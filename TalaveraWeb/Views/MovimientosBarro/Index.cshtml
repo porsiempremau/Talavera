@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Almacén de Barro</h2>
+
+
+<h3>Recervas en 34 poniente</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Tipo</th>
+            <th>Capacidad</th>
+            <th>Unidades</th>
+            <th>Total en Kg</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.lst34Pte)
+        {
+            <tr>
+                <td>@item.Tipo</td>
+                <td>@item.Capacidad</td>
+                <td>@item.Unidades</td>
+                <td>@item.TotalKg</td>
+            </tr>
+        }        
+    </tbody>
+</table>
+<p>
+    @Html.ActionLink("Nueva recerva", "Create")
+</p>
+<br />
+<br />
+<h3>Talavera de la Luz</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Tipo</th>
+            <th>Capacidad</th>
+            <th>Unidades</th>
+            <th>Total en Kg</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.lstLuz)
+        {
+            <tr>
+                <td>@item.Tipo</td>
+                <td>@item.Capacidad</td>
+                <td>@item.Unidades</td>
+                <td>@item.TotalKg</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p>
+    @Html.ActionLink("Solicitar recervas", "SolicitarRecerva", new { lstLuz = ViewBag.lstLuz } );
+</p>
