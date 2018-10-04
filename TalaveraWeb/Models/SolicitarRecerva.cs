@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
 namespace TalaveraWeb.Models
 {
-    public class ReservaBarro
-    {
-        public string CodigoBarro { get; set; }
-        public string Tipo { get; set; }
-        public int? Capacidad { get; set; }
+    public class SolicitarReserva
+    { 
+        public List<SelectListItem> lstTipoCapacidad { get; set; }
+        [Range(0, int.MaxValue, ErrorMessage = "Rango excedido")]
         public int? Unidades { get; set; }
         public int? TotalKg { get; set; }
 
-        public List<SelectListItem> lstTipoCapacidad {get; set;}
         
     }
 }

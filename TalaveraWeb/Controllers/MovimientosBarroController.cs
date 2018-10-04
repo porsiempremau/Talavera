@@ -15,8 +15,8 @@ namespace TalaveraWeb.Controllers
         // GET: MovimientosBarro
         public ActionResult Index()
         {            
-            ViewBag.lst34Pte = tsvc.getRecervasFrom("34 pte");
-            ViewBag.lstLuz = tsvc.getRecervasFrom("La Luz");
+            ViewBag.lst34Pte = tsvc.getReservasFrom("34 pte");
+            ViewBag.lstLuz = tsvc.getReservasFrom("La Luz");
             return View();
         }
 
@@ -52,11 +52,20 @@ namespace TalaveraWeb.Controllers
             return View();            
         }
 
-        public ActionResult SolicitarRecerva()
-        {
-            List<RecervaBarro> lst34pte = tsvc.getRecervasFrom("34 pte");
+        public ActionResult SolicitarReserva()
+        {            
+            ViewBag.lst34pte = tsvc.getReservasFrom("34 pte");
 
-            return View();
+            List<SelectListItem> lstTmp = new List<SelectListItem>();
+            foreach(var iten in ViewBag.lst34pte)
+            {
+                lstTmp.Add(new SelectListItem() { Text = iten.Tipo + " " + iten.Capacidad, Value = iten.Tipo.Substring(0, 1) + iten.Capacidad });                
+            }
+
+            SolicitarReserva SolRec = new SolicitarReserva();
+            SolRec.lstTipoCapacidad = lstTmp;
+            
+            return View(SolRec);
         }
 
         // GET: MovimientosBarro/Edit/5

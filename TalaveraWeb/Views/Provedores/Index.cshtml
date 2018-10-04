@@ -4,10 +4,10 @@
     ViewBag.Title = "Provedores";
 }
 
-<h2>Lista de Provedores</h2>
+<h2>Lista de Proveedores</h2>
 
 <p>
-    @Html.ActionLink("Agregar Provedor", "Create")
+    @Html.ActionLink("Agregar Proveedor", "Create")
 </p>
 <table class="table">
     <tr>
@@ -65,9 +65,9 @@
             @Html.DisplayFor(modelItem => item.Estado)
         </td>*@
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+            @Html.ActionLink("Editar", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Detalles", "Details", new { id=item.id }) |
+            @Html.ActionLink("Borrar", "Delete", new { id=item.id })
         </td>
     </tr>
 }

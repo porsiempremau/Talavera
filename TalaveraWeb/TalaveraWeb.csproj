@@ -225,6 +225,7 @@
     <Compile Include="Models\Recuperados.cs">
       <DependentUpon>ModelTalavera.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SolicitarRecerva.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\TalaveraServices.cs" />
     <Compile Include="Startup.cs" />
@@ -246,6 +247,7 @@
       <DependentUpon>ModelTalavera.edmx</DependentUpon>
       <LastGenOutput>ModelTalavera.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\angular-linq.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <EntityDeploy Include="Models\ModelTalavera.edmx">
@@ -311,7 +313,7 @@
     <Content Include="Views\BarroMaestra\Delete.cshtml" />
     <Content Include="Views\MovimientosBarro\Index.cshtml" />
     <Content Include="Views\MovimientosBarro\Create.cshtml" />
-    <Content Include="Views\MovimientosBarro\SolicitarRecerva.cshtml" />
+    <Content Include="Views\MovimientosBarro\SolicitarReserva.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

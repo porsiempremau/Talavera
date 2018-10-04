@@ -116,7 +116,7 @@ namespace TalaveraWeb.Services
         }
 
         //MOVIMIENTOS BARRO
-        public List<RecervaBarro> getRecervasFrom(string pLocacion)
+        public List<ReservaBarro> getReservasFrom(string pLocacion)
         {
             //Obtengo los registros segun el total de ingresos y egresos
             var lst = db.MovimientosBarro
@@ -130,20 +130,20 @@ namespace TalaveraWeb.Services
 
             var lstBarros = db.BarroMaestra.ToList();
 
-            List<RecervaBarro> lstRecervas = new List<RecervaBarro>();
+            List<ReservaBarro> lstReservas = new List<ReservaBarro>();
             foreach(var item in lstTiposBarro)
             {
                 var Positivo = lst.Where(x => x.TipoMovimiento.CodigoProducto == item.TipoMovimiento.CodigoProducto && x.TipoMovimiento.TipoMovimiento == "In").Select(y => y.Unidades).FirstOrDefault();
                 var Negativo = lst.Where(x => x.TipoMovimiento.CodigoProducto == item.TipoMovimiento.CodigoProducto && x.TipoMovimiento.TipoMovimiento == "Eg").Select(y => y.Unidades).FirstOrDefault();
-                var tmBarro = lstBarros.Where(x => x.CodigoProducto == item.TipoMovimiento.CodigoProducto).Select(y => new { Tipo = y.Tipo, Capacidad = y.Capacidad }).FirstOrDefault();
+                var tmBarro = lstBarros.Where(x => x.CodigoProducto == item.TipoMovimiento.CodigoProducto).Select(y => new { CodigoProducto = y.CodigoProducto, Tipo = y.Tipo, Capacidad = y.Capacidad }).FirstOrDefault();
 
                 int? Total = (Positivo != null ? Positivo : 0) - (Negativo != null ? Negativo : 0);
-                RecervaBarro RecBar = new RecervaBarro() { Tipo = tmBarro.Tipo, Capacidad = tmBarro.Capacidad, Unidades = Total, TotalKg = tmBarro.Capacidad * Total };
+                ReservaBarro RecBar = new ReservaBarro() { CodigoBarro = tmBarro.CodigoProducto , Tipo = tmBarro.Tipo, Capacidad = tmBarro.Capacidad, Unidades = Total, TotalKg = tmBarro.Capacidad * Total };
                                 
-                lstRecervas.Add(RecBar);            
+                lstReservas.Add(RecBar);            
             }        
 
-            return lstRecervas;
+            return lstReservas;
         }
 
         public int addMovimientosBarro(MovimientosBarro pMovB)
@@ -180,7 +180,7 @@ namespace TalaveraWeb.Services
             return lst;
         }
 
-        //RECERVAS BARRO
+        //ReservaS BARRO
         //public List<SelectListItem> obtenerTiposBarro()
         //{
         //    var tmp = db.BarroMaestra;
