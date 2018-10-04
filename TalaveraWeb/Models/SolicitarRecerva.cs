@@ -11,6 +11,7 @@ namespace TalaveraWeb.Models
     { 
         public List<SelectListItem> lstTipoCapacidad { get; set; }
         [Range(0, int.MaxValue, ErrorMessage = "Rango excedido")]
+        [Required]
         public int? Unidades { get; set; }
         public int? TotalKg { get; set; }
 

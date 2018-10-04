@@ -64,8 +64,48 @@ namespace TalaveraWeb.Controllers
 
             SolicitarReserva SolRec = new SolicitarReserva();
             SolRec.lstTipoCapacidad = lstTmp;
+            SolRec.Unidades = 0;
+            SolRec.TotalKg = 0;
             
             return View(SolRec);
+        }
+
+        [HttpPost]
+        public ActionResult SolicitarReserva(SolicitarReserva pSR)
+        {
+            if( ModelState.IsValid )
+            {
+                SelectListItem item = pSR.lstTipoCapacidad.Where(x => x.Selected).FirstOrDefault();
+                MovimientosBarro tmpMovB_in = new MovimientosBarro()
+                {
+                    FechaMovimiento = DateTime.Today,
+                    TipoMovimiento = "In",
+                    CodigoProducto = item.Value,
+                    Unidades = pSR.Unidades,
+                    Locacion = "La Luz",
+                    OrigenTranferencia = "34 pte"
+                };
+                
+                MovimientosBarro tmpMovB_eg = new MovimientosBarro()
+                {
+                    FechaMovimiento = DateTime.Today,
+                    TipoMovimiento = "Eg",
+                    CodigoProducto = item.Value,
+                    Unidades = pSR.Unidades,
+                    Locacion = "34 pte"
+                };
+
+                List<MovimientosBarro> lst = new List<MovimientosBarro>();
+                lst.Add(tmpMovB_in);
+                lst.Add(tmpMovB_eg);
+
+                int res = tsvc.addMovimientosBarro(lst);
+                if (res == 1)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            return View() ;
         }
 
         // GET: MovimientosBarro/Edit/5

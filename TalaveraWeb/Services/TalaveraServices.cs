@@ -159,6 +159,19 @@ namespace TalaveraWeb.Services
                 return -1;
             } 
         }
+        public int addMovimientosBarro(List<MovimientosBarro> plstMovB)
+        {
+            try
+            {
+                db.MovimientosBarro.AddRange(plstMovB);
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
         //Catalogos para Movimientos de barro
         public List<SelectListItem> obtenerProductos()
         {
