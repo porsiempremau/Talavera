@@ -1,9 +1,10 @@
 ﻿@model TalaveraWeb.Models.ExternalLoginListViewModel
 @using Microsoft.Owin.Security
 
-<h4>Use otro servicio para iniciar sesión.</h4>
+<h4>Talavera de la Luz.</h4>
 <hr />
-@{
+<img src="~/Imagen/slide-image-2.jpg" style="width: 50rem;" />
+@*@{
     var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
     if (loginProviders.Count() == 0) {
         <div>
@@ -25,4 +26,4 @@
             </div>
         }
     }
-}
+}*@

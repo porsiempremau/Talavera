@@ -237,6 +237,12 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Imagen\historia2.jpg" />
+    <Content Include="Imagen\slide-image-2.jpg" />
+    <Content Include="Imagen\slide-image-4.jpg" />
+    <Content Include="Imagen\talavera2.JPG" />
+    <Content Include="Imagen\talavera3.jpg" />
+    <Content Include="Imagen\talavera_azulejo.png" />
     <Content Include="Models\ModelTalavera.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ModelTalavera.edmx</DependentUpon>
