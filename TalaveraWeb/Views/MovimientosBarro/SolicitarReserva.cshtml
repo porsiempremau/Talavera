@@ -42,7 +42,8 @@
         <div class="form-group">
             @Html.Label("Reserva requerida", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.lstTipoCapacidad, (IEnumerable<SelectListItem>) Model.lstTipoCapacidad)
+                @*@Html.DropDownListFor(model => model.lstTipoCapacidad, (IEnumerable<SelectListItem>) Model.lstTipoCapacidad)*@
+                @Html.DropDownListFor(model => model.CodigoBarro , (List<SelectListItem>)ViewBag.lstTipoCapacidad, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Unidades, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -83,7 +84,7 @@
         });
 
         function actualizaUnidadesMax(){
-            var CodigoBarroSeleccionado = document.getElementById("lstTipoCapacidad").value;
+            var CodigoBarroSeleccionado = document.getElementById("CodigoBarro").value;
             var lstBarroDisponible = @Html.Raw(Json.Encode(ViewBag.lst34pte));
 
             lstBarroDisponible.forEach(function(element){
@@ -99,7 +100,7 @@
         });
 
         function actualizaTotalKg(){
-            var CodigoBarroSeleccionado = document.getElementById("lstTipoCapacidad").value;
+            var CodigoBarroSeleccionado = document.getElementById("CodigoBarro").value;
             var lstBarroDisponible = @Html.Raw(Json.Encode(ViewBag.lst34pte));
             var Unidades = document.getElementById("Unidades").value;
             var Total = 0;

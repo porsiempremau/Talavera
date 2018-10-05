@@ -63,7 +63,8 @@ namespace TalaveraWeb.Controllers
             }
 
             SolicitarReserva SolRec = new SolicitarReserva();
-            SolRec.lstTipoCapacidad = lstTmp;
+            //SolRec.lstTipoCapacidad = lstTmp;
+            ViewBag.lstTipoCapacidad = lstTmp;
             SolRec.Unidades = 0;
             SolRec.TotalKg = 0;
             
@@ -75,12 +76,12 @@ namespace TalaveraWeb.Controllers
         {
             if( ModelState.IsValid )
             {
-                SelectListItem item = pSR.lstTipoCapacidad.Where(x => x.Selected).FirstOrDefault();
+                //SelectListItem item = pSR.lstTipoCapacidad.Where(x => x.Selected).FirstOrDefault();                
                 MovimientosBarro tmpMovB_in = new MovimientosBarro()
                 {
                     FechaMovimiento = DateTime.Today,
                     TipoMovimiento = "In",
-                    CodigoProducto = item.Value,
+                    CodigoProducto = pSR.CodigoBarro, //item.Value,
                     Unidades = pSR.Unidades,
                     Locacion = "La Luz",
                     OrigenTranferencia = "34 pte"
@@ -90,7 +91,7 @@ namespace TalaveraWeb.Controllers
                 {
                     FechaMovimiento = DateTime.Today,
                     TipoMovimiento = "Eg",
-                    CodigoProducto = item.Value,
+                    CodigoProducto = pSR.CodigoBarro, //item.Value,
                     Unidades = pSR.Unidades,
                     Locacion = "34 pte"
                 };
@@ -100,12 +101,13 @@ namespace TalaveraWeb.Controllers
                 lst.Add(tmpMovB_eg);
 
                 int res = tsvc.addMovimientosBarro(lst);
-                if (res == 1)
+                if (res == 2)
                 {
                     return RedirectToAction("Index");
                 }
             }
-            return View() ;
+            //return HttpStatusCodeResult(201, "No se pudo realizar la consulta");
+            return View( new HttpStatusCodeResult(201, "No se pudo realizar la consulta") );
         }
 
         // GET: MovimientosBarro/Edit/5
