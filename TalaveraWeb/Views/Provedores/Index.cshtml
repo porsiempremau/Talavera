@@ -9,7 +9,7 @@
 <p>
     @Html.ActionLink("Agregar Proveedor", "Create")
 </p>
-<table class="table">
+<table class="table" id="tablaProvedores">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Nombre)
@@ -71,5 +71,24 @@
         </td>
     </tr>
 }
-
 </table>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    $(document).ready(function()
+    {        
+        function estaVaciaTablaProvedores(){            
+            var sinDatos = @Html.Raw(Json.Encode(ViewBag.sinDatos));
+                        
+            if(sinDatos == 1)
+            {
+                document.getElementById("tablaProvedores").style.visibility = "hidden";
+            }
+            else
+            {
+                document.getElementById("tablaProvedores").style.visibility = "visible";
+            }
+        }
+        estaVaciaTablaProvedores();
+    })
+</script>

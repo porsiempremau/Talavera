@@ -16,6 +16,16 @@ namespace TalaveraWeb.Controllers
         public ActionResult Index()
         {
             List<Provedores> lstProv = tsvc.getProvedores();
+            if (lstProv != null)
+            {
+                ViewBag.sinDatos = 0;
+            }                
+            else
+            {
+                ViewBag.sinDatos = 1;
+                lstProv = new List<Provedores>();
+                lstProv.Add( new Provedores() {Nombre = "" } );                
+            }
             return View(lstProv);
         }
 
@@ -49,7 +59,7 @@ namespace TalaveraWeb.Controllers
                 int resultado = tsvc.newProvedores(pProv);
                 return RedirectToAction("Index");
             }
-            catch
+            catch(Exception ex)
             {
                 return View();
             }

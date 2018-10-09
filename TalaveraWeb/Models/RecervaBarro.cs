@@ -14,7 +14,7 @@ namespace TalaveraWeb.Models
         public int? Unidades { get; set; }
         public int? TotalKg { get; set; }
 
-        public List<SelectListItem> lstTipoCapacidad {get; set;}
+        //public List<SelectListItem> lstTipoCapacidad {get; set;}
         
     }
 }

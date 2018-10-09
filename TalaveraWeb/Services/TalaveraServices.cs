@@ -15,7 +15,14 @@ namespace TalaveraWeb.Services
         //PROVEDORES
         public List<Provedores> getProvedores()
         {
-            return db.Provedores.ToList();            
+            try
+            {
+                return db.Provedores.ToList();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }            
         }
 
         public int newProvedores(Provedores pProv)
@@ -192,12 +199,7 @@ namespace TalaveraWeb.Services
             };
             return lst;
         }
-
-        //ReservaS BARRO
-        //public List<SelectListItem> obtenerTiposBarro()
-        //{
-        //    var tmp = db.BarroMaestra;
-        //}
+                
 
     }
 }

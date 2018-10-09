@@ -248,6 +248,7 @@
       <DependentUpon>ModelTalavera.edmx</DependentUpon>
       <LastGenOutput>ModelTalavera.Context.cs</LastGenOutput>
     </Content>
+    <Content Include="Models\ModelTalavera.edmx.sql" />
     <Content Include="Models\ModelTalavera.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ModelTalavera.edmx</DependentUpon>
