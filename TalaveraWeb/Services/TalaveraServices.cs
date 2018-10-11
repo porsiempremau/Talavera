@@ -200,6 +200,80 @@ namespace TalaveraWeb.Services
             return lst;
         }
                 
+        //PREPARACION DE BARROS
+        public List<PreparacionBarro> obtenerPreparacionBarro()
+        {            
+            List<PreparacionBarro> lstPreBar = new List<PreparacionBarro>();
+            try
+            {
+                var lst = db.PreparacionBarro.OrderBy(x => x.FechaPreparacion).ToList();
+                if(lst != null)
+                {
+                    lstPreBar = lst;
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return lstPreBar;
+        }
 
+        public PreparacionBarro detallePreparacionBarro(int pId)
+        {
+            return db.PreparacionBarro.Where(x => x.Id == pId).FirstOrDefault();
+        }
+
+        public int addPreparacionBarro(PreparacionBarro pPreBar)
+        {
+            try
+            {
+                db.PreparacionBarro.Add(pPreBar);
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
+        //Establece el numero de preparado, segun el año.
+        public string getNumeroPreparado()
+        {
+            int Count = db.PreparacionBarro.Count(x => x.FechaPreparacion.Value.Year == DateTime.Today.Year);
+            string res = DateTime.Today.Year + "p" + (Count + 1);            
+            return res;
+        }
+        
+        public int editPreparacionBarro(int pId, PreparacionBarro pPreBar)
+        {
+            try
+            {
+                db.Entry(pPreBar).State = EntityState.Modified;
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                return -1;
+            }
+        }
+
+        public int deletePreparacionBarro(int pId)
+        {
+            try
+            {
+                PreparacionBarro PreBar = db.PreparacionBarro.Find(pId);
+                db.PreparacionBarro.Remove(PreBar);
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                return -1;
+            }
+        }
     }
 }

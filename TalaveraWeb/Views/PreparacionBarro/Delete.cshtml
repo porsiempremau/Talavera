@@ -1,0 +1,104 @@
+﻿@model TalaveraWeb.Models.PreparacionBarro
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Borrar</h2>
+
+<h3>¿Estas seguro que desear borrar este elemento?</h3>
+<div>
+    <h4>Preparación de Barro</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaPreparacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaPreparacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumPreparado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumPreparado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BarroNegro)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BarroNegro)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BarroBlanco)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BarroBlanco)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Recuperado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Recuperado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnPiedra)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnPiedra)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TiempoAgitacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TiempoAgitacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumTambos)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumTambos)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DesperdicioMojado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DesperdicioMojado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Comentario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Comentario)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Borrar" class="btn btn-default" /> |
+            @Html.ActionLink("Vover al listado", "Index")
+        </div>
+    }
+</div>
