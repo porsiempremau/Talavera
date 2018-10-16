@@ -11,7 +11,6 @@ namespace TalaveraWeb.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
     public partial class PreparacionBarro
@@ -22,13 +21,15 @@ namespace TalaveraWeb.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> FechaPreparacion { get; set; }
 
-        [Display(Name = "Numero de Preparado")]        
+        [Display(Name = "Numero de Preparado")]
         public string NumPreparado { get; set; }
 
+        [Required]
         [Display(Name = "Barro Negro Kg")]
         [Range(0, int.MaxValue)]
         public Nullable<int> BarroNegro { get; set; }
 
+        [Required]
         [Display(Name = "Barro Blanco Kg")]
         [Range(0, int.MaxValue)]
         public Nullable<int> BarroBlanco { get; set; }
@@ -48,6 +49,7 @@ namespace TalaveraWeb.Models
 
         [Display(Name = "Desperdicio Mojado en Kg")]
         public string DesperdicioMojado { get; set; }
-        public string Comentario { get; set; }               
+        public string Comentario { get; set; }
+        public string Estado { get; set; }
     }
 }

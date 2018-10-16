@@ -102,6 +102,27 @@
     </div>
 }
 
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    $(document).ready(function()
+    {    
+        function actualizaUnidadesMax(){            
+            var lstBarroDisponible = @Html.Raw(Json.Encode(ViewBag.lstLuz));
+
+            lstBarroDisponible.forEach(function(element){
+                if(element.Tipo.includes("Negro")){
+                    document.getElementById("BarroNegro").setAttribute("max", element.Unidades);
+                }
+                else if(element.Tipo.includes("Blanco")){
+                    document.getElementById("BarroBlanco").setAttribute("max", element.Unidades);
+                }
+            })
+        }
+
+        actualizaUnidadesMax();        
+    })
+</script>
+
 <div>
     @Html.ActionLink("Volver al listado", "Index")
 </div>

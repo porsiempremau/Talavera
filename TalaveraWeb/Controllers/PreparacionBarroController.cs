@@ -33,6 +33,9 @@ namespace TalaveraWeb.Controllers
             PreBar.NumPreparado = tsvc.getNumeroPreparado();
             PreBar.BarroBlanco = 105;
             PreBar.BarroNegro = 150;
+
+            ViewBag.lstLuz = tsvc.getReservasFrom("La Luz");
+
             return View(PreBar);
         }
 
@@ -42,8 +45,32 @@ namespace TalaveraWeb.Controllers
         {
             if (ModelState.IsValid)
             {
+                pPreBar.Estado = "Disponible";
                 int res = tsvc.addPreparacionBarro(pPreBar);
-                if (res == 1)
+
+                //Se hacen los egresos de barro.
+                MovimientosBarro tmpMovB_egNegro = new MovimientosBarro()
+                {
+                    FechaMovimiento = DateTime.Today,
+                    TipoMovimiento = "Eg",
+                    CodigoProducto = "N1", //item.Value,
+                    Unidades = pPreBar.BarroNegro,
+                    Locacion = "La Luz"
+                };
+                MovimientosBarro tmpMovB_egBlanco = new MovimientosBarro()
+                {
+                    FechaMovimiento = DateTime.Today,
+                    TipoMovimiento = "Eg",
+                    CodigoProducto = "B1", //item.Value,
+                    Unidades = pPreBar.BarroBlanco,
+                    Locacion = "La Luz"
+                };
+                List<MovimientosBarro> lst = new List<MovimientosBarro>();
+                lst.Add(tmpMovB_egNegro);
+                lst.Add(tmpMovB_egBlanco);
+                int res2 = tsvc.addMovimientosBarro(lst);
+
+                if (res == 1 && res2 == 2)
                 {
                     return RedirectToAction("Index");
                 }                

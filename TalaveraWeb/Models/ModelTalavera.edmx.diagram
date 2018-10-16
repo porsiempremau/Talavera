@@ -6,7 +6,7 @@
     <edmx:Diagrams>
       <Diagram DiagramId="526be984770d4c1fb7ea048f6ae6240b" Name="Diagram1">
         <EntityTypeShape EntityType="TalaveraModel.EntregaPellas" Width="1.5" PointX="7.75" PointY="2.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="TalaveraModel.PreparacionBarro" Width="1.75" PointX="4.25" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TalaveraModel.PreparacionBarro" PointX="3.375" PointY="5.75" Width="1.75" IsExpanded="true" />
         <EntityTypeShape EntityType="TalaveraModel.PreparacionPellas" Width="1.75" PointX="8.25" PointY="5" IsExpanded="true" />
         <EntityTypeShape EntityType="TalaveraModel.prepBarro_prepPellas" Width="1.5" PointX="6.375" PointY="5" IsExpanded="true" />
         <EntityTypeShape EntityType="TalaveraModel.Provedores" Width="1.5" PointX="0.625" PointY="5.875" IsExpanded="true" />

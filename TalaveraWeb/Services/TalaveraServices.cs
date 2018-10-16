@@ -206,7 +206,7 @@ namespace TalaveraWeb.Services
             List<PreparacionBarro> lstPreBar = new List<PreparacionBarro>();
             try
             {
-                var lst = db.PreparacionBarro.OrderBy(x => x.FechaPreparacion).ToList();
+                var lst = db.PreparacionBarro.Where(y => y.Estado == "Disponible").OrderBy(x => x.FechaPreparacion).ToList();
                 if(lst != null)
                 {
                     lstPreBar = lst;
