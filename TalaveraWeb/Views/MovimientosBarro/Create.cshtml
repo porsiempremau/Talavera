@@ -30,7 +30,7 @@
             </div>*@
             @Html.Label("CodigoProducto", "Producto", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("CodigoProducto", (List<SelectListItem>)ViewBag.Productos)
+                @Html.DropDownList("CodigoProducto", (List<SelectListItem>)ViewBag.Productos, htmlAttributes: new { @class = "droplistStyle" })
             </div>
         </div>
 
@@ -50,7 +50,7 @@
             </div>*@
             @Html.Label("Provedor","Provedor", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Provedor", (List<SelectListItem>)ViewBag.Provedores)
+                @Html.DropDownList("Provedor", (List<SelectListItem>)ViewBag.Provedores, htmlAttributes: new { @class = "droplistStyle" })
             </div>
         </div>
 
@@ -62,7 +62,7 @@
             </div>*@
             @Html.Label("Locacion","Locacion", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Locacion", (List<SelectListItem>)ViewBag.Locaciones)
+                @Html.DropDownList("Locacion", (List<SelectListItem>)ViewBag.Locaciones, htmlAttributes: new { @class = "droplistStyle" })
             </div>
         </div>
 
