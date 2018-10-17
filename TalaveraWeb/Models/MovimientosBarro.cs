@@ -11,29 +11,16 @@ namespace TalaveraWeb.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-
+    
     public partial class MovimientosBarro
     {
         public int Id { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> FechaMovimiento { get; set; }
-        [NotMapped]
-        [ScaffoldColumn(false)]
         public string TipoMovimiento { get; set; }
         public string CodigoProducto { get; set; }
-        [Range(1, int.MaxValue, ErrorMessage = "Only positive number allowed")]
         public Nullable<int> Unidades { get; set; }
         public Nullable<int> Provedor { get; set; }
         public string Locacion { get; set; }
         public string OrigenTranferencia { get; set; }
-
-        public MovimientosBarro()
-        {            
-            FechaMovimiento = DateTime.Today;
-        }
     }
 }

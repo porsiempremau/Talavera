@@ -53,6 +53,7 @@
           <Property Name="NumTambos" Type="int" />
           <Property Name="DesperdicioMojado" Type="nvarchar" MaxLength="10" />
           <Property Name="Comentario" Type="nvarchar" MaxLength="50" />
+          <Property Name="Estado" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="PreparacionPellas">
           <Key>
@@ -131,17 +132,18 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FechaPreparacion" Type="DateTime" Precision="3" />
-          <Property Name="NumPreparado" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+          <Property Name="FechaPreparacion" Precision="3" Type="DateTime" />
+          <Property Name="NumPreparado" MaxLength="10" FixedLength="false" Unicode="true" Type="String" />
           <Property Name="BarroNegro" Type="Int32" />
           <Property Name="BarroBlanco" Type="Int32" />
           <Property Name="Recuperado" Type="Int32" />
-          <Property Name="EnPiedra" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="TiempoAgitacion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="EnPiedra" MaxLength="10" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="TiempoAgitacion" MaxLength="20" FixedLength="false" Unicode="true" Type="String" />
           <Property Name="NumTambos" Type="Int32" />
-          <Property Name="DesperdicioMojado" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Comentario" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DesperdicioMojado" MaxLength="10" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="Comentario" MaxLength="50" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="Estado" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="PreparacionPellas">
           <Key>
@@ -244,6 +246,7 @@
           <EntitySetMapping Name="PreparacionBarro">
             <EntityTypeMapping TypeName="TalaveraModel.PreparacionBarro">
               <MappingFragment StoreEntitySet="PreparacionBarro">
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="FechaPreparacion" ColumnName="FechaPreparacion" />
                 <ScalarProperty Name="NumPreparado" ColumnName="NumPreparado" />

@@ -178,6 +178,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MovimientosBarroController.cs" />
+    <Compile Include="Controllers\PreparacionBarroController.cs" />
     <Compile Include="Controllers\ProvedoresController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -322,9 +323,15 @@
     <Content Include="Views\MovimientosBarro\Index.cshtml" />
     <Content Include="Views\MovimientosBarro\Create.cshtml" />
     <Content Include="Views\MovimientosBarro\SolicitarReserva.cshtml" />
+    <Content Include="Views\PreparacionBarro\Index.cshtml" />
+    <Content Include="Views\PreparacionBarro\Details.cshtml" />
+    <Content Include="Views\PreparacionBarro\Create.cshtml" />
+    <Content Include="Views\PreparacionBarro\Edit.cshtml" />
+    <Content Include="Views\PreparacionBarro\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\local\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -1,0 +1,87 @@
+﻿@model IEnumerable<TalaveraWeb.Models.PreparacionBarro>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>REPORTE DE LA PREPARACIÓN DE BARROS</h2>
+
+<p>
+    @Html.ActionLink("Crear Nuevo", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaPreparacion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NumPreparado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BarroNegro)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BarroBlanco)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Recuperado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EnPiedra)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TiempoAgitacion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NumTambos)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DesperdicioMojado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Comentario)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaPreparacion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumPreparado)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BarroNegro)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BarroBlanco)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Recuperado)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EnPiedra)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TiempoAgitacion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumTambos)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DesperdicioMojado)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Comentario)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Detalles", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Borrar", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
