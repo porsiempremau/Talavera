@@ -3,11 +3,13 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Almacén de Barro</h2>
+<h3>Almacén de Barro</h3>
 
-
-<h3>Reservas en 34 poniente</h3>
-<table>
+<p>
+    @Html.ActionLink("Nueva Reserva", "Create")
+</p>
+<h4 class="encabezado">Reservas en 34 poniente</h4>
+<table class="table">
     <thead>
         <tr>
             <th>Tipo</th>
@@ -28,13 +30,15 @@
         }        
     </tbody>
 </table>
+
+<br />
+<br />
 <p>
-    @Html.ActionLink("Nueva Reserva", "Create")
+    @Html.ActionLink("Solicitar Reservas", "SolicitarReserva", new { lstLuz = ViewBag.lstLuz })
 </p>
-<br />
-<br />
-<h3>Talavera de la Luz</h3>
-<table>
+
+<h4 class="encabezado">Talavera de la Luz</h4>
+<table class="table">
     <thead>
         <tr>
             <th>Tipo</th>
@@ -56,6 +60,3 @@
     </tbody>
 </table>
 
-<p>
-    @Html.ActionLink("Solicitar Reservas", "SolicitarReserva", new { lstLuz = ViewBag.lstLuz } )
-</p>
