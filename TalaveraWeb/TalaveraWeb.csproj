@@ -179,6 +179,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MovimientosBarroController.cs" />
     <Compile Include="Controllers\PreparacionBarroController.cs" />
+    <Compile Include="Controllers\PreparacionPellasController.cs" />
     <Compile Include="Controllers\ProvedoresController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -327,6 +328,7 @@
     <Content Include="Views\PreparacionBarro\Create.cshtml" />
     <Content Include="Views\PreparacionBarro\Edit.cshtml" />
     <Content Include="Views\PreparacionBarro\Delete.cshtml" />
+    <Content Include="Views\PreparacionPellas\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

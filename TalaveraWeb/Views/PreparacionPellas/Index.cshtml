@@ -1,0 +1,81 @@
+﻿@model IEnumerable<TalaveraWeb.Models.PreparacionPellas>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Reporte de barro en fuentes</h2>
+
+<p>
+    @Html.ActionLink("Crear nuevo", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Fuente)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NumCarga)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaVaciado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaLevantado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaInicoPisado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaFinPisado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NumPeyas)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Restante)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CargaTotal)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Fuente)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumCarga)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaVaciado)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaLevantado)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaInicoPisado)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaFinPisado)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumPeyas)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Restante)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CargaTotal)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Detalles", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Borrar", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
