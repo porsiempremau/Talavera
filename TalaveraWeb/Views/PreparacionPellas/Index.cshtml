@@ -7,7 +7,7 @@
 <h2>Reporte de barro en fuentes</h2>
 
 <p>
-    @Html.ActionLink("Crear nuevo", "Create")
+    @Html.ActionLink("Crear nuevo", "CrearPellas")
 </p>
 <table class="table">
     <tr>
@@ -71,9 +71,8 @@
             @Html.DisplayFor(modelItem => item.CargaTotal)
         </td>
         <td>
-            @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Detalles", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Borrar", "Delete", new { id=item.Id })
+            @Html.ActionLink("Editar", "EditarPellas", new { id=item.Id }) |            
+            @Html.ActionLink("Borrar", "BorrarPellas", new { id=item.Id })
         </td>
     </tr>
 }

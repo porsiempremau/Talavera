@@ -275,5 +275,70 @@ namespace TalaveraWeb.Services
                 return -1;
             }
         }
+
+        //PREPARACION PELLAS
+        public List<PreparacionPellas> obtenerPreparacionPellas()
+        {
+            return db.PreparacionPellas.OrderByDescending(x => x.NumCarga).Take(10).ToList();
+        }
+
+        //Establece el numero de carga en fuentes, segun el año
+        public string getNumeroCarga()
+        {
+            int Count = db.PreparacionPellas.Count(x => x.FechaVaciado.Value.Year == DateTime.Today.Year);
+            string res = DateTime.Today.Year + "c" + (Count + 1);
+            return res;
+        }
+
+        public int addPreparacionPellas(PreparacionPellas pPrePell)
+        {
+            try
+            {
+                db.PreparacionPellas.Add(pPrePell);
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Preparación Pellas Error: " + ex.Message);
+                return -1;
+            }
+        }
+
+        public PreparacionPellas detallePreparacionPellas(int pId)
+        {
+            return db.PreparacionPellas.Where(x => x.Id == pId).FirstOrDefault();
+        }
+
+        public int editPreparacionPellas(PreparacionPellas pPrePell)
+        {
+            try
+            {
+                db.Entry(pPrePell).State = EntityState.Modified;
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Edición Preparación Pellas Error: " + ex.Message);
+                return -1;
+            }            
+        }
+
+        public int deletePreparacionPellas(int pId)
+        {
+            try
+            {
+                PreparacionPellas tmp = db.PreparacionPellas.Find(pId);
+                db.PreparacionPellas.Remove(tmp);
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Delete Preparacion Pellas Error: " + ex.Message);
+                return -1;
+            }
+        }
     }
 }

@@ -330,6 +330,9 @@
     <Content Include="Views\PreparacionBarro\Edit.cshtml" />
     <Content Include="Views\PreparacionBarro\Delete.cshtml" />
     <Content Include="Views\PreparacionPellas\Index.cshtml" />
+    <Content Include="Views\PreparacionPellas\CrearPellas.cshtml" />
+    <Content Include="Views\PreparacionPellas\EditarPellas.cshtml" />
+    <Content Include="Views\PreparacionPellas\BorrarPellas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

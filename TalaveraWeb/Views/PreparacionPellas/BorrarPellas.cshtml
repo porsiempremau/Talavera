@@ -1,0 +1,97 @@
+﻿@model TalaveraWeb.Models.PreparacionPellas
+
+@{
+    ViewBag.Title = "BorrarPellas";
+}
+
+<h2>Borrar reporte</h2>
+
+<h3>¿Estas seguro que deseas borrar el reporte?
+</h3>
+<div>
+    <h4>Reporte de barro en fuentes</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Fuente)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fuente)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumCarga)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumCarga)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaVaciado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaVaciado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaLevantado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaLevantado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaInicoPisado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaInicoPisado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaFinPisado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaFinPisado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumPeyas)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumPeyas)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Restante)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Restante)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CargaTotal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CargaTotal)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Borrar" class="btn btn-default" /> |
+            @Html.ActionLink("Volver al listado", "Index")
+        </div>
+    }
+</div>
