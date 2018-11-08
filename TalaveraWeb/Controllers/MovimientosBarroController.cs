@@ -15,8 +15,8 @@ namespace TalaveraWeb.Controllers
         // GET: MovimientosBarro
         public ActionResult Index()
         {            
-            ViewBag.lst34Pte = tsvc.getReservasFrom("34 pte");
-            ViewBag.lstLuz = tsvc.getReservasFrom("La Luz");
+            ViewBag.lst34Pte = tsvc.getReservasFrom(2);
+            ViewBag.lstLuz = tsvc.getReservasFrom(1);
             return View();
         }
 
@@ -26,35 +26,11 @@ namespace TalaveraWeb.Controllers
             return View();
         }
 
-        // GET: MovimientosBarro/Create
-        public ActionResult Create()
-        {
-            ViewBag.Productos = tsvc.obtenerProductos();
-            ViewBag.Provedores = tsvc.obtenerProvedores();
-            ViewBag.Locaciones = tsvc.obtenerLocaciones();
-            MovimientosBarro MovBar = new MovimientosBarro();
-            return View(MovBar);
-        }
-
-        // POST: MovimientosBarro/Create
-        [HttpPost]
-        public ActionResult Create(MovimientosBarro pMovB)
-        {
-            if (ModelState.IsValid)
-            {
-                pMovB.TipoMovimiento = "In";
-                int res = tsvc.addMovimientosBarro(pMovB);
-                if (res == 1)
-                {
-                    return RedirectToAction("Index");
-                }                
-            }            
-            return View();            
-        }
+        
 
         public ActionResult SolicitarReserva()
         {            
-            ViewBag.lst34pte = tsvc.getReservasFrom("34 pte");
+            ViewBag.lst34pte = tsvc.getReservasFrom(2);
 
             List<SelectListItem> lstTmp = new List<SelectListItem>();
             foreach(var iten in ViewBag.lst34pte)
@@ -77,26 +53,26 @@ namespace TalaveraWeb.Controllers
             if( ModelState.IsValid )
             {
                 //SelectListItem item = pSR.lstTipoCapacidad.Where(x => x.Selected).FirstOrDefault();                
-                MovimientosBarro tmpMovB_in = new MovimientosBarro()
+                BarroMovimientos tmpMovB_in = new BarroMovimientos()
                 {
                     FechaMovimiento = DateTime.Today,
                     TipoMovimiento = "In",
                     CodigoProducto = pSR.CodigoBarro, //item.Value,
-                    Unidades = pSR.Unidades,
-                    Locacion = "La Luz",
-                    OrigenTranferencia = "34 pte"
+                    Unidades = (int)pSR.Unidades,
+                    ////Locacion = "La Luz",
+                    ////OrigenTranferencia = "34 pte"
                 };
-                
-                MovimientosBarro tmpMovB_eg = new MovimientosBarro()
+
+                BarroMovimientos tmpMovB_eg = new BarroMovimientos()
                 {
                     FechaMovimiento = DateTime.Today,
                     TipoMovimiento = "Eg",
                     CodigoProducto = pSR.CodigoBarro, //item.Value,
-                    Unidades = pSR.Unidades,
-                    Locacion = "34 pte"
+                    //Unidades = pSR.Unidades,
+                    //Locacion = "34 pte"
                 };
 
-                List<MovimientosBarro> lst = new List<MovimientosBarro>();
+                List<BarroMovimientos> lst = new List<BarroMovimientos>();
                 lst.Add(tmpMovB_in);
                 lst.Add(tmpMovB_eg);
 

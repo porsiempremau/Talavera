@@ -21,6 +21,8 @@ namespace TalaveraWeb.Controllers
         {
             PreparacionPellas PrePell = new PreparacionPellas();
             PrePell.NumCarga = tsvc.getNumeroCarga();
+            //PrePell.lstBarroPellas = tsvc.getPreparadosDeCarga(PrePell.NumCarga);
+            ViewBag.lstPreparadosDisponibles = tsvc.getPreparadosDisponibles();
             return View(PrePell);
         }
 

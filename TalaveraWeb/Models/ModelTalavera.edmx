@@ -14,6 +14,20 @@
           <Property Name="Capacidad" Type="int" />
           <Property Name="Tipo" Type="nvarchar" MaxLength="10" />
         </EntityType>
+        <EntityType Name="BarroMovimientos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CodigoProducto" Type="nvarchar" MaxLength="5" />
+          <Property Name="FechaMovimiento" Type="date" />
+          <Property Name="TipoMovimiento" Type="nvarchar" MaxLength="2" />
+          <Property Name="Unidades" Type="int" />
+          <Property Name="Locacion" Type="int" />
+          <Property Name="OrigenTransferencia" Type="int" />
+          <Property Name="OrigenTabla" Type="nvarchar" MaxLength="20" />
+          <Property Name="PesoTotal" Type="int" />
+        </EntityType>
         <EntityType Name="EntregaPellas">
           <Key>
             <PropertyRef Name="Id" />
@@ -24,19 +38,6 @@
           <Property Name="TipoMovimiento" Type="nvarchar" MaxLength="1" />
           <Property Name="CantidadPellas" Type="int" />
           <Property Name="NumCarga" Type="nvarchar" MaxLength="10" />
-        </EntityType>
-        <EntityType Name="MovimientosBarro">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FechaMovimiento" Type="datetime" />
-          <Property Name="TipoMovimiento" Type="nvarchar" MaxLength="2" />
-          <Property Name="CodigoProducto" Type="nvarchar" MaxLength="5" />
-          <Property Name="Unidades" Type="int" />
-          <Property Name="Provedor" Type="int" />
-          <Property Name="Locacion" Type="nvarchar" MaxLength="10" />
-          <Property Name="OrigenTranferencia" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="PreparacionBarro">
           <Key>
@@ -103,20 +104,44 @@
           <Property Name="NumRecuperado" Type="nvarchar" MaxLength="10" />
           <Property Name="TipoMovimiento" Type="nvarchar" MaxLength="1" />
         </EntityType>
+        <EntityType Name="Sucursales">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="250" />
+          <Property Name="Telefono" Type="nvarchar" MaxLength="15" />
+          <Property Name="Telefono2" Type="nvarchar" MaxLength="15" />
+          <Property Name="Numero" Type="nvarchar" MaxLength="50" />
+          <Property Name="Calle" Type="nvarchar" MaxLength="50" />
+          <Property Name="Colonia" Type="nvarchar" MaxLength="50" />
+          <Property Name="Municipio" Type="nvarchar" MaxLength="50" />
+          <Property Name="Estado" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityContainer Name="TalaveraModelStoreContainer">
           <EntitySet Name="BarroMaestra" EntityType="Self.BarroMaestra" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BarroMovimientos" EntityType="Self.BarroMovimientos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EntregaPellas" EntityType="Self.EntregaPellas" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="MovimientosBarro" EntityType="Self.MovimientosBarro" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PreparacionBarro" EntityType="Self.PreparacionBarro" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PreparacionPellas" EntityType="Self.PreparacionPellas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="prepBarro_prepPellas" EntityType="Self.prepBarro_prepPellas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Provedores" EntityType="Self.Provedores" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Recuperados" EntityType="Self.Recuperados" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sucursales" EntityType="Self.Sucursales" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TalaveraModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BarroMaestra">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CodigoProducto" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="Capacidad" Type="Int32" />
+          <Property Name="Tipo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="EntregaPellas">
           <Key>
             <PropertyRef Name="Id" />
@@ -132,17 +157,17 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
-          <Property Name="FechaPreparacion" Precision="3" Type="DateTime" />
-          <Property Name="NumPreparado" MaxLength="10" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaPreparacion" Type="DateTime" Precision="3" />
+          <Property Name="NumPreparado" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="BarroNegro" Type="Int32" />
           <Property Name="BarroBlanco" Type="Int32" />
           <Property Name="Recuperado" Type="Int32" />
-          <Property Name="EnPiedra" MaxLength="10" FixedLength="false" Unicode="true" Type="String" />
-          <Property Name="TiempoAgitacion" MaxLength="20" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="EnPiedra" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TiempoAgitacion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="NumTambos" Type="Int32" />
-          <Property Name="DesperdicioMojado" MaxLength="10" FixedLength="false" Unicode="true" Type="String" />
-          <Property Name="Comentario" MaxLength="50" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="DesperdicioMojado" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Comentario" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Estado" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="PreparacionPellas">
@@ -193,37 +218,44 @@
           <Property Name="NumRecuperado" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="TipoMovimiento" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="Sucursales">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Telefono" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Telefono2" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Numero" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Calle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Colonia" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Municipio" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Estado" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityContainer Name="TalaveraEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BarroMaestra" EntityType="Self.BarroMaestra" />
           <EntitySet Name="EntregaPellas" EntityType="Self.EntregaPellas" />
           <EntitySet Name="PreparacionBarro" EntityType="Self.PreparacionBarro" />
           <EntitySet Name="PreparacionPellas" EntityType="Self.PreparacionPellas" />
           <EntitySet Name="prepBarro_prepPellas" EntityType="Self.prepBarro_prepPellas" />
           <EntitySet Name="Provedores" EntityType="Self.Provedores" />
           <EntitySet Name="Recuperados" EntityType="Self.Recuperados" />
-          <EntitySet Name="BarroMaestra" EntityType="TalaveraModel.BarroMaestra" />
-          <EntitySet Name="MovimientosBarro" EntityType="TalaveraModel.MovimientosBarro" />
+          <EntitySet Name="Sucursales" EntityType="Self.Sucursales" />
+          <EntitySet Name="BarroMovimientos" EntityType="TalaveraModel.BarroMovimientos" />
         </EntityContainer>
-        <EntityType Name="BarroMaestra">
+        <EntityType Name="BarroMovimientos">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CodigoProducto" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="Capacidad" Type="Int32" />
-          <Property Name="Tipo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="MovimientosBarro">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FechaMovimiento" Type="DateTime" Precision="3" />
+          <Property Name="FechaMovimiento" Type="DateTime" Precision="0" />
           <Property Name="TipoMovimiento" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-          <Property Name="CodigoProducto" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
           <Property Name="Unidades" Type="Int32" />
-          <Property Name="Provedor" Type="Int32" />
-          <Property Name="Locacion" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="OrigenTranferencia" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Locacion" Type="Int32" />
+          <Property Name="OrigenTransferencia" Type="Int32" />
+          <Property Name="OrigenTabla" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="PesoTotal" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -231,6 +263,16 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="TalaveraModelStoreContainer" CdmEntityContainer="TalaveraEntities">
+          <EntitySetMapping Name="BarroMaestra">
+            <EntityTypeMapping TypeName="TalaveraModel.BarroMaestra">
+              <MappingFragment StoreEntitySet="BarroMaestra">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CodigoProducto" ColumnName="CodigoProducto" />
+                <ScalarProperty Name="Capacidad" ColumnName="Capacidad" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="EntregaPellas">
             <EntityTypeMapping TypeName="TalaveraModel.EntregaPellas">
               <MappingFragment StoreEntitySet="EntregaPellas">
@@ -246,7 +288,6 @@
           <EntitySetMapping Name="PreparacionBarro">
             <EntityTypeMapping TypeName="TalaveraModel.PreparacionBarro">
               <MappingFragment StoreEntitySet="PreparacionBarro">
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="FechaPreparacion" ColumnName="FechaPreparacion" />
                 <ScalarProperty Name="NumPreparado" ColumnName="NumPreparado" />
@@ -258,6 +299,7 @@
                 <ScalarProperty Name="NumTambos" ColumnName="NumTambos" />
                 <ScalarProperty Name="DesperdicioMojado" ColumnName="DesperdicioMojado" />
                 <ScalarProperty Name="Comentario" ColumnName="Comentario" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -313,26 +355,32 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="BarroMaestra">
-            <EntityTypeMapping TypeName="TalaveraModel.BarroMaestra">
-              <MappingFragment StoreEntitySet="BarroMaestra">
-                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
-                <ScalarProperty Name="Capacidad" ColumnName="Capacidad" />
-                <ScalarProperty Name="CodigoProducto" ColumnName="CodigoProducto" />
+          <EntitySetMapping Name="Sucursales">
+            <EntityTypeMapping TypeName="TalaveraModel.Sucursales">
+              <MappingFragment StoreEntitySet="Sucursales">
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Telefono2" ColumnName="Telefono2" />
+                <ScalarProperty Name="Numero" ColumnName="Numero" />
+                <ScalarProperty Name="Calle" ColumnName="Calle" />
+                <ScalarProperty Name="Colonia" ColumnName="Colonia" />
+                <ScalarProperty Name="Municipio" ColumnName="Municipio" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="MovimientosBarro">
-            <EntityTypeMapping TypeName="TalaveraModel.MovimientosBarro">
-              <MappingFragment StoreEntitySet="MovimientosBarro">
-                <ScalarProperty Name="OrigenTranferencia" ColumnName="OrigenTranferencia" />
+          <EntitySetMapping Name="BarroMovimientos">
+            <EntityTypeMapping TypeName="TalaveraModel.BarroMovimientos">
+              <MappingFragment StoreEntitySet="BarroMovimientos">
+                <ScalarProperty Name="PesoTotal" ColumnName="PesoTotal" />
+                <ScalarProperty Name="OrigenTabla" ColumnName="OrigenTabla" />
+                <ScalarProperty Name="OrigenTransferencia" ColumnName="OrigenTransferencia" />
                 <ScalarProperty Name="Locacion" ColumnName="Locacion" />
-                <ScalarProperty Name="Provedor" ColumnName="Provedor" />
                 <ScalarProperty Name="Unidades" ColumnName="Unidades" />
-                <ScalarProperty Name="CodigoProducto" ColumnName="CodigoProducto" />
                 <ScalarProperty Name="TipoMovimiento" ColumnName="TipoMovimiento" />
                 <ScalarProperty Name="FechaMovimiento" ColumnName="FechaMovimiento" />
+                <ScalarProperty Name="CodigoProducto" ColumnName="CodigoProducto" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

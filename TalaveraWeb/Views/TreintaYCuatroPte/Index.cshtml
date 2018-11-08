@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>34 Poniente</h2>
+
+<content>
+    <p>
+        @Html.ActionLink("Solicitar barro en granel", "SolicitarBarroGranel")
+    </p>
+    <h4 class="encabezado">Barro en Granel</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tipo</th>
+                <th>Total en Kg</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.lstBarroGranel34pte)
+            {
+                <tr>
+                    <td>@item.Tipo</td>
+                    <td>@item.TotalKg</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</content>
+
+<content>
+    <p>
+        @Html.ActionLink("Solicitar barro empaquetado", "SolicitarBarroEmpaque", new { Sucursal = 1 })
+    </p>
+    <h4 class="encabezado">Barro empaquetado</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tipo</th>
+                <th>Paquete Kg</th>
+                <th>Unidades</th>
+                <th>Total en Kg</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.lstBarroEmpaque34pte)
+            {
+                <tr>
+                    <td>@item.Tipo</td>
+                    <td>@item.Capacidad</td>
+                    <td>@item.Unidades</td>
+                    <td>@item.TotalKg</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</content>
+
+<content>
+    <p>
+        @Html.ActionLink("Solicitar pellas de barro", "Create")
+    </p>
+    <h4 class="encabezado">Pellas de barro</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Pella</th>
+                <th>Unidades</th>
+                <th>Total en Kg</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</content>
+

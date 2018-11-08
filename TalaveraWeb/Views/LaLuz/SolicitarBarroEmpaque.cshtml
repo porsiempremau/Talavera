@@ -1,0 +1,71 @@
+﻿@model TalaveraWeb.Models.ReservaBarro
+
+@{
+    ViewBag.Title = "SolicitarBarroEmpaque";
+}
+
+<h2>Solicitar Barro en Empaque</h2>
+
+<content>
+    <h4 class="encabezado">Barro empaquetado en 34 poniente</h4>    
+    @using (Html.BeginForm())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Paquete Kg</th>
+                    <th>Unidades disponibles</th>
+                    <th>Unidades a solicitar</th>
+                    <th>Total solicitado en Kg</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.lstBarroEmpaque34pte)
+                {
+                <tr>
+                    <td>                                            
+                        @*@item.Tipo*@
+                        <input type="text" name="Tipo" value="@item.Tipo" readonly />
+                    </td>
+                    <td>
+                        @*@item.Capacidad*@
+                        <input type="number" name="Capacidad" value="@item.Capacidad" readonly />
+                    </td>
+                    <td>
+                        @item.Unidades                        
+                    </td>
+                    <td>
+                        <input type="number" name="barroSolicitado" min="0" max="@item.Unidades" onchange="ValorActualizado(this.value, @item.CodigoBarro, @item.Capacidad)"/>
+                    </td>
+                    <td>
+                        <input type="number" id="@item.CodigoBarro" readonly/>
+                    </td>
+                </tr>
+                    }
+            </tbody>
+        </table>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Solicitar" class="btn btn-default" />
+            </div>
+        </div>
+    }
+</content>
+
+@section scripts{
+    <script src="~/Scripts/jquery-3.0.0.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script>
+        
+        function ValorActualizado(val, pCodigo, pCapacidad) {
+            pCodigo.value = val * pCapacidad;
+        }
+        
+    </script>
+}
+
+<div>
+    @Html.ActionLink("Volver a listado", "Index")
+</div>
+

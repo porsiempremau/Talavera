@@ -19,20 +19,44 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
-                </button>
-               
+                </button>               
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Proveedores","Index", "Provedores")</li>
+                    <li>
+                        <div class="dropdown">
+                            <a class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Catálogos
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="/Provedores">Proveedores</a>
+                                <a class="dropdown-item" href="/BarroMaestra">Barro</a>
+                                <a class="dropdown-item" href="/Sucursales">Sucursales</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="dropdown">
+                            <a class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Almacén
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="/LaLuz">La Luz</a>
+                                <a class="dropdown-item" href="/TreintaYcuatroPte">34 poniente</a>
+                            </div>
+                        </div>
+                    </li>
+
+                    @*<li>@Html.ActionLink("Proveedores", "Index", "Provedores")</li>
                     <li>@Html.ActionLink("Barro", "Index", "BarroMaestra")</li>
-                    <li>@Html.ActionLink("Movimientos Barro", "Index", "MovimientosBarro")</li>
+                    <li>@Html.ActionLink("Movimientos Barro", "Index", "MovimientosBarro")</li>*@
                     <li>@Html.ActionLink("Preparacion Barro", "Index", "PreparacionBarro")</li>
-                    <li>@Html.ActionLink("Preparacion Pellas", "Index", "PreparacionPellas"  ) </li>
+                    <li>@Html.ActionLink("Preparacion Pellas", "Index", "PreparacionPellas") </li>
                     <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
                     <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>
                 </ul>
+
                 @Html.Partial("_LoginPartial")
             </div>
         </div>

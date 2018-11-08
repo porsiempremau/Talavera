@@ -60,10 +60,20 @@ namespace TalaveraWeb.Services
             }            
         }
 
+
         //BARROMAESTRA
         public List<BarroMaestra> getBarroMestra()
         {
-            return db.BarroMaestra.ToList();
+            try
+            {
+                return db.BarroMaestra.ToList();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("GetBarroMaestra error: " + ex.Message);
+                return null;
+            }
+            
         }
 
         public BarroMaestra getBarroMaestra(int pId)
@@ -122,11 +132,145 @@ namespace TalaveraWeb.Services
             }
         }
 
-        //MOVIMIENTOS BARRO
-        public List<ReservaBarro> getReservasFrom(string pLocacion)
+
+        //BARRO EN GRANEL, EMPAQUETADO.
+        public int getBarroTotalDe(int pSucursal, string pCodPro)
+        {
+            try
+            {
+                var lst = db.BarroMovimientos
+                    .Where(x => x.Locacion == pSucursal && x.CodigoProducto == pCodPro)
+                    .GroupBy(y => new { y.TipoMovimiento, y.CodigoProducto })
+                    .Select(z => new { TipoMovimiento = z.Key, Unidades = z.Sum(s => s.Unidades) })
+                    .ToList();
+
+                var Positivo = lst.Where(x => x.TipoMovimiento.TipoMovimiento == "In").Select(y => y.Unidades).FirstOrDefault();
+                var Negativo = lst.Where(x => x.TipoMovimiento.TipoMovimiento == "Eg").Select(y => y.Unidades).FirstOrDefault();
+
+                var Barro = db.BarroMaestra.Where(x => x.CodigoProducto == pCodPro).FirstOrDefault();
+
+                int? Total = (Positivo != null ? Positivo : 0) - (Negativo != null ? Negativo : 0);
+                ReservaBarro RecBar = new ReservaBarro() { CodigoBarro = pCodPro, Tipo = Barro.Tipo, Capacidad = Barro.Capacidad, Unidades = Total, TotalKg = Barro.Capacidad * Total };
+
+                return 0;
+            }
+            catch(Exception ex)
+            {
+                return -1;
+            }
+        }
+
+        //Barro en Granel
+        public List<ReservaBarro> getReservasBarroGranelFrom(int pLocacion)
         {
             //Obtengo los registros segun el total de ingresos y egresos
-            var lst = db.MovimientosBarro
+            var lstCodigosBarroGranel = db.BarroMaestra.Where(bm => bm.Capacidad == 1).Select(y => y.CodigoProducto).ToList();
+            var lst = db.BarroMovimientos
+                .Where(x => x.Locacion == pLocacion &&  lstCodigosBarroGranel.Contains(x.CodigoProducto))
+                .GroupBy(y => new { y.TipoMovimiento, y.CodigoProducto })
+                .Select(z => new { TipoMovimiento = z.Key, Unidades = z.Sum(s => s.Unidades), TotalKg = z.Sum(ss => ss.PesoTotal) })
+                .ToList();
+            
+            //Obtengo los distintos tipos de productos para hacer las sumas correspondientes.
+            var lstTiposBarro = lst.GroupBy(x => x.TipoMovimiento.CodigoProducto).Select(y => y.First());
+
+            var lstBarros = db.BarroMaestra.ToList();
+
+            List<ReservaBarro> lstReservas = new List<ReservaBarro>();
+            foreach (var item in lstTiposBarro)
+            {
+                var Positivo = lst.Where(x => x.TipoMovimiento.CodigoProducto == item.TipoMovimiento.CodigoProducto && x.TipoMovimiento.TipoMovimiento == "In").Select(y => y.Unidades).FirstOrDefault();
+                var Negativo = lst.Where(x => x.TipoMovimiento.CodigoProducto == item.TipoMovimiento.CodigoProducto && x.TipoMovimiento.TipoMovimiento == "Eg").Select(y => y.Unidades).FirstOrDefault();
+                var tmBarro = lstBarros.Where(x => x.CodigoProducto == item.TipoMovimiento.CodigoProducto).Select(y => new { CodigoProducto = y.CodigoProducto, Tipo = y.Tipo, Capacidad = y.Capacidad }).FirstOrDefault();
+
+                int? Total = (Positivo != null ? Positivo : 0) - (Negativo != null ? Negativo : 0);
+                ReservaBarro RecBar = new ReservaBarro() { CodigoBarro = tmBarro.CodigoProducto, Tipo = tmBarro.Tipo, Capacidad = tmBarro.Capacidad, Unidades = Total, TotalKg = item.TotalKg };
+
+                lstReservas.Add(RecBar);
+            }
+
+            return lstReservas;
+        }
+
+        //Barro empaquetado
+        public List<ReservaBarro> getReservasBarroEmpaqueFrom(int pLocacion)
+        {
+            //Obtengo los registros segun el total de ingresos y egresos
+            var lstCodigosBarroEmpaque = db.BarroMaestra.Where(bm => bm.Capacidad != 1).Select(y => y.CodigoProducto).ToList();
+            var lst = db.BarroMovimientos
+                .Where(x => x.Locacion == pLocacion && lstCodigosBarroEmpaque.Contains(x.CodigoProducto))
+                .GroupBy(y => new { y.TipoMovimiento, y.CodigoProducto })
+                .Select(z => new { TipoMovimiento = z.Key, Unidades = z.Sum(s => s.Unidades), TotalKg = z.Sum(ss => ss.PesoTotal) })
+                .ToList();
+
+            //Obtengo los distintos tipos de productos para hacer las sumas correspondientes.
+            var lstTiposBarro = lst.GroupBy(x => x.TipoMovimiento.CodigoProducto).Select(y => y.First());
+
+            var lstBarros = db.BarroMaestra.ToList();
+
+            List<ReservaBarro> lstReservas = new List<ReservaBarro>();
+            foreach (var item in lstTiposBarro)
+            {
+                var Positivo = lst.Where(x => x.TipoMovimiento.CodigoProducto == item.TipoMovimiento.CodigoProducto && x.TipoMovimiento.TipoMovimiento == "In").Select(y => y.Unidades).FirstOrDefault();
+                var Negativo = lst.Where(x => x.TipoMovimiento.CodigoProducto == item.TipoMovimiento.CodigoProducto && x.TipoMovimiento.TipoMovimiento == "Eg").Select(y => y.Unidades).FirstOrDefault();
+                var tmBarro = lstBarros.Where(x => x.CodigoProducto == item.TipoMovimiento.CodigoProducto).Select(y => new { CodigoProducto = y.CodigoProducto, Tipo = y.Tipo, Capacidad = y.Capacidad }).FirstOrDefault();
+
+                int? Total = (Positivo != null ? Positivo : 0) - (Negativo != null ? Negativo : 0);
+                ReservaBarro RecBar = new ReservaBarro() { CodigoBarro = tmBarro.CodigoProducto, Tipo = tmBarro.Tipo, Capacidad = tmBarro.Capacidad, Unidades = Total, TotalKg = item.TotalKg };
+
+                lstReservas.Add(RecBar);
+            }
+
+            return lstReservas;
+        }
+
+        //Catalogos para los Movimientos de barro
+        public List<SelectListItem> obtenerProductos(int pCapacidad = 0)
+        {
+            List<SelectListItem> lst;
+            if (pCapacidad == 1)
+            {
+                lst = db.BarroMaestra.Where(y => y.Capacidad == pCapacidad).Select(x => new SelectListItem() { Text = "Barro " + x.Tipo + " de " + x.Capacidad + " Kg", Value = x.CodigoProducto }).ToList();
+            }
+            else
+            {
+                lst = db.BarroMaestra.Select(x => new SelectListItem() { Text = "Barro " + x.Tipo + " de " + x.Capacidad + " Kg", Value = x.CodigoProducto }).ToList();
+            }
+            lst.First().Selected = true;
+            return lst;
+        }
+        public List<SelectListItem> obtenerProvedores()
+        {
+            List<SelectListItem> lst = db.Provedores.Select(x => new SelectListItem() { Text = x.Nombre, Value = x.id.ToString() }).ToList();
+            lst.First().Selected = true;
+            return lst;
+        }
+        //Se hizo de esta manera pues no se considero necesario crear un catalogo en BD para 2 locaciones
+        public List<SelectListItem> obtenerSucursales(int pSucursal = 0)
+        {
+            //List<SelectListItem> lst = new List<SelectListItem>() {
+            //    new SelectListItem() { Text = "34 pte", Value = "34 pte" },
+            //    new SelectListItem() { Text = "La Luz", Value = "La Luz" }
+            //};
+            List<SelectListItem> lst;
+            if (pSucursal > 0)
+            {
+                lst = db.Sucursales.Where(y => y.Id == pSucursal).Select(x => new SelectListItem() { Text = x.Nombre, Value = x.Id.ToString() }).ToList();
+            }
+            else
+            {
+                lst = db.Sucursales.Select(x => new SelectListItem() { Text = x.Nombre, Value = x.Id.ToString() }).ToList();
+            }
+            lst.First().Selected = true;
+            return lst;
+        }
+
+
+        //MOVIMIENTOS BARRO
+        public List<ReservaBarro> getReservasFrom(int pLocacion)
+        {
+            //Obtengo los registros segun el total de ingresos y egresos
+            var lst = db.BarroMovimientos
                 .Where(x => x.Locacion == pLocacion)
                 .GroupBy(y => new { y.TipoMovimiento, y.CodigoProducto })
                 .Select(z => new { TipoMovimiento = z.Key, Unidades = z.Sum(s => s.Unidades) })
@@ -153,11 +297,11 @@ namespace TalaveraWeb.Services
             return lstReservas;
         }
 
-        public int addMovimientosBarro(MovimientosBarro pMovB)
+        public int addMovimientosBarro(BarroMovimientos pMovB)
         {
             try
             {
-                db.MovimientosBarro.Add(pMovB);
+                db.BarroMovimientos.Add(pMovB);
                 int res = db.SaveChanges();
                 return res;
             }
@@ -166,11 +310,11 @@ namespace TalaveraWeb.Services
                 return -1;
             } 
         }
-        public int addMovimientosBarro(List<MovimientosBarro> plstMovB)
+        public int addMovimientosBarro(List<BarroMovimientos> plstMovB)
         {
             try
             {
-                db.MovimientosBarro.AddRange(plstMovB);
+                db.BarroMovimientos.AddRange(plstMovB);
                 int res = db.SaveChanges();
                 return res;
             }
@@ -179,26 +323,7 @@ namespace TalaveraWeb.Services
                 return -1;
             }
         }
-        //Catalogos para Movimientos de barro
-        public List<SelectListItem> obtenerProductos()
-        {
-            List<SelectListItem> lst = db.BarroMaestra.Select(x => new SelectListItem() { Text = "Barro " + x.Tipo + " de " + x.Capacidad + " Kg", Value = x.CodigoProducto }).ToList();
-            return lst;
-        }
-        public List<SelectListItem> obtenerProvedores()
-        {
-            List<SelectListItem> lst = db.Provedores.Select(x => new SelectListItem() { Text = x.Nombre, Value = x.id.ToString() }).ToList();
-            return lst;
-        }
-        //Se hizo de esta manera pues no se considero necesario crear un catalogo en BD para 2 locaciones
-        public List<SelectListItem> obtenerLocaciones()        
-        {
-            List<SelectListItem> lst = new List<SelectListItem>() {
-                new SelectListItem() { Text = "34 pte", Value = "34 pte" },
-                new SelectListItem() { Text = "La Luz", Value = "La Luz" }
-            };
-            return lst;
-        }
+        
                 
         //PREPARACION DE BARROS
         public List<PreparacionBarro> obtenerPreparacionBarro()
@@ -288,6 +413,30 @@ namespace TalaveraWeb.Services
             int Count = db.PreparacionPellas.Count(x => x.FechaVaciado.Value.Year == DateTime.Today.Year);
             string res = DateTime.Today.Year + "c" + (Count + 1);
             return res;
+        }
+
+        public List<prepBarro_prepPellas> getPreparadosDeCarga(string pCarga)
+        {
+            try
+            {
+                return db.prepBarro_prepPellas.Where(x => x.NumCarga == pCarga).ToList();
+            }
+            catch (Exception ex) {
+                Console.WriteLine("getPreparados de Carga Error: " + ex.Message);
+                return null;
+            }            
+        }
+        
+        public List<PreparacionBarro> getPreparadosDisponibles()
+        {
+            try
+            {
+                return db.PreparacionBarro.Where(x => x.Estado == "Disponible").ToList();
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }            
         }
 
         public int addPreparacionPellas(PreparacionPellas pPrePell)

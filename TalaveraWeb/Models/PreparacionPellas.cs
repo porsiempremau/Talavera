@@ -11,41 +11,18 @@ namespace TalaveraWeb.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class PreparacionPellas
     {
         public int Id { get; set; }
         public Nullable<int> Fuente { get; set; }
-
-        [Display(Name = "No. de carga")]
         public string NumCarga { get; set; }
-
-        [DataType(DataType.Date)]
-        [Display(Name = "Fecha vaciado")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> FechaVaciado { get; set; }
-
-        [DataType(DataType.Date)]
-        [Display(Name = "Fecha se saca el barro")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> FechaLevantado { get; set; }
-
-        [DataType(DataType.Date)]
-        [Display(Name = "Fecha pisado de barro" )]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> FechaInicoPisado { get; set; }
-
-        [DataType(DataType.Date)]
-        [Display(Name = "Fecha fin de pisado de barro")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> FechaFinPisado { get; set; }
-
-        [Display(Name = "No. de peyas")]
         public Nullable<int> NumPeyas { get; set; }
         public Nullable<int> Restante { get; set; }
-
-        [Display(Name = "Peso de peyas KG")]
         public Nullable<int> CargaTotal { get; set; }
     }
 }
