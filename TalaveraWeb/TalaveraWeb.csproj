@@ -389,6 +389,7 @@
     <Content Include="Views\LaLuz\SolicitarBarroEmpaque.cshtml" />
     <Content Include="Views\TreintaYCuatroPte\Index.cshtml" />
     <Content Include="Views\TreintaYCuatroPte\SolicitarBarroGranel.cshtml" />
+    <Content Include="Views\TreintaYCuatroPte\SolicitarBarroEmpaque.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

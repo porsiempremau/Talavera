@@ -38,6 +38,8 @@ namespace TalaveraWeb.Controllers
                     TipoMovimiento = "Eg",
                     Unidades = int.Parse(barroSolicitado[i]),
                     Locacion = 2,
+                    OrigenTransferencia = 1,
+                    OrigenTabla = "Sucursales",
                     PesoTotal = Capacidad[i] * int.Parse(barroSolicitado[i])
                 };
                 lst.Add(bmEg);

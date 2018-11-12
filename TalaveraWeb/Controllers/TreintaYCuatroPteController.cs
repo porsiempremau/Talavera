@@ -44,9 +44,67 @@ namespace TalaveraWeb.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            return View(new HttpStatusCodeResult(202, "No pudo ser generada la solicitud.") );
+            return View(new HttpStatusCodeResult(202, "No pudo ser generada la solicitud."));
         }
 
+
+        public ActionResult SolicitarBarroEmpaque()
+        {
+            ViewBag.lstBarroGranel34pte = tsvc.getReservasBarroGranelFrom(2);
+            ViewData["Negro"] = tsvc.obtenerProductosDeTipo("Negro");
+            ViewData["Blanco"] = tsvc.obtenerProductosDeTipo("Blanco");
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult SolicitarBarroEmpaque(string[] Tipo, int[] Capacidad, string[] CodigoProducto, string[] barroSolicitado)
+        {
+            List<BarroMovimientos> lst = new List<BarroMovimientos>();
+
+            for (int i = 0; i < Tipo.Length; i++)
+            {
+                if(barroSolicitado[i] != null && barroSolicitado[i] != "")
+                {
+                    int PesoEmpaque = int.Parse(CodigoProducto[i].Replace("N", "").Replace("B", ""));
+                    string codigoGranel = tsvc.obtenerCodigoDeProducto(Tipo[i], 1);
+
+
+
+                    BarroMovimientos bmEg = new BarroMovimientos()
+                    {
+                        CodigoProducto = codigoGranel, //Tipo[i].Substring(0, 1) + Capacidad[i],
+                        FechaMovimiento = DateTime.Today,
+                        TipoMovimiento = "Eg",
+                        Unidades = PesoEmpaque * int.Parse(barroSolicitado[i]),
+                        Locacion = 2,
+                        OrigenTransferencia = 2,
+                        OrigenTabla = "Sucursales",
+                        PesoTotal = PesoEmpaque * int.Parse(barroSolicitado[i])
+                    };
+                    lst.Add(bmEg);
+
+                    BarroMovimientos bmIn = new BarroMovimientos()
+                    {
+                        CodigoProducto = CodigoProducto[i], //Tipo[i].Substring(0, 1) + Capacidad[i],
+                        FechaMovimiento = DateTime.Today,
+                        TipoMovimiento = "In",
+                        Unidades = int.Parse(barroSolicitado[i]),
+                        Locacion = 2,
+                        OrigenTransferencia = 2,
+                        OrigenTabla = "Sucursales",
+                        PesoTotal = PesoEmpaque * int.Parse(barroSolicitado[i])
+                    };
+                    lst.Add(bmIn);
+                }                
+            }
+
+            int res = tsvc.addMovimientosBarro(lst);
+
+            if (res > 1)
+                return RedirectToAction("Index");
+            else
+                return View(new HttpStatusCodeResult(201, "No fue posible realizar la peticion."));
+        }
 
 
     }

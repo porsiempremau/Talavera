@@ -1,0 +1,91 @@
+﻿@model TalaveraWeb.Models.ReservaBarro
+
+@{
+    ViewBag.Title = "SolicitarBarroEmpaque";
+}
+
+<h2>Empaquetar barro en 34 Poniente</h2>
+
+<content>
+    <h4 class="encabezado">Barro en granel</h4>
+    @using (Html.BeginForm())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Tipo</th>                    
+                    <th>Total disponible en Kg</th>
+                    <th>Empaque a solicitar</th>
+                    <th>Unidades solicitadas</th>
+                    <th>Total en Kg solicitado</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.lstBarroGranel34pte)
+                {
+                    <tr id="@item.CodigoBarro">
+                        <td>                           
+                            <input type="text" name="Tipo" value="@item.Tipo" readonly />
+                        </td>
+                        <td>                            
+                            <input type="number" name="Capacidad" value="@item.TotalKg" readonly />
+                        </td>
+                        <td>
+                            @Html.DropDownList("CodigoProducto", (List<SelectListItem>)ViewData[item.Tipo], htmlAttributes: new { @class = "droplistStyle" })
+                        </td>
+                        <td>
+                            <input type="number" name="barroSolicitado" min="0" onchange="ValorActualizado(this.value, @item.CodigoBarro )" />
+                        </td>
+                        <td>
+                            <input type="number" id="PesoTotalKg" readonly />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Solicitar" class="btn btn-default" />
+            </div>
+        </div>
+    }
+</content>
+
+@section scripts{
+    <script src="~/Scripts/jquery-3.0.0.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+
+        function ValorActualizado(val, pRow) {
+            
+            var ValorMaximo = pRow.children[1].children[0].value;
+            var CapacidadEmpaque = pRow.children[2].children[0].value.replace('N','').replace('B','');
+            
+            //Se establece el valor maximo
+            var ValorMaximoPosible = ValorMaximo / CapacidadEmpaque;
+            pRow.children[3].children[0].setAttribute("max", ValorMaximoPosible);
+
+            //Se establece el total
+            var total = val * CapacidadEmpaque;
+            if (total <= ValorMaximo)
+            {
+                pRow.children[4].children[0].value = total;
+            }
+            //else
+            //{
+            //    pRow.children[3].children[0].value = ValorMaximoPosible;
+            //    total = ValorMaximoPosible * CapacidadEmpaque;
+            //    pRow.children[4].children[0].value = total;
+
+            //    alert("El valor maximo puede ser: " + ValorMaximoPosible);
+            //}
+        }
+
+    </script>
+}
+
+<div>
+    @Html.ActionLink("Volver a listado", "Index")
+</div>
