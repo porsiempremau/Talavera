@@ -218,6 +218,7 @@
     <Compile Include="Models\PreparacionBarro.cs">
       <DependentUpon>ModelTalavera.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PreparacionBarroConsumo.cs" />
     <Compile Include="Models\PreparacionPellas.cs">
       <DependentUpon>ModelTalavera.tt</DependentUpon>
     </Compile>
@@ -231,6 +232,7 @@
     <Compile Include="Models\Recuperados.cs">
       <DependentUpon>ModelTalavera.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ReservaBarroPreparado.cs" />
     <Compile Include="Models\SolicitarRecerva.cs" />
     <Compile Include="Models\Sucursales.cs">
       <DependentUpon>ModelTalavera.tt</DependentUpon>

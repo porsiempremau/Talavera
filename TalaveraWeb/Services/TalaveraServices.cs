@@ -321,6 +321,38 @@ namespace TalaveraWeb.Services
             return lstReservas;
         }
 
+        public List<ReservaBarro> getReservasEnKgFrom(int pLocacion)
+        {
+            //Obtengo los registros segun el total de ingresos y egresos
+            var lst = db.BarroMovimientos
+                .Where(x => x.Locacion == pLocacion)
+                .GroupBy(y => new { y.TipoMovimiento, y.CodigoProducto })
+                .Select(z => new { TipoMovimiento = z.Key, Unidades = z.Sum(s => s.Unidades) })
+                .ToList();
+
+            //Obtengo los distintos tipos de productos para hacer las sumas correspondientes.
+            var lstTiposBarro = lst.GroupBy(x => x.TipoMovimiento.CodigoProducto).Select(y => y.First());
+
+            var lstBarros = db.BarroMaestra.ToList();
+
+            List<ReservaBarro> lstReservas = new List<ReservaBarro>();
+            foreach (var item in lstTiposBarro)
+            {
+                var Positivo = lst.Where(x => x.TipoMovimiento.CodigoProducto == item.TipoMovimiento.CodigoProducto && x.TipoMovimiento.TipoMovimiento == "In").Select(y => y.Unidades).FirstOrDefault();
+                var Negativo = lst.Where(x => x.TipoMovimiento.CodigoProducto == item.TipoMovimiento.CodigoProducto && x.TipoMovimiento.TipoMovimiento == "Eg").Select(y => y.Unidades).FirstOrDefault();
+                var tmBarro = lstBarros.Where(x => x.CodigoProducto == item.TipoMovimiento.CodigoProducto).Select(y => new { CodigoProducto = y.CodigoProducto, Tipo = y.Tipo, Capacidad = y.Capacidad }).FirstOrDefault();
+
+                int? Total = (Positivo != null ? Positivo : 0) - (Negativo != null ? Negativo : 0);
+                ReservaBarro RecBar = new ReservaBarro() { CodigoBarro = tmBarro.CodigoProducto, Tipo = tmBarro.Tipo, Capacidad = tmBarro.Capacidad, Unidades = Total, TotalKg = tmBarro.Capacidad * Total };
+
+                lstReservas.Add(RecBar);
+            }
+
+            return lstReservas.GroupBy(x => x.Tipo).Select(y => new ReservaBarro() { CodigoBarro = "N", Tipo = y.Key, Unidades = y.Sum(s => s.TotalKg), TotalKg = y.Sum(s2 => s2.TotalKg) }).ToList();
+
+            //return lstReservas;
+        }
+
         public int addMovimientosBarro(BarroMovimientos pMovB)
         {
             try
@@ -350,12 +382,12 @@ namespace TalaveraWeb.Services
         
                 
         //PREPARACION DE BARROS
-        public List<PreparacionBarro> obtenerPreparacionBarro()
+        public List<PreparacionBarro> obtenerPreparacionBarro(int pLocacion)
         {            
             List<PreparacionBarro> lstPreBar = new List<PreparacionBarro>();
             try
             {
-                var lst = db.PreparacionBarro.Where(y => y.Estado == "Disponible").OrderBy(x => x.FechaPreparacion).ToList();
+                var lst = db.PreparacionBarro.Where(y => y.Estado == "Disponible" && y.Locacion == pLocacion).OrderBy(x => x.FechaPreparacion).ToList();
                 if(lst != null)
                 {
                     lstPreBar = lst;
@@ -378,7 +410,7 @@ namespace TalaveraWeb.Services
             {
                 db.PreparacionBarro.Add(pPreBar);
                 int res = db.SaveChanges();
-                return res;
+                return pPreBar.Id;      //Obtengo el id del nuevo registro 
             }
             catch (Exception ex)
             {

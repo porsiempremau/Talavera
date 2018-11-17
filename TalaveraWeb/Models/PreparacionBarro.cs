@@ -11,10 +11,16 @@ namespace TalaveraWeb.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+    using System.Web.Mvc;
+
     public partial class PreparacionBarro
     {
         public int Id { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Fecha preparación")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> FechaPreparacion { get; set; }
         public string NumPreparado { get; set; }
         public Nullable<int> BarroNegro { get; set; }
@@ -26,5 +32,8 @@ namespace TalaveraWeb.Models
         public string DesperdicioMojado { get; set; }
         public string Comentario { get; set; }
         public string Estado { get; set; }
+
+        [ScaffoldColumn(false)]
+        public Nullable<int> Locacion { get; set; }
     }
 }

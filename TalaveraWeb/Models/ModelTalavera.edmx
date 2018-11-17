@@ -55,6 +55,7 @@
           <Property Name="DesperdicioMojado" Type="nvarchar" MaxLength="10" />
           <Property Name="Comentario" Type="nvarchar" MaxLength="50" />
           <Property Name="Estado" Type="nvarchar" MaxLength="10" />
+          <Property Name="Locacion" Type="int" />
         </EntityType>
         <EntityType Name="PreparacionPellas">
           <Key>
@@ -153,23 +154,6 @@
           <Property Name="CantidadPellas" Type="Int32" />
           <Property Name="NumCarga" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="PreparacionBarro">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FechaPreparacion" Type="DateTime" Precision="3" />
-          <Property Name="NumPreparado" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="BarroNegro" Type="Int32" />
-          <Property Name="BarroBlanco" Type="Int32" />
-          <Property Name="Recuperado" Type="Int32" />
-          <Property Name="EnPiedra" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="TiempoAgitacion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="NumTambos" Type="Int32" />
-          <Property Name="DesperdicioMojado" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Comentario" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Estado" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="PreparacionPellas">
           <Key>
             <PropertyRef Name="Id" />
@@ -235,13 +219,13 @@
         <EntityContainer Name="TalaveraEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="BarroMaestra" EntityType="Self.BarroMaestra" />
           <EntitySet Name="EntregaPellas" EntityType="Self.EntregaPellas" />
-          <EntitySet Name="PreparacionBarro" EntityType="Self.PreparacionBarro" />
           <EntitySet Name="PreparacionPellas" EntityType="Self.PreparacionPellas" />
           <EntitySet Name="prepBarro_prepPellas" EntityType="Self.prepBarro_prepPellas" />
           <EntitySet Name="Provedores" EntityType="Self.Provedores" />
           <EntitySet Name="Recuperados" EntityType="Self.Recuperados" />
           <EntitySet Name="Sucursales" EntityType="Self.Sucursales" />
           <EntitySet Name="BarroMovimientos" EntityType="TalaveraModel.BarroMovimientos" />
+          <EntitySet Name="PreparacionBarro" EntityType="TalaveraModel.PreparacionBarro" />
         </EntityContainer>
         <EntityType Name="BarroMovimientos">
           <Key>
@@ -256,6 +240,24 @@
           <Property Name="OrigenTransferencia" Type="Int32" />
           <Property Name="OrigenTabla" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="PesoTotal" Type="Int32" />
+        </EntityType>
+        <EntityType Name="PreparacionBarro">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaPreparacion" Type="DateTime" Precision="3" />
+          <Property Name="NumPreparado" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="BarroNegro" Type="Int32" />
+          <Property Name="BarroBlanco" Type="Int32" />
+          <Property Name="Recuperado" Type="Int32" />
+          <Property Name="EnPiedra" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TiempoAgitacion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="NumTambos" Type="Int32" />
+          <Property Name="DesperdicioMojado" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Comentario" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Estado" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Locacion" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -282,24 +284,6 @@
                 <ScalarProperty Name="TipoMovimiento" ColumnName="TipoMovimiento" />
                 <ScalarProperty Name="CantidadPellas" ColumnName="CantidadPellas" />
                 <ScalarProperty Name="NumCarga" ColumnName="NumCarga" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PreparacionBarro">
-            <EntityTypeMapping TypeName="TalaveraModel.PreparacionBarro">
-              <MappingFragment StoreEntitySet="PreparacionBarro">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="FechaPreparacion" ColumnName="FechaPreparacion" />
-                <ScalarProperty Name="NumPreparado" ColumnName="NumPreparado" />
-                <ScalarProperty Name="BarroNegro" ColumnName="BarroNegro" />
-                <ScalarProperty Name="BarroBlanco" ColumnName="BarroBlanco" />
-                <ScalarProperty Name="Recuperado" ColumnName="Recuperado" />
-                <ScalarProperty Name="EnPiedra" ColumnName="EnPiedra" />
-                <ScalarProperty Name="TiempoAgitacion" ColumnName="TiempoAgitacion" />
-                <ScalarProperty Name="NumTambos" ColumnName="NumTambos" />
-                <ScalarProperty Name="DesperdicioMojado" ColumnName="DesperdicioMojado" />
-                <ScalarProperty Name="Comentario" ColumnName="Comentario" />
-                <ScalarProperty Name="Estado" ColumnName="Estado" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -381,6 +365,25 @@
                 <ScalarProperty Name="TipoMovimiento" ColumnName="TipoMovimiento" />
                 <ScalarProperty Name="FechaMovimiento" ColumnName="FechaMovimiento" />
                 <ScalarProperty Name="CodigoProducto" ColumnName="CodigoProducto" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PreparacionBarro">
+            <EntityTypeMapping TypeName="TalaveraModel.PreparacionBarro">
+              <MappingFragment StoreEntitySet="PreparacionBarro">
+                <ScalarProperty Name="Locacion" ColumnName="Locacion" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Comentario" ColumnName="Comentario" />
+                <ScalarProperty Name="DesperdicioMojado" ColumnName="DesperdicioMojado" />
+                <ScalarProperty Name="NumTambos" ColumnName="NumTambos" />
+                <ScalarProperty Name="TiempoAgitacion" ColumnName="TiempoAgitacion" />
+                <ScalarProperty Name="EnPiedra" ColumnName="EnPiedra" />
+                <ScalarProperty Name="Recuperado" ColumnName="Recuperado" />
+                <ScalarProperty Name="BarroBlanco" ColumnName="BarroBlanco" />
+                <ScalarProperty Name="BarroNegro" ColumnName="BarroNegro" />
+                <ScalarProperty Name="NumPreparado" ColumnName="NumPreparado" />
+                <ScalarProperty Name="FechaPreparacion" ColumnName="FechaPreparacion" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

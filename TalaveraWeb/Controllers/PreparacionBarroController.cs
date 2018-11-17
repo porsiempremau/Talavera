@@ -12,76 +12,229 @@ namespace TalaveraWeb.Controllers
     {
         TalaveraServices tsvc = new TalaveraServices();
         // GET: PreparacionBarro
-        public ActionResult Index()
+        public ActionResult Index(int pLoc = 1)
         {
-            List<PreparacionBarro> lstPreBar = tsvc.obtenerPreparacionBarro();
+            List<PreparacionBarro> lstPreBar = tsvc.obtenerPreparacionBarro(pLoc);
+            ViewBag.Locacion = pLoc;
             return View(lstPreBar);
         }
 
         // GET: PreparacionBarro/Details/5
         public ActionResult Details(int id)
         {
-            PreparacionBarro PreBar = tsvc.detallePreparacionBarro(id);
+            PreparacionBarro PreBar = tsvc.detallePreparacionBarro(id);            
             return View(PreBar);
         }
 
         // GET: PreparacionBarro/Create
-        public ActionResult Create()
+        public ActionResult Create(int pLocacion)
         {
-            PreparacionBarro PreBar = new PreparacionBarro();
+            List<ReservaBarro> lstReservas = tsvc.getReservasFrom(pLocacion);
+            ViewBag.lstLuz = lstReservas;            
+            ViewBag.lstLocaciones = tsvc.obtenerSucursales();
+            
+            PreparacionBarroConsumo PreBar = new PreparacionBarroConsumo();
             PreBar.FechaPreparacion = DateTime.Today;
             PreBar.NumPreparado = tsvc.getNumeroPreparado();
             PreBar.BarroBlanco = 105;
             PreBar.BarroNegro = 150;
+            PreBar.Locacion = pLocacion;
+            PreBar.lstConsumoBarroNegro = lstReservas.Where(x => x.Tipo == "Negro")
+                                    .Select(y => new ReservaBarroPreparado()
+                                    {
+                                        CodigoBarro = y.CodigoBarro,
+                                        Tipo = y.Tipo,
+                                        Capacidad = y.Capacidad,
+                                        Unidades = y.Unidades,
+                                        TotalKg = y.TotalKg
+                                    }).ToList();
 
-            ViewBag.lstLuz = tsvc.getReservasFrom(1);
+            PreBar.lstConsumoBarroBlanco = lstReservas.Where(x => x.Tipo == "Blanco")
+                                    .Select(y => new ReservaBarroPreparado()
+                                    {
+                                        CodigoBarro = y.CodigoBarro,
+                                        Tipo = y.Tipo,
+                                        Capacidad = y.Capacidad,
+                                        Unidades = y.Unidades,
+                                        TotalKg = y.TotalKg
+                                    }).ToList();
 
             return View(PreBar);
         }
 
         // POST: PreparacionBarro/Create
         [HttpPost]
-        public ActionResult Create(PreparacionBarro pPreBar)
+        public ActionResult Create(PreparacionBarroConsumo pPreBar)
         {
             if (ModelState.IsValid)
-            {
-                pPreBar.Estado = "Disponible";
-                int res = tsvc.addPreparacionBarro(pPreBar);
+            {                
+                int? tmpBarNeg = pPreBar.BarroNegro;
+                int? SumBN = pPreBar.lstConsumoBarroNegro.Select(x => new { TotalSolicitado = x.Capacidad * x.BarroUsado }).Sum(x => x.TotalSolicitado);
+                int? SumBB = pPreBar.lstConsumoBarroBlanco.Select(x => new { TotalSolicitado = x.Capacidad * x.BarroUsado }).Sum(x => x.TotalSolicitado);
 
-                //Se hacen los egresos de barro.
-                BarroMovimientos tmpMovB_egNegro = new BarroMovimientos()
-                {
-                    FechaMovimiento = DateTime.Today,
-                    TipoMovimiento = "Eg",
-                    CodigoProducto = "N1", //item.Value,
-                    Unidades = pPreBar.BarroNegro,
-                    Locacion = 1
-                };
-                BarroMovimientos tmpMovB_egBlanco = new BarroMovimientos()
-                {
-                    FechaMovimiento = DateTime.Today,
-                    TipoMovimiento = "Eg",
-                    CodigoProducto = "B1", //item.Value,
-                    Unidades = pPreBar.BarroBlanco,
-                    Locacion = 1
-                };
                 List<BarroMovimientos> lst = new List<BarroMovimientos>();
-                lst.Add(tmpMovB_egNegro);
-                lst.Add(tmpMovB_egBlanco);
-                int res2 = tsvc.addMovimientosBarro(lst);
-
-                if (res == 1 && res2 == 2)
+                pPreBar.Estado = "Disponible";
+                PreparacionBarro PB = new PreparacionBarro()
                 {
-                    return RedirectToAction("Index");
+                    Id = pPreBar.Id,
+                    FechaPreparacion = pPreBar.FechaPreparacion,
+                    NumPreparado = pPreBar.NumPreparado,
+                    BarroNegro = pPreBar.BarroNegro,
+                    BarroBlanco = pPreBar.BarroBlanco,
+                    Recuperado = pPreBar.Recuperado,
+                    EnPiedra = pPreBar.EnPiedra,
+                    TiempoAgitacion = pPreBar.TiempoAgitacion,
+                    NumTambos = pPreBar.NumTambos,
+                    DesperdicioMojado = pPreBar.DesperdicioMojado,
+                    Comentario = pPreBar.Comentario,
+                    Estado = pPreBar.Estado,
+                    Locacion = pPreBar.Locacion
+                };
+                
+                //Si las recercas asignadas para cubrir el barro Negro solicitado son mayores, se cubre el pedido, en caso contrario se solicita asignar mas recervas.
+                if (pPreBar.BarroNegro <= SumBN)
+                {
+                    //Si las recercas asignadas para cubrir el barro Blanco solicitado son mayores, se cubre el pedido, en caso contrario se solicita asignar mas recervas.
+                    if (pPreBar.BarroBlanco <= SumBB)
+                    {                        
+                        int idPreparacion = tsvc.addPreparacionBarro(PB);
+                        if (idPreparacion != -1)
+                        {
+                            var lstBarMovNegro = calculaBarroMovimientos(pPreBar.lstConsumoBarroNegro, (int)pPreBar.BarroNegro, PB, idPreparacion);
+                            lst.AddRange(lstBarMovNegro);
+
+                            var lstBarMovBlanco = calculaBarroMovimientos(pPreBar.lstConsumoBarroBlanco, (int)pPreBar.BarroBlanco, PB, idPreparacion);
+                            lst.AddRange(lstBarMovBlanco);
+
+                            //Por ultimo se registran los movimientos en BD.
+                            int res2 = tsvc.addMovimientosBarro(lst);
+                            if (res2 > 0)
+                            {
+                                return RedirectToAction("Index");
+                            }
+                        }
+                        else
+                        {
+                            ViewBag.txtMensaje = "No se pudo crear la preparación, vuelva a intentarlo más tarde.";
+                        }                        
+                    }
+                    else //Como las recervas son menores al barro solicitado, se pide una cantidad mayor de recervas.
+                    {
+                        ViewBag.txtMensaje = "Es necesario que asignes reservas de barro blanco mayores que el barro blanco solicitado para la preparación.";
+                    }
+                }
+                else //Como las recervas son menores al barro solicitado, se pide una cantidad mayor de recervas.
+                {
+                    ViewBag.txtMensaje = "Es necesario que asignes reservas de barro mayores que el barro negro solicitado para la preparación.";                    
                 }                
             }
-            return View();
+
+            List<ReservaBarro> lstReservas = tsvc.getReservasFrom((int)pPreBar.Locacion);
+            ViewBag.lstLuz = lstReservas;
+            ViewBag.lstLocaciones = tsvc.obtenerSucursales();
+            return View(pPreBar);
+        }
+
+        public List<BarroMovimientos> calculaBarroMovimientos(List<ReservaBarroPreparado> plstBarroReservaAsignado, int pBarroSolicitado, PreparacionBarro pPreBar, int idPreparacion)
+        {
+            List<BarroMovimientos> lst = new List<BarroMovimientos>();
+            int? SumBN = plstBarroReservaAsignado.Select(x => new { TotalSolicitado = x.Capacidad * x.BarroUsado }).Sum(x => x.TotalSolicitado);
+
+            //foreach (var item in pPreBar.lstConsumoBarroNegro.OrderBy(x => x.CodigoBarro))
+            for (int a = 0; a < plstBarroReservaAsignado.Count; a++)
+            {
+                var item = plstBarroReservaAsignado[a];
+                if (item.BarroUsado > 0)
+                {
+                    //En caso de ser a granel, se hace una resta directa
+                    if (item.Capacidad == 1)
+                    {
+                        int TotalKgUsados = item.BarroUsado * (int)item.Capacidad;
+                        pBarroSolicitado = pBarroSolicitado - TotalKgUsados;
+
+                        //Se hace el egreso de barro a granel.
+                        //Nota: en el barro a granel "NO" es nesario hacer un ingreso con el sobrante del barro asignado.
+                        BarroMovimientos tmpMovB_egNegro = new BarroMovimientos()
+                        {
+                            CodigoProducto = item.CodigoBarro,
+                            FechaMovimiento = DateTime.Today,
+                            TipoMovimiento = "Eg",
+                            Unidades = item.BarroUsado,
+                            Locacion = pPreBar.Locacion,
+                            OrigenTransferencia = idPreparacion,
+                            OrigenTabla = "PreparacionBarro",
+                            PesoTotal = TotalKgUsados
+                        };
+                        lst.Add(tmpMovB_egNegro);
+                    }
+                    else  //Para los paquete se va haciendo gradual la resta, para determinar cuantos paquetes son necesrios.
+                    {
+                        int empaquetadosNecesarios = 0;
+                        int TotalKgUsados = 0;
+                        //Se ira sumando paquete a paquete hasta cubrir el barro solicitado o agotar las recervas asignadas(BarroUsado).
+                        for (int i = 1; i <= item.BarroUsado; i++)
+                        {
+                            empaquetadosNecesarios = i;
+                            pBarroSolicitado = pBarroSolicitado - (int)item.Capacidad;
+                            if (pBarroSolicitado <= 0)
+                                break;
+                        }
+                        TotalKgUsados = empaquetadosNecesarios * (int)item.Capacidad;
+
+                        //Se genera el egreso de estas empaquetados.
+                        BarroMovimientos tmpMovB_egNegro = new BarroMovimientos()
+                        {
+                            CodigoProducto = item.CodigoBarro,
+                            FechaMovimiento = DateTime.Today,
+                            TipoMovimiento = "Eg",
+                            Unidades = empaquetadosNecesarios,
+                            Locacion = pPreBar.Locacion,
+                            OrigenTransferencia = idPreparacion,
+                            OrigenTabla = "PreparacionBarro",
+                            PesoTotal = TotalKgUsados
+                        };
+                        lst.Add(tmpMovB_egNegro);
+
+                        //Cuando tmpBarNegro es negativo y dado que estamos en un segmento validador de paquetes
+                        //se asume que el restante es debido a que un paquete tubo que ser habierto para cubrir el barro solicitado
+                        //por esta razon, el restante sera un ingreso a granel en barromovimientos para no peder el restante del paquete habierto.
+                        if (pBarroSolicitado < 0)
+                        {
+                            BarroMovimientos tmpMovB_inNegro = new BarroMovimientos()
+                            {
+                                CodigoProducto = tsvc.obtenerCodigoDeProducto(item.Tipo, 1),
+                                FechaMovimiento = DateTime.Today,
+                                TipoMovimiento = "In",
+                                Unidades = pBarroSolicitado * -1,
+                                Locacion = pPreBar.Locacion,
+                                OrigenTransferencia = idPreparacion,
+                                OrigenTabla = "PreparacionBarro",
+                                PesoTotal = pBarroSolicitado * -1
+                            };
+                            lst.Add(tmpMovB_inNegro);
+                        }
+                    }
+                }
+            }
+
+            return lst;
+        }
+        
+
+        [HttpPost]
+        public JsonResult ActualizarRecervasFrom(int pLocacion)
+        {
+            //Este accion es para consumo interno de Edit.
+            List<ReservaBarro> lstRes = tsvc.getReservasEnKgFrom(pLocacion);
+            return Json(lstRes);
         }
 
         // GET: PreparacionBarro/Edit/5
         public ActionResult Edit(int id)
         {
             PreparacionBarro PreBar = tsvc.detallePreparacionBarro(id);
+            ViewBag.lstRecervas = tsvc.getReservasFrom((int)PreBar.Locacion);
+            ViewBag.lstLocaciones = tsvc.obtenerSucursales();
             return View(PreBar);
         }
 
@@ -89,6 +242,7 @@ namespace TalaveraWeb.Controllers
         [HttpPost]
         public ActionResult Edit(int id, PreparacionBarro pPreBar)
         {
+            pPreBar.Estado = "Disponible";
             int res = tsvc.editPreparacionBarro(id, pPreBar);
             if(res > 0)
             {

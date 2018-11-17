@@ -7,7 +7,7 @@
 <h2>REPORTE DE LA PREPARACIÓN DE BARROS</h2>
 
 <p>
-    @Html.ActionLink("Crear Nuevo", "Create")
+    @Html.ActionLink("Crear nueva preparación", "Create", new { pLocacion = ViewBag.Locacion })
 </p>
 <table class="table">
     <tr>
@@ -76,8 +76,7 @@
         <td>
             @Html.DisplayFor(modelItem => item.Comentario)
         </td>
-        <td>
-            @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |
+        <td>            
             @Html.ActionLink("Detalles", "Details", new { id=item.Id }) |
             @Html.ActionLink("Borrar", "Delete", new { id=item.Id })
         </td>

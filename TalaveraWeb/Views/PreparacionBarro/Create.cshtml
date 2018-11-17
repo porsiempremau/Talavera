@@ -1,4 +1,4 @@
-﻿@model TalaveraWeb.Models.PreparacionBarro
+﻿@model TalaveraWeb.Models.PreparacionBarroConsumo
 
 @{
     ViewBag.Title = "Create";
@@ -6,14 +6,28 @@
 
 <h2>Registrar preparación</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "formCrearPreBar" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Preparación Barro</h4>
+        @if (ViewBag.txtMensaje != null)
+        {
+            <div class="alert alert-warning" role="alert">
+                @ViewBag.txtMensaje
+            </div>
+        }        
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.Label("Locacion", "Locacion", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Locacion", (List<SelectListItem>)ViewBag.lstLocaciones, htmlAttributes: new { @class = "droplistStyle" })
+            </div>
+        </div>
+
         <div class="form-group">
             @Html.LabelFor(model => model.FechaPreparacion, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -25,7 +39,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.NumPreparado, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.NumPreparado, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.EditorFor(model => model.NumPreparado, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.NumPreparado, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -33,18 +47,51 @@
         <div class="form-group">
             @Html.LabelFor(model => model.BarroNegro, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.BarroNegro, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.BarroNegro, new { htmlAttributes = new { @class = "form-control", @min = "0" } })
                 @Html.ValidationMessageFor(model => model.BarroNegro, "", new { @class = "text-danger" })
             </div>
         </div>
+        <div class="form-group">
+            @Html.Label("Recursos asignados para Barro Negro:")
+            <div class="col-md-10">
+                @for (var i = 0; i < Model.lstConsumoBarroNegro.Count; i++)
+                {
+                    <label>Barro: @Model.lstConsumoBarroNegro[i].Tipo de @Model.lstConsumoBarroNegro[i].Capacidad Kg </label>
+                    @Html.HiddenFor(model => model.lstConsumoBarroNegro[i].CodigoBarro)
+                    @Html.HiddenFor(model => model.lstConsumoBarroNegro[i].Tipo)
+                    @Html.HiddenFor(model => model.lstConsumoBarroNegro[i].Capacidad)
+                    @Html.HiddenFor(model => model.lstConsumoBarroNegro[i].Unidades)
+                    @Html.HiddenFor(model => model.lstConsumoBarroNegro[i].TotalKg)
+                    @Html.EditorFor(model => model.lstConsumoBarroNegro[i].BarroUsado, new { htmlAttributes = new { @class = "form-control", @min = "0" } })
+                }
+            </div>
+        </div>
+
+
 
         <div class="form-group">
-            @Html.LabelFor(model => model.BarroBlanco, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.BarroBlanco, htmlAttributes: new { @class = "control-label col-md-2", @min = "0" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.BarroBlanco, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.BarroBlanco, "", new { @class = "text-danger" })
             </div>
         </div>
+        <div class="form-group">
+            @Html.Label("Recursos asignados para Barro Blanco:")
+            <div class="col-md-10">
+                @for (var i = 0; i < Model.lstConsumoBarroBlanco.Count; i++)
+                {
+                    <label>Barro: @Model.lstConsumoBarroBlanco[i].Tipo de @Model.lstConsumoBarroBlanco[i].Capacidad Kg </label>
+                    @Html.HiddenFor(model => model.lstConsumoBarroBlanco[i].CodigoBarro)
+                    @Html.HiddenFor(model => model.lstConsumoBarroBlanco[i].Tipo)
+                    @Html.HiddenFor(model => model.lstConsumoBarroBlanco[i].Capacidad)
+                    @Html.HiddenFor(model => model.lstConsumoBarroBlanco[i].Unidades)
+                    @Html.HiddenFor(model => model.lstConsumoBarroBlanco[i].TotalKg)
+                    @Html.EditorFor(model => model.lstConsumoBarroBlanco[i].BarroUsado, new { htmlAttributes = new { @class = "form-control", @min = "0" } })
+                }
+            </div>
+        </div>
+
 
         <div class="form-group">
             @Html.LabelFor(model => model.Recuperado, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -96,32 +143,48 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Crear" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jquery-3.0.0.min.js"></script>
 <script>
-    $(document).ready(function()
-    {    
-        function actualizaUnidadesMax(){            
-            var lstBarroDisponible = @Html.Raw(Json.Encode(ViewBag.lstLuz));
 
-            lstBarroDisponible.forEach(function(element){
-                if(element.Tipo.includes("Negro")){
-                    document.getElementById("BarroNegro").setAttribute("max", element.Unidades);
-                }
-                else if(element.Tipo.includes("Blanco")){
-                    document.getElementById("BarroBlanco").setAttribute("max", element.Unidades);
-                }
-            })
-        }
+    $(document).ready(function () {
 
-        actualizaUnidadesMax();        
-    })
+    });
+
+    function actualizaUnidadesMax(){
+        var lstBarroDisponible = @Html.Raw(Json.Encode(ViewBag.lstLuz));
+
+        lstBarroDisponible.forEach(function(element){
+            if(element.Tipo.includes("Negro")){
+                document.getElementById("BarroNegro").setAttribute("max", element.TotalKg);
+            }
+            else if(element.Tipo.includes("Blanco")){
+                document.getElementById("BarroBlanco").setAttribute("max", element.TotalKg);
+            }
+        })
+
+        var lstCBN = @Html.Raw(Json.Encode(Model.lstConsumoBarroNegro));
+        var i = 0;
+        lstCBN.forEach(function(item){
+            var n1 = "#lstConsumoBarroNegro_";
+            var n2 = "__BarroUsado";
+            var nombre =  n1.concat(i).concat(n2);
+            $(nombre).attr("max", item.Unidades);
+            i = i + 1;
+        })
+        //lstConsumoBarroNegro[i].BarroUsado
+
+    }
+
+    actualizaUnidadesMax();
+
+
+
 </script>
 
 <div>

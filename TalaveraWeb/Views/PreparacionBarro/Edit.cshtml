@@ -17,6 +17,13 @@
         @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
+            @Html.Label("Locacion", "Locacion", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Locacion", (List<SelectListItem>)ViewBag.lstLocaciones, htmlAttributes: new { @class = "droplistStyle", @onchange="ActualizaMaximos(this.value)" })
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.FechaPreparacion, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.FechaPreparacion, new { htmlAttributes = new { @class = "form-control" } })
@@ -98,11 +105,58 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Guardar" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
+
+<script src="~/Scripts/jquery-3.0.0.min.js"></script>
+<script>
+    
+
+    function ActualizaMaximos(valueActual){
+        var url = "@Url.Action("ActualizarRecervasFrom", "PreparacionBarro")";
+        var LocacionSeleccionada = $("#Locacion").val();
+        var data = { pLocacion: LocacionSeleccionada };
+
+        $.post(url, data).done(function(data){
+
+            var lstBarroDisponible = data;
+
+            lstBarroDisponible.forEach(function(element){
+                if(element.Tipo.includes("Negro")){
+                    document.getElementById("BarroNegro").setAttribute("max", element.TotalKg);
+                }
+                else if(element.Tipo.includes("Blanco")){
+                    document.getElementById("BarroBlanco").setAttribute("max", element.TotalKg);
+                }
+            })
+
+        }).fail(function(error){
+            var text = error.messagge;
+        }).always(function(){
+        });
+
+        actualizaUnidadesMax();
+    }
+
+    function actualizaUnidadesMax(){
+        var lstBarroDisponible = @Html.Raw(Json.Encode(ViewBag.lstRecervas));
+
+        lstBarroDisponible.forEach(function(element){
+            if(element.Tipo.includes("Negro")){
+                document.getElementById("BarroNegro").setAttribute("max", element.TotalKg);
+            }
+            else if(element.Tipo.includes("Blanco")){
+                document.getElementById("BarroBlanco").setAttribute("max", element.TotalKg);
+            }
+        })
+    }
+
+    actualizaUnidadesMax();
+    
+</script>
 
 <div>
     @Html.ActionLink("Volver al listado", "Index")

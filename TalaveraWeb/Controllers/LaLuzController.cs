@@ -65,5 +65,7 @@ namespace TalaveraWeb.Controllers
             else
                 return View(new HttpStatusCodeResult(201, "No fue posible realizar la peticion."));
         }
+
+
     }
 }

@@ -9,58 +9,47 @@
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
-<body>
-    
-    <div class="navbar navbar-inverse navbar-fixed-top" style="background-color:#0b122e">
-        <div class="container">
-            <img src="~/Imagen/talavera3.jpg" style="max-width: 100%;" />
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>               
+<body>    
+    <div class="navbar navbar-inverse navbar-fixed-top" style="background-color:#0b122e">        
+        <img src="~/Imagen/talavera3.jpg" class="row" style="max-width: 100%;" />           
+        <div class="row" style="width: 100%; margin-top:10px">
+            <div class="col-md-3 col-lg-2">
+                <ul class="nav navbar-inverse">
+                    <li style="margin-left:10px">@Html.ActionLink("Inicio", "Index", "Home")</li>                       
+                    <li style="margin-left:10px">@Html.ActionLink("Acerca de", "About", "Home")</li>
+                    <li style="margin-left:10px">@Html.ActionLink("Contacto", "Contact", "Home")</li>
+                </ul>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
-                    <li>
-                        <div class="dropdown">
-                            <a class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Catálogos
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="/Provedores">Proveedores</a>
-                                <a class="dropdown-item" href="/BarroMaestra">Barro</a>
-                                <a class="dropdown-item" href="/Sucursales">Sucursales</a>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="dropdown">
-                            <a class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Almacén
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="/LaLuz">La Luz</a>
-                                <a class="dropdown-item" href="/TreintaYcuatroPte">34 poniente</a>
-                            </div>
-                        </div>
-                    </li>
-
-                    @*<li>@Html.ActionLink("Proveedores", "Index", "Provedores")</li>
-                    <li>@Html.ActionLink("Barro", "Index", "BarroMaestra")</li>
+            <div class="col-md-6 col-lg-8 text-center">
+                <div class="btn-group">
+                    @*
                     <li>@Html.ActionLink("Movimientos Barro", "Index", "MovimientosBarro")</li>
                     <li>@Html.ActionLink("Preparacion Barro", "Index", "PreparacionBarro")</li>
                     <li>@Html.ActionLink("Preparacion Pellas", "Index", "PreparacionPellas") </li>*@
-                    <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>
-                </ul>
-
+                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Catálogos <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("Proveedores", "Index", "Provedores")</li>
+                        <li>@Html.ActionLink("Barro", "Index", "BarroMaestra")</li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Almacén <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("La Luz", "Index", "LaLuz")</li>
+                        <li>@Html.ActionLink("34 poniente", "Index", "TreintaYcuatroPte")</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-2 text-right">
                 @Html.Partial("_LoginPartial")
             </div>
-        </div>
+        </div>        
     </div>
+
     <div class="container body-content" style="margin-top:110px">
         @RenderBody()
         <hr />

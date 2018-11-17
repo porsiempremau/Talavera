@@ -59,7 +59,13 @@
 
 <content>
     <p>
-        @Html.ActionLink("Solicitar pellas de barro", "Create")
+        @Html.ActionLink("Preparación de barro", "Index", "PreparacionBarro", new { pLoc = 1 }, null)
+    </p>
+</content>
+
+<content>
+    <p>
+        @Html.ActionLink("Solicitar pellas", "Index")
     </p>
     <h4 class="encabezado">Pellas de barro</h4>
     <table class="table">
