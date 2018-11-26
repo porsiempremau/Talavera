@@ -321,11 +321,12 @@ namespace TalaveraWeb.Services
             return lstReservas;
         }
 
-        public List<ReservaBarro> getReservasEnKgFrom(int pLocacion)
+        public List<ReservaBarro> getReservasEnKgFrom(int pLocacion, DateTime pFecha, int pId)
         {
             //Obtengo los registros segun el total de ingresos y egresos
-            var lst = db.BarroMovimientos
-                .Where(x => x.Locacion == pLocacion)
+            var lst = db.BarroMovimientos                
+                .Where(x => x.Locacion == pLocacion && x.FechaMovimiento <= pFecha)
+                .Where(x => !db.BarroMovimientos.Where(y => y.OrigenTransferencia == pId && y.OrigenTabla == "PreparacionBarro").Select(z => z.Id).Contains(x.Id))  //Not in list
                 .GroupBy(y => new { y.TipoMovimiento, y.CodigoProducto })
                 .Select(z => new { TipoMovimiento = z.Key, Unidades = z.Sum(s => s.Unidades) })
                 .ToList();
@@ -348,9 +349,9 @@ namespace TalaveraWeb.Services
                 lstReservas.Add(RecBar);
             }
 
-            return lstReservas.GroupBy(x => x.Tipo).Select(y => new ReservaBarro() { CodigoBarro = "N", Tipo = y.Key, Unidades = y.Sum(s => s.TotalKg), TotalKg = y.Sum(s2 => s2.TotalKg) }).ToList();
+            //return lstReservas.GroupBy(x => x.Tipo).Select(y => new ReservaBarro() { CodigoBarro = "N", Tipo = y.Key, Unidades = y.Sum(s => s.TotalKg), TotalKg = y.Sum(s2 => s2.TotalKg) }).ToList();
 
-            //return lstReservas;
+            return lstReservas;
         }
 
         public int addMovimientosBarro(BarroMovimientos pMovB)
@@ -403,6 +404,47 @@ namespace TalaveraWeb.Services
         {
             return db.PreparacionBarro.Where(x => x.Id == pId).FirstOrDefault();
         }
+        public PreparacionBarroConsumo detallePreparacionBarroConsumo(int pId)
+        {
+            PreparacionBarroConsumo pbc = new PreparacionBarroConsumo();
+            PreparacionBarro PreBar = db.PreparacionBarro.Where(x => x.Id == pId).FirstOrDefault();
+            pbc.getPreparacionBarro(PreBar);
+
+            pbc.lstConsumoBarroNegro = db.BarroMovimientos
+                .Where(x => x.OrigenTransferencia == pId && x.OrigenTabla == "PreparacionBarro" && x.CodigoProducto.Contains("N") && x.TipoMovimiento == "Eg")
+                .Select(x => new ReservaBarroPreparado()
+                {
+                    CodigoBarro = x.CodigoProducto,
+                    Tipo = "Negro",
+                    //Capacidad = int.Parse(x.CodigoProducto.Remove(0,1)),
+                    Unidades = x.Unidades,
+                    TotalKg = x.PesoTotal,
+                    BarroUsado = (int)x.Unidades
+                }).ToList();
+            foreach(var item in pbc.lstConsumoBarroNegro)
+            {
+                item.Capacidad = int.Parse(item.CodigoBarro.Remove(0, 1));
+            }
+
+
+            pbc.lstConsumoBarroBlanco = db.BarroMovimientos
+                .Where(x => x.OrigenTransferencia == pId && x.OrigenTabla == "PreparacionBarro" && x.CodigoProducto.Contains("B") && x.TipoMovimiento == "Eg")
+                .Select(x => new ReservaBarroPreparado()
+                {
+                    CodigoBarro = x.CodigoProducto,
+                    Tipo = "Blanco",
+                    //Capacidad = int.Parse(x.CodigoProducto.Substring(1)),
+                    Unidades = x.Unidades,
+                    TotalKg = x.PesoTotal,
+                    BarroUsado = (int)x.Unidades
+                }).ToList();
+            foreach (var item in pbc.lstConsumoBarroBlanco)
+            {
+                item.Capacidad = int.Parse(item.CodigoBarro.Remove(0, 1));
+            }
+
+            return pbc;
+        }
 
         public int addPreparacionBarro(PreparacionBarro pPreBar)
         {
@@ -426,7 +468,7 @@ namespace TalaveraWeb.Services
             return res;
         }
         
-        public int editPreparacionBarro(int pId, PreparacionBarro pPreBar)
+        public int editPreparacionBarro(PreparacionBarro pPreBar)
         {
             try
             {
@@ -437,6 +479,22 @@ namespace TalaveraWeb.Services
             catch(Exception ex)
             {
                 Console.WriteLine("Error: " + ex.Message);
+                return -1;
+            }
+        }
+
+        //Se borran los registros en BarroMovimientos derivados de la preparacion de barro dada.
+        public int borrarMovimientosBarroDerivadosDePreparacionBarro(int pPreBarId)
+        {
+            try
+            {
+                List<BarroMovimientos> lstElems = db.BarroMovimientos.Where(x => x.OrigenTabla == "PreparacionBarro" && x.OrigenTransferencia == pPreBarId).ToList();
+                db.BarroMovimientos.RemoveRange(lstElems);
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch(Exception ex)
+            {
                 return -1;
             }
         }

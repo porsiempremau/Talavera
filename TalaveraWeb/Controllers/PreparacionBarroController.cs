@@ -222,36 +222,93 @@ namespace TalaveraWeb.Controllers
         
 
         [HttpPost]
-        public JsonResult ActualizarRecervasFrom(int pLocacion)
+        public JsonResult ActualizarRecervasFrom(int pLocacion, DateTime pFecha, int pId)
         {
             //Este accion es para consumo interno de Edit.
-            List<ReservaBarro> lstRes = tsvc.getReservasEnKgFrom(pLocacion);
+            List<ReservaBarro> lstRes = tsvc.getReservasEnKgFrom(pLocacion, pFecha, pId);
             return Json(lstRes);
         }
 
         // GET: PreparacionBarro/Edit/5
         public ActionResult Edit(int id)
-        {
-            PreparacionBarro PreBar = tsvc.detallePreparacionBarro(id);
-            ViewBag.lstRecervas = tsvc.getReservasFrom((int)PreBar.Locacion);
+        {            
+            PreparacionBarroConsumo PreBarCon = tsvc.detallePreparacionBarroConsumo(id);            
+            ViewBag.lstRecervas = tsvc.getReservasFrom((int)PreBarCon.Locacion);
             ViewBag.lstLocaciones = tsvc.obtenerSucursales();
-            return View(PreBar);
+            return View(PreBarCon);
         }
 
         // POST: PreparacionBarro/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, PreparacionBarro pPreBar)
+        public ActionResult Edit(int id, PreparacionBarroConsumo pPreBar)
         {
-            pPreBar.Estado = "Disponible";
-            int res = tsvc.editPreparacionBarro(id, pPreBar);
-            if(res > 0)
-            {
-                return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {                
+                int? SumBN = pPreBar.lstConsumoBarroNegro.Select(x => new { TotalSolicitado = x.Capacidad * x.BarroUsado }).Sum(x => x.TotalSolicitado);
+                int? SumBB = pPreBar.lstConsumoBarroBlanco.Select(x => new { TotalSolicitado = x.Capacidad * x.BarroUsado }).Sum(x => x.TotalSolicitado);
+
+                List<BarroMovimientos> lst = new List<BarroMovimientos>();
+                pPreBar.Estado = "Disponible";
+                PreparacionBarro PB = new PreparacionBarro()
+                {
+                    Id = pPreBar.Id,
+                    FechaPreparacion = pPreBar.FechaPreparacion,
+                    NumPreparado = pPreBar.NumPreparado,
+                    BarroNegro = pPreBar.BarroNegro,
+                    BarroBlanco = pPreBar.BarroBlanco,
+                    Recuperado = pPreBar.Recuperado,
+                    EnPiedra = pPreBar.EnPiedra,
+                    TiempoAgitacion = pPreBar.TiempoAgitacion,
+                    NumTambos = pPreBar.NumTambos,
+                    DesperdicioMojado = pPreBar.DesperdicioMojado,
+                    Comentario = pPreBar.Comentario,
+                    Estado = pPreBar.Estado,
+                    Locacion = pPreBar.Locacion
+                };
+
+                //Si las recercas asignadas para cubrir el barro Negro solicitado son mayores, se cubre el pedido, en caso contrario se solicita asignar mas recervas.
+                if (pPreBar.BarroNegro <= SumBN)
+                {
+                    //Si las recercas asignadas para cubrir el barro Blanco solicitado son mayores, se cubre el pedido, en caso contrario se solicita asignar mas recervas.
+                    if (pPreBar.BarroBlanco <= SumBB)
+                    {
+                        int idPreparacion = tsvc.editPreparacionBarro(PB);                        
+                        if (idPreparacion != -1)
+                        {
+                            int elemBorrados = tsvc.borrarMovimientosBarroDerivadosDePreparacionBarro(PB.Id);
+
+                            var lstBarMovNegro = calculaBarroMovimientos(pPreBar.lstConsumoBarroNegro, (int)pPreBar.BarroNegro, PB, idPreparacion);
+                            lst.AddRange(lstBarMovNegro);
+
+                            var lstBarMovBlanco = calculaBarroMovimientos(pPreBar.lstConsumoBarroBlanco, (int)pPreBar.BarroBlanco, PB, idPreparacion);
+                            lst.AddRange(lstBarMovBlanco);
+
+                            //Por ultimo se registran los movimientos en BD.
+                            int res2 = tsvc.addMovimientosBarro(lst);
+                            if (res2 > 0)
+                            {
+                                return RedirectToAction("Index");
+                            }
+                        }
+                        else
+                        {
+                            ViewBag.txtMensaje = "No se pudo crear la preparación, vuelva a intentarlo más tarde.";
+                        }
+                    }
+                    else //Como las recervas son menores al barro solicitado, se pide una cantidad mayor de recervas.
+                    {
+                        ViewBag.txtMensaje = "Es necesario que asignes reservas de barro blanco mayores que el barro blanco solicitado para la preparación.";
+                    }
+                }
+                else //Como las recervas son menores al barro solicitado, se pide una cantidad mayor de recervas.
+                {
+                    ViewBag.txtMensaje = "Es necesario que asignes reservas de barro mayores que el barro negro solicitado para la preparación.";
+                }              
             }
-            else
-            {
-                return View();
-            }
+
+            ViewBag.lstRecervas = tsvc.getReservasFrom((int)pPreBar.Locacion);
+            ViewBag.lstLocaciones = tsvc.obtenerSucursales();
+            return View(pPreBar);
         }
 
         // GET: PreparacionBarro/Delete/5
@@ -267,12 +324,13 @@ namespace TalaveraWeb.Controllers
         {
             int res = tsvc.deletePreparacionBarro(id);
             if(res > 0)
-            {                
+            {
+                int elemBorrados = tsvc.borrarMovimientosBarroDerivadosDePreparacionBarro(id);
                 return RedirectToAction("Index");
             }
             else
             {
-                return View();
+                return View(new HttpStatusCodeResult(202, "No se pudo realizar el borrado, intentelo mas tarde"));
             }
         }
     }
