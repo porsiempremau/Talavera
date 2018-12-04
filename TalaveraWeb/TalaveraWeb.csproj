@@ -184,10 +184,24 @@
     <Compile Include="Controllers\PreparacionBarroController.cs" />
     <Compile Include="Controllers\PreparacionPellasController.cs" />
     <Compile Include="Controllers\ProvedoresController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\TreintaYCuatroPteController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811281957543_InitialCreate.cs" />
+    <Compile Include="Migrations\201811281957543_InitialCreate.Designer.cs">
+      <DependentUpon>201811281957543_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812031921538_role.cs" />
+    <Compile Include="Migrations\201812031921538_role.Designer.cs">
+      <DependentUpon>201812031921538_role.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812032051041_addFullName.cs" />
+    <Compile Include="Migrations\201812032051041_addFullName.Designer.cs">
+      <DependentUpon>201812032051041_addFullName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BarroMaestra.cs">
       <DependentUpon>ModelTalavera.tt</DependentUpon>
@@ -233,6 +247,7 @@
       <DependentUpon>ModelTalavera.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ReservaBarroPreparado.cs" />
+    <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Models\SolicitarRecerva.cs" />
     <Compile Include="Models\Sucursales.cs">
       <DependentUpon>ModelTalavera.tt</DependentUpon>
@@ -392,6 +407,11 @@
     <Content Include="Views\TreintaYCuatroPte\Index.cshtml" />
     <Content Include="Views\TreintaYCuatroPte\SolicitarBarroGranel.cshtml" />
     <Content Include="Views\TreintaYCuatroPte\SolicitarBarroEmpaque.cshtml" />
+    <Content Include="Views\Role\Index.cshtml" />
+    <Content Include="Views\Role\Create.cshtml" />
+    <Content Include="Views\Role\Edit.cshtml" />
+    <Content Include="Views\Role\Details.cshtml" />
+    <Content Include="Views\Role\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -404,6 +424,17 @@
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201811281957543_InitialCreate.resx">
+      <DependentUpon>201811281957543_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812031921538_role.resx">
+      <DependentUpon>201812031921538_role.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812032051041_addFullName.resx">
+      <DependentUpon>201812032051041_addFullName.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -69,6 +69,12 @@ namespace TalaveraWeb.Models
         [Display(Name = "Correo electrónico")]
         public string Email { get; set; }
 
+        [Display(Name = "Nombre completo"), Required, MaxLength(200, ErrorMessage = "El maximo permitido es de 200")]
+        public string NombreCompleto { get; set; }
+
+        [Display(Name = "Nombre corto"), Required, MaxLength(20, ErrorMessage = "El maximo permitido es de 20 caracteres")]
+        public string Nick { get; set; }
+
         [Required]
         [StringLength(100, ErrorMessage = "El número de caracteres de {0} debe ser al menos {2}.", MinimumLength = 6)]
         [DataType(DataType.Password)]
@@ -79,6 +85,8 @@ namespace TalaveraWeb.Models
         [Display(Name = "Confirmar contraseña")]
         [Compare("Password", ErrorMessage = "La contraseña y la contraseña de confirmación no coinciden.")]
         public string ConfirmPassword { get; set; }
+
+        public string RoleName { get; set; }
     }
 
     public class ResetPasswordViewModel
