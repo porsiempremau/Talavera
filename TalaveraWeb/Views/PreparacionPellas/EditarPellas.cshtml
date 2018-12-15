@@ -1,4 +1,4 @@
-﻿@model TalaveraWeb.Models.PreparacionPellas
+﻿@model TalaveraWeb.Models.PreparacionPellasConPreBar
 
 @{
     ViewBag.Title = "EditarPellas";
@@ -97,5 +97,5 @@
 }
 
 <div>
-    @Html.ActionLink("Volver al listado", "Index")
+    @Html.ActionLink("Volver al listado", "Index", new { pLoc = ViewBag.Loc })
 </div>

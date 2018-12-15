@@ -9,6 +9,7 @@ using TalaveraWeb.Services;
 
 namespace TalaveraWeb.Controllers
 {
+    [Authorize(Roles = "Administrador")]
     public class ProvedoresController : Controller
     {
         TalaveraServices tsvc = new TalaveraServices();

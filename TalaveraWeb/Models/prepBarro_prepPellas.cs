@@ -17,5 +17,7 @@ namespace TalaveraWeb.Models
         public int Id { get; set; }
         public string NumCarga { get; set; }
         public string NumPreparado { get; set; }
+        public string Editor { get; set; }
+        public Nullable<System.DateTime> FechaEdicion { get; set; }
     }
 }

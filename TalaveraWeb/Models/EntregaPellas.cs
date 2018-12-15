@@ -20,5 +20,8 @@ namespace TalaveraWeb.Models
         public string TipoMovimiento { get; set; }
         public Nullable<int> CantidadPellas { get; set; }
         public string NumCarga { get; set; }
+        public string Editor { get; set; }
+        public Nullable<System.DateTime> FechaEdicion { get; set; }
+        public Nullable<int> Locacion { get; set; }
     }
 }

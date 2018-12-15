@@ -11,18 +11,40 @@ namespace TalaveraWeb.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class PreparacionPellas
     {
         public int Id { get; set; }
         public Nullable<int> Fuente { get; set; }
+
+        [Display(Name = "Numero de carga")]
         public string NumCarga { get; set; }
+
+        [DataType(DataType.Date), Display(Name = "Fecha de vaciado")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> FechaVaciado { get; set; }
+
+        [DataType(DataType.Date), Display(Name = "Fecha de levantado")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> FechaLevantado { get; set; }
+
+        [DataType(DataType.Date), Display(Name = "Fecha que inicio el pisado")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> FechaInicoPisado { get; set; }
+
+        [DataType(DataType.Date), Display(Name = "Fecha que termino el pisado")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> FechaFinPisado { get; set; }
+
+        [Display(Name = "Numero de peyas")]
         public Nullable<int> NumPeyas { get; set; }
         public Nullable<int> Restante { get; set; }
+
+        [Display(Name = "Carga total")]
         public Nullable<int> CargaTotal { get; set; }
+        public string Editor { get; set; }
+        public Nullable<System.DateTime> FechaEdicion { get; set; }
+        public Nullable<int> Locacion { get; set; }
     }
 }

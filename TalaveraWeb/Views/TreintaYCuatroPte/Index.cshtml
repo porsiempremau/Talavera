@@ -58,19 +58,31 @@
 </content>
 
 <content>
-    <p>
-        @Html.ActionLink("Solicitar pellas de barro", "Create")
+    <p style="margin-top:2rem; margin-bottom:2rem">
+        @Html.ActionLink("Preparación de barro", "Index", "PreparacionBarro", new { pLoc = 2 }, null)  -  @Html.ActionLink("Preparación en fuentes", "Index", "PreparacionPellas", new { pLoc = 2 }, null)
     </p>
+</content>
+
+<content>    
     <h4 class="encabezado">Pellas de barro</h4>
     <table class="table">
         <thead>
             <tr>
-                <th>Pella</th>
+                <th>Pellas</th>
                 <th>Unidades</th>
                 <th>Total en Kg</th>
             </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+            @foreach (var item in ViewBag.lstPellas)
+            {
+                <tr>
+                    <td>@item.Tipo</td>
+                    <td>@item.Unidades</td>
+                    <td>@item.TotalKg</td>
+                </tr>
+            }            
+        </tbody>
     </table>
 </content>
 

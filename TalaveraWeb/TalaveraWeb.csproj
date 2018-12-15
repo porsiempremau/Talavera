@@ -201,6 +201,10 @@
     <Compile Include="Migrations\201812032051041_addFullName.Designer.cs">
       <DependentUpon>201812032051041_addFullName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812051603053_largoVariablesExtraUsuarios.cs" />
+    <Compile Include="Migrations\201812051603053_largoVariablesExtraUsuarios.Designer.cs">
+      <DependentUpon>201812051603053_largoVariablesExtraUsuarios.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BarroMaestra.cs">
@@ -236,16 +240,17 @@
     <Compile Include="Models\PreparacionPellas.cs">
       <DependentUpon>ModelTalavera.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PreparacionPellasConPreBar.cs" />
     <Compile Include="Models\prepBarro_prepPellas.cs">
       <DependentUpon>ModelTalavera.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Provedores.cs">
       <DependentUpon>ModelTalavera.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ReservaBarro.cs" />
     <Compile Include="Models\Recuperados.cs">
       <DependentUpon>ModelTalavera.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ReservaBarro.cs" />
     <Compile Include="Models\ReservaBarroPreparado.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Models\SolicitarRecerva.cs" />
@@ -434,6 +439,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201812032051041_addFullName.resx">
       <DependentUpon>201812032051041_addFullName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812051603053_largoVariablesExtraUsuarios.resx">
+      <DependentUpon>201812051603053_largoVariablesExtraUsuarios.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

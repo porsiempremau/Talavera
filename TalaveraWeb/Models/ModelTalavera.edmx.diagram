@@ -5,15 +5,15 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="3e5e7f7b3a1c4adb8af69a86674f195e" Name="Diagram1">
-        <EntityTypeShape EntityType="TalaveraModel.BarroMaestra" Width="1.5" PointX="0.75" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TalaveraModel.EntregaPellas" Width="1.5" PointX="8.875" PointY="6.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="TalaveraModel.PreparacionPellas" Width="1.75" PointX="6.75" PointY="4.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="TalaveraModel.prepBarro_prepPellas" Width="1.5" PointX="4.875" PointY="4.25" IsExpanded="true" />
         <EntityTypeShape EntityType="TalaveraModel.Provedores" Width="1.5" PointX="3" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TalaveraModel.Recuperados" Width="1.5" PointX="8.875" PointY="3.875" IsExpanded="true" />
         <EntityTypeShape EntityType="TalaveraModel.Sucursales" Width="1.5" PointX="5.25" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TalaveraModel.BarroMovimientos" Width="1.75" PointX="0.625" PointY="4.25" />
-        <EntityTypeShape EntityType="TalaveraModel.PreparacionBarro" Width="1.625" PointX="2.875" PointY="4.25" />
+        <EntityTypeShape EntityType="TalaveraModel.BarroMaestra" Width="1.625" PointX="0.875" PointY="0.5" />
+        <EntityTypeShape EntityType="TalaveraModel.BarroMovimientos" Width="1.75" PointX="0.75" PointY="4.5" />
+        <EntityTypeShape EntityType="TalaveraModel.PreparacionBarro" Width="1.625" PointX="3" PointY="4.5" />
+        <EntityTypeShape EntityType="TalaveraModel.prepBarro_prepPellas" Width="1.875" PointX="5.125" PointY="4.5" />
+        <EntityTypeShape EntityType="TalaveraModel.EntregaPellas" Width="1.5" PointX="9.625" PointY="4.25" />
+        <EntityTypeShape EntityType="TalaveraModel.PreparacionPellas" Width="1.75" PointX="7.375" PointY="4.5" />
+        <EntityTypeShape EntityType="TalaveraModel.Recuperados" Width="1.5" PointX="9.625" PointY="7.375" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

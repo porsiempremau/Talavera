@@ -1,4 +1,4 @@
-﻿@model TalaveraWeb.Models.PreparacionPellas
+﻿@model TalaveraWeb.Models.PreparacionPellasConPreBar
 
 @{
     ViewBag.Title = "BorrarPellas";
@@ -91,7 +91,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Borrar" class="btn btn-default" /> |
-            @Html.ActionLink("Volver al listado", "Index")
+            @Html.ActionLink("Volver al listado", "Index", new { pLoc = ViewBag.Loc })
         </div>
     }
 </div>

@@ -10,10 +10,10 @@ namespace TalaveraWeb.Models
     // Puede agregar datos del perfil del usuario agregando más propiedades a la clase ApplicationUser. Para más información, visite http://go.microsoft.com/fwlink/?LinkID=317594.
     public class ApplicationUser : IdentityUser
     {
-        [Display(Name = "Nombre completo"), Required]
+        [Display(Name = "Nombre completo"), Required, StringLength(200)]
         public string NombreCompleto { get; set; }
 
-        [Display(Name = "Nombre corto"), Required]
+        [Display(Name = "Nombre corto"), Required, StringLength(20, ErrorMessage = "Considera usar un nombre corto de meno de 20 caracteres.")]
         public string Nick { get; set; }
 
 

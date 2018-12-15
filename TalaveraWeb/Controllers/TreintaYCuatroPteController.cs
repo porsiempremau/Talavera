@@ -8,35 +8,41 @@ using TalaveraWeb.Services;
 
 namespace TalaveraWeb.Controllers
 {
+    [Authorize(Roles = "Administrador, Usuario")]
     public class TreintaYCuatroPteController : Controller
     {
         TalaveraServices tsvc = new TalaveraServices();
         // GET: TreintaYCuatroPte
         public ActionResult Index()
         {
+            HttpContext.Application["Locacion"] = 2;
             ViewBag.lstBarroGranel34pte = tsvc.getReservasBarroGranelFrom(2);
             ViewBag.lstBarroEmpaque34pte = tsvc.getReservasBarroEmpaqueFrom(2);
+            ViewBag.lstPellas = tsvc.getReservasPellasFrom(2);
             return View();
         }
 
         public ActionResult SolicitarBarroGranel()
-        {
+        {            
             ViewBag.Productos = tsvc.obtenerProductos(1);
             ViewBag.Provedores = tsvc.obtenerProvedores();
             ViewBag.Locaciones = tsvc.obtenerSucursales(2);
             BarroMovimientos bm = new BarroMovimientos();
+            bm.FechaMovimiento = DateTime.Today;
             return View(bm);
         }
 
         // POST: MovimientosBarro/Create
         [HttpPost]
         public ActionResult SolicitarBarroGranel(BarroMovimientos pMovB)
-        {
+        {            
             if (ModelState.IsValid)
             {
                 pMovB.TipoMovimiento = "In";
                 pMovB.PesoTotal = pMovB.Unidades;
                 pMovB.OrigenTabla = "Provedores";
+                pMovB.Editor = User.Identity.Name;
+                pMovB.FechaEdicion = DateTime.Now;
 
                 int res = tsvc.addMovimientosBarro(pMovB);
                 if (res == 1)
@@ -67,9 +73,7 @@ namespace TalaveraWeb.Controllers
                 {
                     int PesoEmpaque = int.Parse(CodigoProducto[i].Replace("N", "").Replace("B", ""));
                     string codigoGranel = tsvc.obtenerCodigoDeProducto(Tipo[i], 1);
-
-
-
+                    
                     BarroMovimientos bmEg = new BarroMovimientos()
                     {
                         CodigoProducto = codigoGranel, //Tipo[i].Substring(0, 1) + Capacidad[i],
@@ -79,7 +83,9 @@ namespace TalaveraWeb.Controllers
                         Locacion = 2,
                         OrigenTransferencia = 2,
                         OrigenTabla = "Sucursales",
-                        PesoTotal = PesoEmpaque * int.Parse(barroSolicitado[i])
+                        PesoTotal = PesoEmpaque * int.Parse(barroSolicitado[i]),
+                        Editor = User.Identity.Name,
+                        FechaEdicion = DateTime.Now
                     };
                     lst.Add(bmEg);
 
@@ -92,7 +98,9 @@ namespace TalaveraWeb.Controllers
                         Locacion = 2,
                         OrigenTransferencia = 2,
                         OrigenTabla = "Sucursales",
-                        PesoTotal = PesoEmpaque * int.Parse(barroSolicitado[i])
+                        PesoTotal = PesoEmpaque * int.Parse(barroSolicitado[i]),
+                        Editor = User.Identity.Name,
+                        FechaEdicion = DateTime.Now
                     };
                     lst.Add(bmIn);
                 }                

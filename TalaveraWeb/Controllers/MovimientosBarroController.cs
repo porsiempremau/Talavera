@@ -59,18 +59,22 @@ namespace TalaveraWeb.Controllers
                     TipoMovimiento = "In",
                     CodigoProducto = pSR.CodigoBarro, //item.Value,
                     Unidades = (int)pSR.Unidades,
-                    ////Locacion = "La Luz",
-                    ////OrigenTranferencia = "34 pte"
-                };
+                    Editor = User.Identity.Name,
+                    FechaEdicion = DateTime.Now
+                ////Locacion = "La Luz",
+                ////OrigenTranferencia = "34 pte"
+            };
 
                 BarroMovimientos tmpMovB_eg = new BarroMovimientos()
                 {
                     FechaMovimiento = DateTime.Today,
                     TipoMovimiento = "Eg",
                     CodigoProducto = pSR.CodigoBarro, //item.Value,
-                    //Unidades = pSR.Unidades,
-                    //Locacion = "34 pte"
-                };
+                    Editor = User.Identity.Name,
+                    FechaEdicion = DateTime.Now
+                //Unidades = pSR.Unidades,
+                //Locacion = "34 pte"
+            };
 
                 List<BarroMovimientos> lst = new List<BarroMovimientos>();
                 lst.Add(tmpMovB_in);

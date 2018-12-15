@@ -20,14 +20,10 @@
                     <li style="margin-left:10px">@Html.ActionLink("Contacto", "Contact", "Home")</li>
                 </ul>
             </div>
-            <div class="col-md-6 col-lg-8 text-center">
-                @*
-                    <li>@Html.ActionLink("Movimientos Barro", "Index", "MovimientosBarro")</li>
-                    <li>@Html.ActionLink("Preparacion Barro", "Index", "PreparacionBarro")</li>
-                    <li>@Html.ActionLink("Preparacion Pellas", "Index", "PreparacionPellas") </li>*@
+            <div class="col-md-6 col-lg-8 nav text-md-center text-lg-center">
                 @if (User.IsInRole("Administrador"))
                 {
-                    <div class="btn-group">
+                    <div class="btn-group btn-sm">
                         <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Catálogos <span class="caret"></span>
                         </button>
@@ -35,21 +31,18 @@
                             <li>@Html.ActionLink("Proveedores", "Index", "Provedores")</li>
                             <li>@Html.ActionLink("Barro", "Index", "BarroMaestra")</li>
                             <li>@Html.ActionLink("Usuarios", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-                            <li>@Html.ActionLink("Roles", "Index", "Role")</li>
+                            @*<li>@Html.ActionLink("Roles", "Index", "Role")</li>*@
                         </ul>
                     </div>
                 }
                 @if (User.IsInRole("Usuario") || User.IsInRole("Administrador"))
-                {
-                    <div class="btn-group">
-                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Almacén <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
+                {                    
+                    <div class="col text-center">
+                        <ul class="list-inline">
                             <li>@Html.ActionLink("La Luz", "Index", "LaLuz")</li>
-                            <li>@Html.ActionLink("34 poniente", "Index", "TreintaYcuatroPte")</li>
+                            <li style="margin-left:15px">@Html.ActionLink("34 poniente", "Index", "TreintaYcuatroPte")</li>
                         </ul>
-                    </div>
+                    </div>                    
                 }
             </div>
             <div class="col-md-3 col-lg-2 text-right">

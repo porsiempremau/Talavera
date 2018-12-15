@@ -18,5 +18,7 @@ namespace TalaveraWeb.Models
         public string CodigoProducto { get; set; }
         public Nullable<int> Capacidad { get; set; }
         public string Tipo { get; set; }
+        public string Editor { get; set; }
+        public Nullable<System.DateTime> FechaEdicion { get; set; }
     }
 }

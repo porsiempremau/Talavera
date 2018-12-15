@@ -8,6 +8,7 @@ using TalaveraWeb.Models;
 
 namespace TalaveraWeb.Controllers
 {
+    [Authorize(Roles = "Administrador, Usuario")]
     public class LaLuzController : Controller
     {
         TalaveraServices tsvc = new TalaveraServices();
@@ -15,7 +16,8 @@ namespace TalaveraWeb.Controllers
         public ActionResult Index()
         {
             ViewBag.lstBarroGranelLuz = tsvc.getReservasBarroGranelFrom(1);
-            ViewBag.lstBarroEmpaqueLuz = tsvc.getReservasBarroEmpaqueFrom(1);            
+            ViewBag.lstBarroEmpaqueLuz = tsvc.getReservasBarroEmpaqueFrom(1);
+            ViewBag.lstPellas = tsvc.getReservasPellasFrom(1);
             return View();
         }
 
@@ -40,8 +42,10 @@ namespace TalaveraWeb.Controllers
                     Locacion = 2,
                     OrigenTransferencia = 1,
                     OrigenTabla = "Sucursales",
-                    PesoTotal = Capacidad[i] * int.Parse(barroSolicitado[i])
-                };
+                    PesoTotal = Capacidad[i] * int.Parse(barroSolicitado[i]),
+                    Editor = User.Identity.Name,
+                    FechaEdicion = DateTime.Now
+            };
                 lst.Add(bmEg);
 
                 BarroMovimientos bmIn = new BarroMovimientos()
@@ -53,8 +57,10 @@ namespace TalaveraWeb.Controllers
                     Locacion = 1,
                     OrigenTransferencia = 2,
                     OrigenTabla = "Sucursales",
-                    PesoTotal = Capacidad[i] * int.Parse(barroSolicitado[i])
-                };
+                    PesoTotal = Capacidad[i] * int.Parse(barroSolicitado[i]),
+                    Editor = User.Identity.Name,
+                    FechaEdicion = DateTime.Now
+            };
                 lst.Add(bmIn);
             }
 

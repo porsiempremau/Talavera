@@ -4,7 +4,11 @@
     ViewBag.Title = "Index";
 }
 
-<h2>REPORTE DE LA PREPARACIÓN DE BARROS</h2>
+<h2 style="text-align:center">
+    @ViewBag.NombreLocacion
+</h2>
+<h3 style="text-align:center">REPORTE DE LA PREPARACIÓN DE BARROS</h3>
+<br /><br />
 
 <p>
     @Html.ActionLink("Crear nueva preparación", "Create", new { pLocacion = ViewBag.Locacion })

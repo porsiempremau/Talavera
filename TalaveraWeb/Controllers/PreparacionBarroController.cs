@@ -15,6 +15,7 @@ namespace TalaveraWeb.Controllers
         public ActionResult Index(int pLoc = 1)
         {
             List<PreparacionBarro> lstPreBar = tsvc.obtenerPreparacionBarro(pLoc);
+            ViewBag.NombreLocacion = tsvc.getNombreSucursal(pLoc);
             ViewBag.Locacion = pLoc;
             return View(lstPreBar);
         }
@@ -88,8 +89,10 @@ namespace TalaveraWeb.Controllers
                     DesperdicioMojado = pPreBar.DesperdicioMojado,
                     Comentario = pPreBar.Comentario,
                     Estado = pPreBar.Estado,
-                    Locacion = pPreBar.Locacion
-                };
+                    Locacion = pPreBar.Locacion,
+                    Editor = User.Identity.Name,
+                    FechaEdicion = DateTime.Now
+            };
                 
                 //Si las recercas asignadas para cubrir el barro Negro solicitado son mayores, se cubre el pedido, en caso contrario se solicita asignar mas recervas.
                 if (pPreBar.BarroNegro <= SumBN)
@@ -163,8 +166,10 @@ namespace TalaveraWeb.Controllers
                             Locacion = pPreBar.Locacion,
                             OrigenTransferencia = idPreparacion,
                             OrigenTabla = "PreparacionBarro",
-                            PesoTotal = TotalKgUsados
-                        };
+                            PesoTotal = TotalKgUsados,
+                            Editor = pPreBar.Editor,
+                            FechaEdicion = pPreBar.FechaEdicion
+                    };
                         lst.Add(tmpMovB_egNegro);
                     }
                     else  //Para los paquete se va haciendo gradual la resta, para determinar cuantos paquetes son necesrios.
@@ -191,7 +196,9 @@ namespace TalaveraWeb.Controllers
                             Locacion = pPreBar.Locacion,
                             OrigenTransferencia = idPreparacion,
                             OrigenTabla = "PreparacionBarro",
-                            PesoTotal = TotalKgUsados
+                            PesoTotal = TotalKgUsados,
+                            Editor = pPreBar.Editor,
+                            FechaEdicion = pPreBar.FechaEdicion
                         };
                         lst.Add(tmpMovB_egNegro);
 
@@ -209,7 +216,9 @@ namespace TalaveraWeb.Controllers
                                 Locacion = pPreBar.Locacion,
                                 OrigenTransferencia = idPreparacion,
                                 OrigenTabla = "PreparacionBarro",
-                                PesoTotal = pBarroSolicitado * -1
+                                PesoTotal = pBarroSolicitado * -1,
+                                Editor = pPreBar.Editor,
+                                FechaEdicion = pPreBar.FechaEdicion                                
                             };
                             lst.Add(tmpMovB_inNegro);
                         }
@@ -263,7 +272,9 @@ namespace TalaveraWeb.Controllers
                     DesperdicioMojado = pPreBar.DesperdicioMojado,
                     Comentario = pPreBar.Comentario,
                     Estado = pPreBar.Estado,
-                    Locacion = pPreBar.Locacion
+                    Locacion = pPreBar.Locacion,
+                    Editor = User.Identity.Name,
+                    FechaEdicion = DateTime.Now
                 };
 
                 //Si las recercas asignadas para cubrir el barro Negro solicitado son mayores, se cubre el pedido, en caso contrario se solicita asignar mas recervas.

@@ -8,6 +8,7 @@ using TalaveraWeb.Models;
 
 namespace TalaveraWeb.Controllers
 {
+    [Authorize(Roles = "Administrador")]
     public class BarroMaestraController : Controller
     {
         TalaveraServices tsvc = new TalaveraServices();
@@ -35,6 +36,8 @@ namespace TalaveraWeb.Controllers
                 BarroMaestra ExiteBarro = tsvc.validaExistenciaBarroMaestra(pBarro);
                 if(ExiteBarro == null)
                 {
+                    pBarro.Editor = User.Identity.Name;
+                    pBarro.FechaEdicion = DateTime.Now;
                     int res = tsvc.addBarroMaestra(pBarro);
                     if (res == 1)
                     {

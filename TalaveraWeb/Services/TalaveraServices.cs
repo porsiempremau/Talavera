@@ -12,6 +12,12 @@ namespace TalaveraWeb.Services
     {
         TalaveraEntities db = new TalaveraEntities();
 
+        //SUCURSALES
+        public string getNombreSucursal(int pLoc)
+        {
+            return db.Sucursales.Where(x => x.Id == pLoc).Select(y => y.Nombre).FirstOrDefault();
+        }
+
         //PROVEDORES
         public List<Provedores> getProvedores()
         {
@@ -231,6 +237,40 @@ namespace TalaveraWeb.Services
 
             return lstReservas;
         }
+
+        //Barro en pellas
+        public List<ReservaBarro> getReservasPellasFrom(int pLocacion)
+        {
+            try
+            {                
+                var lstRes = db.EntregaPellas.Where(x => x.Locacion == pLocacion)
+                        .GroupBy(y => y.TipoMovimiento)
+                        .Select(z => new { TipoMovimiento = z.Key, Total = z.Sum(s => s.CantidadPellas) })
+                        .ToList();
+
+                int? Positivo = 0, Negativo = 0;
+                List<ReservaBarro> lstReservas = new List<ReservaBarro>();
+                foreach (var item in lstRes)
+                {                    
+                    if (item.TipoMovimiento == "I")
+                        Positivo = item.Total;
+                    if (item.TipoMovimiento == "E")
+                        Negativo = item.Total;
+                }
+
+                int? Total = (Positivo != null ? Positivo : 0) - (Negativo != null ? Negativo : 0);
+                ReservaBarro RecBar = new ReservaBarro() { CodigoBarro = "N/A", Tipo = "Pella 40 kg", Capacidad = null, Unidades = Total, TotalKg = Total * 40 };
+                lstReservas.Add(RecBar);
+                
+                return lstReservas;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }            
+        }
+
+
 
         //Catalogos para los Movimientos de barro
         public List<SelectListItem> obtenerProductos(int pCapacidad = 0)
@@ -517,9 +557,9 @@ namespace TalaveraWeb.Services
 
 
         //PREPARACION PELLAS
-        public List<PreparacionPellas> obtenerPreparacionPellas()
+        public List<PreparacionPellas> obtenerPreparacionPellas(int pLoc)
         {
-            return db.PreparacionPellas.OrderByDescending(x => x.NumCarga).Take(10).ToList();
+            return db.PreparacionPellas.Where(x => x.Locacion == pLoc).OrderByDescending(x => x.NumCarga).Take(10).ToList();
         }
 
         //Establece el numero de carga en fuentes, segun el año
@@ -542,22 +582,22 @@ namespace TalaveraWeb.Services
             }            
         }
         
-        public List<PreparacionBarro> getPreparadosDisponibles()
+        public List<string> getPreparadosDisponibles(int pIdSucursal)
         {
             try
             {
-                return db.PreparacionBarro.Where(x => x.Estado == "Disponible").ToList();
+                return db.PreparacionBarro.Where(x => x.Estado == "Disponible" && x.Locacion == pIdSucursal).Select(x => x.NumPreparado).ToList();
             }
             catch(Exception ex)
             {
                 return null;
             }            
         }
-
+                
         public int addPreparacionPellas(PreparacionPellas pPrePell)
         {
             try
-            {
+            {                
                 db.PreparacionPellas.Add(pPrePell);
                 int res = db.SaveChanges();
                 return res;
@@ -565,6 +605,43 @@ namespace TalaveraWeb.Services
             catch(Exception ex)
             {
                 Console.WriteLine("Preparación Pellas Error: " + ex.Message);
+                return -1;
+            }
+        }
+        
+        public int addPreparacionPellasRelacionesPreparacionBarro(List<string> plstPreBar, string pPrePell, string pEditor)
+        {
+            try
+            {
+                List<prepBarro_prepPellas> lst = new List<prepBarro_prepPellas>();
+                foreach (var item in plstPreBar)
+                    lst.Add(new prepBarro_prepPellas() { NumPreparado = item, NumCarga = pPrePell, Editor = pEditor, FechaEdicion = DateTime.Now });
+
+                db.prepBarro_prepPellas.AddRange(lst);
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("addPreparacionPellasRelacionesPreparacionBarro error: " + ex.Message);
+                return -1;
+            }
+        }
+                
+        //Actualiza en la tabla de PreparacionBarro el campo de Estado de "Disponible" a "Consumido"
+        public int editaEstadoPrepBarroPorPreparacionPellas(List<string> plstPreBar, string pEstado, string pEditor)
+        {
+            try
+            {
+                var friends = db.PreparacionBarro.Where(f => plstPreBar.Contains(f.NumPreparado)).ToList();
+                friends.ForEach(a => a.Estado = pEstado);
+                friends.ForEach(a => a.Editor = pEditor);
+                friends.ForEach(a => a.FechaEdicion = DateTime.Now);
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch (Exception ex)
+            {
                 return -1;
             }
         }
@@ -578,7 +655,18 @@ namespace TalaveraWeb.Services
         {
             try
             {
-                db.Entry(pPrePell).State = EntityState.Modified;
+                var pp = db.PreparacionPellas.FirstOrDefault(x => x.Id == pPrePell.Id);
+                pp.Fuente = pPrePell.Fuente;
+                pp.NumCarga = pPrePell.NumCarga;
+                pp.FechaVaciado = pPrePell.FechaVaciado;
+                pp.FechaLevantado = pPrePell.FechaLevantado;
+                pp.FechaInicoPisado = pPrePell.FechaInicoPisado;
+                pp.FechaFinPisado = pPrePell.FechaFinPisado;
+                pp.NumPeyas = pPrePell.NumPeyas;
+                pp.Restante = pPrePell.Restante;
+                pp.CargaTotal = pPrePell.CargaTotal;
+                pp.Editor = pPrePell.Editor;
+                pp.FechaEdicion = pPrePell.FechaEdicion;
                 int res = db.SaveChanges();
                 return res;
             }
@@ -588,7 +676,7 @@ namespace TalaveraWeb.Services
                 return -1;
             }            
         }
-
+        
         public int deletePreparacionPellas(int pId)
         {
             try
@@ -604,5 +692,72 @@ namespace TalaveraWeb.Services
                 return -1;
             }
         }
+
+        public int deletePreparacionPellasRelacionesPreparacionBarro(string pNumCarga)
+        {
+            try
+            {
+                List<prepBarro_prepPellas> lst = db.prepBarro_prepPellas.Where(x => x.NumCarga == pNumCarga).ToList();
+                db.prepBarro_prepPellas.RemoveRange(lst);
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("addPreparacionPellasRelacionesPreparacionBarro error: " + ex.Message);
+                return -1;
+            }
+        }
+
+        //ENTREGA PELLAS
+        public int addEntregaPellas(int? pCantidadPellas, string pCarga, string pResponsable, int pLocacion)
+        {
+            try
+            {
+                EntregaPellas EP = new EntregaPellas() { FechaMovimiento = DateTime.Today, Responsable = pResponsable, TipoMovimiento = "I", CantidadPellas = pCantidadPellas, NumCarga = pCarga, Editor = pResponsable, FechaEdicion = DateTime.Now, Locacion = pLocacion };
+                db.EntregaPellas.Add(EP);
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
+        public int editEntregaPellas(int? pCantidadPellas, string pCarga, string pResponsable, int pLocacion)
+        {
+            try
+            {
+                var ep = db.EntregaPellas.FirstOrDefault(x => x.NumCarga == pCarga);
+                ep.CantidadPellas = pCantidadPellas;
+                ep.Responsable = pResponsable;
+                ep.Editor = pResponsable;
+                ep.FechaEdicion = DateTime.Now;
+                ep.Locacion = pLocacion;
+                int res = db.SaveChanges();                                
+                return res;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
+        public int deleteEntregaPellas(string pCarga)
+        {
+            try
+            {
+                EntregaPellas ep = db.EntregaPellas.FirstOrDefault(x => x.NumCarga == pCarga);
+                db.EntregaPellas.Remove(ep);
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
     }
 }

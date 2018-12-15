@@ -11,11 +11,15 @@ namespace TalaveraWeb.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class BarroMovimientos
     {
         public int Id { get; set; }
         public string CodigoProducto { get; set; }
+
+        [DataType(DataType.Date), Display(Name = "Fecha de adquisición")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> FechaMovimiento { get; set; }
         public string TipoMovimiento { get; set; }
         public Nullable<int> Unidades { get; set; }
@@ -23,5 +27,7 @@ namespace TalaveraWeb.Models
         public Nullable<int> OrigenTransferencia { get; set; }
         public string OrigenTabla { get; set; }
         public Nullable<int> PesoTotal { get; set; }
+        public string Editor { get; set; }
+        public Nullable<System.DateTime> FechaEdicion { get; set; }
     }
 }
