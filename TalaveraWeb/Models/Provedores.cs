@@ -11,13 +11,20 @@ namespace TalaveraWeb.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Provedores
     {
         public int id { get; set; }
         public string Nombre { get; set; }
+
+        [Display(Name = "Teléfono")]
         public string Telefono { get; set; }
+
+        [Display(Name = "Segundo teléfono")]
         public string Telefono2 { get; set; }
+
+        [Display(Name = "Número")]
         public string Numero { get; set; }
         public string Calle { get; set; }
         public string Colonia { get; set; }

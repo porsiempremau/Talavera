@@ -185,6 +185,7 @@
     <Compile Include="Controllers\PreparacionPellasController.cs" />
     <Compile Include="Controllers\ProvedoresController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\SolicitarPellasController.cs" />
     <Compile Include="Controllers\TreintaYCuatroPteController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -204,6 +205,10 @@
     <Compile Include="Migrations\201812051603053_largoVariablesExtraUsuarios.cs" />
     <Compile Include="Migrations\201812051603053_largoVariablesExtraUsuarios.Designer.cs">
       <DependentUpon>201812051603053_largoVariablesExtraUsuarios.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812181924222_addCampoAEntregaPellas.cs" />
+    <Compile Include="Migrations\201812181924222_addCampoAEntregaPellas.Designer.cs">
+      <DependentUpon>201812181924222_addCampoAEntregaPellas.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -417,6 +422,7 @@
     <Content Include="Views\Role\Edit.cshtml" />
     <Content Include="Views\Role\Details.cshtml" />
     <Content Include="Views\Role\Delete.cshtml" />
+    <Content Include="Views\SolicitarPellas\Solicitar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -442,6 +448,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201812051603053_largoVariablesExtraUsuarios.resx">
       <DependentUpon>201812051603053_largoVariablesExtraUsuarios.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812181924222_addCampoAEntregaPellas.resx">
+      <DependentUpon>201812181924222_addCampoAEntregaPellas.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

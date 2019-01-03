@@ -308,7 +308,7 @@ namespace TalaveraWeb.Services
             lst.First().Selected = true;
             return lst;
         }
-        //Se hizo de esta manera pues no se considero necesario crear un catalogo en BD para 2 locaciones
+        
         public List<SelectListItem> obtenerSucursales(int pSucursal = 0)
         {
             //List<SelectListItem> lst = new List<SelectListItem>() {
@@ -328,7 +328,26 @@ namespace TalaveraWeb.Services
             return lst;
         }
 
-        
+        public List<SelectListItem> obtenerSucursalesExcepto(int pSucursal = 0)
+        {
+            //List<SelectListItem> lst = new List<SelectListItem>() {
+            //    new SelectListItem() { Text = "34 pte", Value = "34 pte" },
+            //    new SelectListItem() { Text = "La Luz", Value = "La Luz" }
+            //};
+            List<SelectListItem> lst;
+            if (pSucursal > 0)
+            {
+                lst = db.Sucursales.Where(y => y.Id != pSucursal).Select(x => new SelectListItem() { Text = x.Nombre, Value = x.Id.ToString() }).ToList();
+            }
+            else
+            {
+                lst = db.Sucursales.Select(x => new SelectListItem() { Text = x.Nombre, Value = x.Id.ToString() }).ToList();
+            }
+            lst.First().Selected = true;
+            return lst;
+        }
+
+
 
         //MOVIMIENTOS BARRO
         public List<ReservaBarro> getReservasFrom(int pLocacion)
@@ -710,12 +729,25 @@ namespace TalaveraWeb.Services
         }
 
         //ENTREGA PELLAS
-        public int addEntregaPellas(int? pCantidadPellas, string pCarga, string pResponsable, int pLocacion)
+        public int addEntregaPellas(int? pCantidadPellas, string pCarga, string pResponsable, int pLocacion, string pTipoMovimiento)
         {
             try
             {
-                EntregaPellas EP = new EntregaPellas() { FechaMovimiento = DateTime.Today, Responsable = pResponsable, TipoMovimiento = "I", CantidadPellas = pCantidadPellas, NumCarga = pCarga, Editor = pResponsable, FechaEdicion = DateTime.Now, Locacion = pLocacion };
+                EntregaPellas EP = new EntregaPellas() { FechaMovimiento = DateTime.Today, Responsable = pResponsable, TipoMovimiento = pTipoMovimiento, CantidadPellas = pCantidadPellas, NumCarga = pCarga, Editor = pResponsable, FechaEdicion = DateTime.Now, Locacion = pLocacion };
                 db.EntregaPellas.Add(EP);
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+        public int addEntregaPellas(EntregaPellas pEnPe)
+        {
+            try
+            {                
+                db.EntregaPellas.Add(pEnPe);
                 int res = db.SaveChanges();
                 return res;
             }

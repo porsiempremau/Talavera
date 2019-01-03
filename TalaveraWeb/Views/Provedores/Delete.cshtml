@@ -36,14 +36,6 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Numero)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Numero)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.Calle)
         </dt>
 
@@ -51,6 +43,14 @@
             @Html.DisplayFor(model => model.Calle)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.Numero)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Numero)
+        </dd>
+        
         <dt>
             @Html.DisplayNameFor(model => model.Colonia)
         </dt>
@@ -81,7 +81,7 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <input type="submit" value="Borrar" class="btn btn-default" /> |
             @Html.ActionLink("Ir a lista de Proveedores", "Index")
         </div>
     }

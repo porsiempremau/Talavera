@@ -31,8 +31,8 @@ namespace TalaveraWeb.Models
         public virtual DbSet<BarroMovimientos> BarroMovimientos { get; set; }
         public virtual DbSet<PreparacionBarro> PreparacionBarro { get; set; }
         public virtual DbSet<prepBarro_prepPellas> prepBarro_prepPellas { get; set; }
-        public virtual DbSet<EntregaPellas> EntregaPellas { get; set; }
         public virtual DbSet<PreparacionPellas> PreparacionPellas { get; set; }
         public virtual DbSet<Recuperados> Recuperados { get; set; }
+        public virtual DbSet<EntregaPellas> EntregaPellas { get; set; }
     }
 }

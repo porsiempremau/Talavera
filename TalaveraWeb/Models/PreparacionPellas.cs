@@ -18,33 +18,39 @@ namespace TalaveraWeb.Models
         public int Id { get; set; }
         public Nullable<int> Fuente { get; set; }
 
-        [Display(Name = "Numero de carga")]
+        [Display(Name = "Número de Carga")]
         public string NumCarga { get; set; }
 
-        [DataType(DataType.Date), Display(Name = "Fecha de vaciado")]
+        [DataType(DataType.Date)]
+        [Display(Name = "Fecha vaciado")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> FechaVaciado { get; set; }
 
-        [DataType(DataType.Date), Display(Name = "Fecha de levantado")]
+        [DataType(DataType.Date)]
+        [Display(Name = "Fecha se saca el barro")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> FechaLevantado { get; set; }
 
-        [DataType(DataType.Date), Display(Name = "Fecha que inicio el pisado")]
+        [DataType(DataType.Date)]
+        [Display(Name = "Fecha pisado de barro")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> FechaInicoPisado { get; set; }
 
-        [DataType(DataType.Date), Display(Name = "Fecha que termino el pisado")]
+        [DataType(DataType.Date)]
+        [Display(Name = "Fecha fin de pisado de barro")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> FechaFinPisado { get; set; }
 
-        [Display(Name = "Numero de peyas")]
+        [Display(Name = "Número de pellas")]
         public Nullable<int> NumPeyas { get; set; }
         public Nullable<int> Restante { get; set; }
 
-        [Display(Name = "Carga total")]
+        [Display(Name = "Peso de pellas KG")]
         public Nullable<int> CargaTotal { get; set; }
         public string Editor { get; set; }
         public Nullable<System.DateTime> FechaEdicion { get; set; }
+
+        [Display(Name = "Locación")]
         public Nullable<int> Locacion { get; set; }
     }
 }

@@ -7,13 +7,13 @@
 
 <content>
     @*<p>
-        @Html.ActionLink("Solicitar barro en granel", "SolicitarBarroGranel", new { Sucursal = 1 })
-    </p>*@
+            @Html.ActionLink("Solicitar barro en granel", "SolicitarBarroGranel", new { Sucursal = 1 })
+        </p>*@
     <h4 class="encabezado">Barro en Granel</h4>
     <table class="table">
         <thead>
             <tr>
-                <th>Tipo</th>                
+                <th>Tipo</th>
                 <th>Total en Kg</th>
             </tr>
         </thead>
@@ -21,7 +21,7 @@
             @foreach (var item in ViewBag.lstBarroGranelLuz)
             {
                 <tr>
-                    <td>@item.Tipo</td>                    
+                    <td>@item.Tipo</td>
                     <td>@item.TotalKg</td>
                 </tr>
             }
@@ -58,20 +58,31 @@
 </content>
 
 <content>
-    <p style="margin-top:2rem; margin-bottom:2rem">
-        @Html.ActionLink("Preparación de barro", "Index", "PreparacionBarro", new { pLoc = 1 }, null)  -  @Html.ActionLink("Preparación en fuentes", "Index", "PreparacionPellas", new { pLoc = 1 }, null)
-    </p>    
+    @if (ViewBag.lstBarroEmpaqueLuz.Count == 0)
+    {
+        <p style="margin-top:2rem; margin-bottom:2rem">
+            @Html.Label("Preparación de barro", new { style = "color: gray" }) - @Html.Label("Preparación en fuentes", new { style = "color: gray" })
+        </p>
+    }
+    else
+    {
+        <p style="margin-top:2rem; margin-bottom:2rem">
+            @Html.ActionLink("Preparación de barro", "Index", "PreparacionBarro", new { pLoc = 1 }, null)  -  @Html.ActionLink("Preparación en fuentes", "Index", "PreparacionPellas", new { pLoc = 1 }, null)
+        </p>
+    }
+
+
 </content>
 
 <content>
     <p>
-        @Html.ActionLink("Solicitar pellas", "Index")
+        @Html.ActionLink("Solicitar pellas", "Solicitar", "SolicitarPellas", new { pLoc = 1 }, null)
     </p>
     <h4 class="encabezado">Pellas de barro</h4>
     <table class="table">
         <thead>
             <tr>
-                <th>Pellas</th>                
+                <th>Pellas</th>
                 <th>Unidades</th>
                 <th>Total en Kg</th>
             </tr>

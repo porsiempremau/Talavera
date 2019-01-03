@@ -22,7 +22,7 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="form-group">
-            @Html.Label("Locacion", "Locacion", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Locacion", "Locación", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("Locacion", (List<SelectListItem>)ViewBag.lstLocaciones, htmlAttributes: new { @class = "droplistStyle" })
             </div>

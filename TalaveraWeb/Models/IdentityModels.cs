@@ -43,5 +43,7 @@ namespace TalaveraWeb.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<TalaveraWeb.Models.EntregaPellas> EntregaPellas { get; set; }
     }
 }

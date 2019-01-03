@@ -45,6 +45,7 @@
           <Property Name="Editor" Type="nvarchar" MaxLength="50" />
           <Property Name="FechaEdicion" Type="datetime" />
           <Property Name="Locacion" Type="int" />
+          <Property Name="Observacion" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="PreparacionBarro">
           <Key>
@@ -186,9 +187,9 @@
           <EntitySet Name="BarroMovimientos" EntityType="TalaveraModel.BarroMovimientos" />
           <EntitySet Name="PreparacionBarro" EntityType="TalaveraModel.PreparacionBarro" />
           <EntitySet Name="prepBarro_prepPellas" EntityType="TalaveraModel.prepBarro_prepPellas" />
-          <EntitySet Name="EntregaPellas" EntityType="TalaveraModel.EntregaPellas" />
           <EntitySet Name="PreparacionPellas" EntityType="TalaveraModel.PreparacionPellas" />
           <EntitySet Name="Recuperados" EntityType="TalaveraModel.Recuperados" />
+          <EntitySet Name="EntregaPellas" EntityType="TalaveraModel.EntregaPellas" />
         </EntityContainer>
         <EntityType Name="BarroMaestra">
           <Key>
@@ -247,20 +248,6 @@
           <Property Name="Editor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="FechaEdicion" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="EntregaPellas">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FechaMovimiento" Type="DateTime" Precision="3" />
-          <Property Name="Responsable" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="TipoMovimiento" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-          <Property Name="CantidadPellas" Type="Int32" />
-          <Property Name="NumCarga" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Editor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FechaEdicion" Type="DateTime" Precision="3" />
-          <Property Name="Locacion" Type="Int32" />
-        </EntityType>
         <EntityType Name="PreparacionPellas">
           <Key>
             <PropertyRef Name="Id" />
@@ -292,6 +279,21 @@
           <Property Name="Editor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="FechaEdicion" Type="DateTime" Precision="3" />
           <Property Name="Locacion" Type="Int32" />
+        </EntityType>
+        <EntityType Name="EntregaPellas">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FechaMovimiento" Type="DateTime" Precision="3" />
+          <Property Name="Responsable" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TipoMovimiento" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="CantidadPellas" Type="Int32" />
+          <Property Name="NumCarga" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Editor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FechaEdicion" Type="DateTime" Precision="3" />
+          <Property Name="Locacion" Type="Int32" />
+          <Property Name="Observacion" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -390,21 +392,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="EntregaPellas">
-            <EntityTypeMapping TypeName="TalaveraModel.EntregaPellas">
-              <MappingFragment StoreEntitySet="EntregaPellas">
-                <ScalarProperty Name="Locacion" ColumnName="Locacion" />
-                <ScalarProperty Name="FechaEdicion" ColumnName="FechaEdicion" />
-                <ScalarProperty Name="Editor" ColumnName="Editor" />
-                <ScalarProperty Name="NumCarga" ColumnName="NumCarga" />
-                <ScalarProperty Name="CantidadPellas" ColumnName="CantidadPellas" />
-                <ScalarProperty Name="TipoMovimiento" ColumnName="TipoMovimiento" />
-                <ScalarProperty Name="Responsable" ColumnName="Responsable" />
-                <ScalarProperty Name="FechaMovimiento" ColumnName="FechaMovimiento" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="PreparacionPellas">
             <EntityTypeMapping TypeName="TalaveraModel.PreparacionPellas">
               <MappingFragment StoreEntitySet="PreparacionPellas">
@@ -435,6 +422,22 @@
                 <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
                 <ScalarProperty Name="Responsable" ColumnName="Responsable" />
                 <ScalarProperty Name="FechaRecuperado" ColumnName="FechaRecuperado" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EntregaPellas">
+            <EntityTypeMapping TypeName="TalaveraModel.EntregaPellas">
+              <MappingFragment StoreEntitySet="EntregaPellas">
+                <ScalarProperty Name="Observacion" ColumnName="Observacion" />
+                <ScalarProperty Name="Locacion" ColumnName="Locacion" />
+                <ScalarProperty Name="FechaEdicion" ColumnName="FechaEdicion" />
+                <ScalarProperty Name="Editor" ColumnName="Editor" />
+                <ScalarProperty Name="NumCarga" ColumnName="NumCarga" />
+                <ScalarProperty Name="CantidadPellas" ColumnName="CantidadPellas" />
+                <ScalarProperty Name="TipoMovimiento" ColumnName="TipoMovimiento" />
+                <ScalarProperty Name="Responsable" ColumnName="Responsable" />
+                <ScalarProperty Name="FechaMovimiento" ColumnName="FechaMovimiento" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
