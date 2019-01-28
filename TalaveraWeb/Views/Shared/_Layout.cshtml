@@ -13,8 +13,8 @@
     <div class="navbar navbar-inverse navbar-fixed-top" style="background-color:#0b122e">
         <img src="~/Imagen/talavera3.jpg" class="row" style="max-width: 100%;" />
         <div class="row" style="width: 100%; margin-top:10px">
-            <div class="col-md-3 col-lg-2">
-                <ul class="nav navbar-inverse">
+            <div class="col-md-1 col-lg-1 text-center">
+                <ul class="nav list-inline navbar-inverse">
                     <li style="margin-left:10px">@Html.ActionLink("Inicio", "Index", "Home")</li>
                     <li style="margin-left:10px">@Html.ActionLink("Acerca de", "About", "Home")</li>
                     <li style="margin-left:10px">@Html.ActionLink("Contacto", "Contact", "Home")</li>
@@ -35,14 +35,24 @@
                         </ul>
                     </div>
                 }
+
+                @if (User.IsInRole("Vendedor") || User.IsInRole("Administrador"))
+                {
+                    <div class="col-md-3 col-lg-3 text-center">
+                        <ul class="list-inline">
+                            <li>@Html.ActionLink("Solicitud de producción", "Index", "LaLuz")</li>
+                        </ul>
+                    </div>
+                }                
+
                 @if (User.IsInRole("Usuario") || User.IsInRole("Administrador"))
-                {                    
+                {
                     <div class="col text-center">
                         <ul class="list-inline">
                             <li>@Html.ActionLink("La Luz", "Index", "LaLuz")</li>
                             <li style="margin-left:15px">@Html.ActionLink("34 poniente", "Index", "TreintaYcuatroPte")</li>
                         </ul>
-                    </div>                    
+                    </div>
                 }
             </div>
             <div class="col-md-3 col-lg-2 text-right">
@@ -65,4 +75,5 @@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
+
 </html>

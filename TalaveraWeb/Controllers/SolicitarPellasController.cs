@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using TalaveraWeb.Services;
 using TalaveraWeb.Models;
+using TalaveraWeb.Models.MiBD;
 
 namespace TalaveraWeb.Controllers
 {
@@ -15,6 +16,7 @@ namespace TalaveraWeb.Controllers
         public ActionResult Solicitar(int pLoc)
         {
             HttpContext.Application["Locacion"] = pLoc;
+            ViewBag.Loc = pLoc;
             ViewBag.NombreLocActual = tsvc.getNombreSucursal(pLoc);
             ViewBag.lstLocaciones = tsvc.obtenerSucursalesExcepto(pLoc);
 
@@ -31,7 +33,7 @@ namespace TalaveraWeb.Controllers
         {
             ViewBag.Loc = (int)HttpContext.Application["Locacion"];
             string NombreLocActual = tsvc.getNombreSucursal(ViewBag.Loc);
-            int? tmpResponsable = int.Parse(pEnPe.Responsable);
+            int? tmpResponsable = int.Parse(pEnPe.Responsable); //Id de la sucursal a la que se le pidio los recursos.
             if (ModelState.IsValid)
             {
                 pEnPe.Responsable = NombreLocActual;
@@ -65,5 +67,50 @@ namespace TalaveraWeb.Controllers
             return new HttpStatusCodeResult(404, "No se pudo registrar la solicitud de pellas");
         }
 
+        //Entrega de pella a trabajadores para crear jahuetes.
+        public ActionResult Entregar(int pLoc)
+        {
+            HttpContext.Application["Locacion"] = pLoc;
+            ViewBag.Loc = pLoc;
+            ViewBag.NombreLocActual = tsvc.getNombreSucursal(pLoc);
+
+            ViewBag.lstRecervasPellas = tsvc.getReservasPellasFrom(pLoc);
+
+            EntregaPellas EP = new EntregaPellas();
+            EP.FechaMovimiento = DateTime.Today;
+
+            return View(EP);
+        }
+
+        [HttpPost]
+        public ActionResult Entregar(EntregaPellas pEnPe)
+        {
+            ViewBag.Loc = (int)HttpContext.Application["Locacion"];
+                        
+            if (ModelState.IsValid)
+            {                
+                pEnPe.TipoMovimiento = "E";
+                pEnPe.Editor = User.Identity.Name;
+                pEnPe.FechaEdicion = DateTime.Now;
+                pEnPe.Locacion = ViewBag.Loc;
+
+                int res = tsvc.addEntregaPellas(pEnPe);
+                if (res >= 1)
+                {
+                    if (ViewBag.Loc == 1)
+                        return RedirectToAction("Index", "LaLuz");
+                    else
+                        return RedirectToAction("Index", "TreintaYcuatroPte");
+                }
+            }
+            return new HttpStatusCodeResult(404, "No se pudo registrar la solicitud de pellas");
+        }
+
+        public ActionResult ReporteEntrega(int pLoc)
+        {
+            ViewBag.Loc = pLoc;
+            ViewBag.lstEntrega = tsvc.listEngregaPellas(pLoc);
+            return View();
+        }
     }
 }

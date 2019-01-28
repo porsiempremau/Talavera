@@ -1,0 +1,68 @@
+﻿@model IEnumerable<TalaveraWeb.Models.EntregaPellas>
+
+@{
+    ViewBag.Title = "ReporteEntrega";
+}
+
+<h2>Reporte de entrega de barro en pellas</h2>
+
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaMovimiento)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Responsable)
+        </th>       
+        <th>
+            @Html.DisplayNameFor(model => model.CantidadPellas)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NumCarga)
+        </th>       
+        <th>
+            @Html.DisplayNameFor(model => model.Observacion)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in (List<TalaveraWeb.Models.EntregaPellas>)ViewBag.lstEntrega) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaMovimiento)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Responsable)
+        </td>       
+        <td>
+            @Html.DisplayFor(modelItem => item.CantidadPellas)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumCarga)
+        </td>       
+        <td>
+            @Html.DisplayFor(modelItem => item.Observacion)
+        </td>
+        @*<td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>*@
+    </tr>
+}
+
+</table>
+
+<div>
+    @if (ViewBag.Loc == 1)
+    {
+        @Html.ActionLink("Volver al listado", "Index", "LaLuz")
+    }
+    else
+    {
+        @Html.ActionLink("Volver al listado", "Index", "TreintaYcuatroPte")
+    }
+</div>

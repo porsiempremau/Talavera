@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TalaveraWeb.Models;
+using TalaveraWeb.Models.MiBD;
 using TalaveraWeb.Services;
 
 namespace TalaveraWeb.Controllers

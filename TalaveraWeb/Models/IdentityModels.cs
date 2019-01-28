@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.ComponentModel.DataAnnotations;
+using TalaveraWeb.Models;
+using TalaveraWeb.Models.MiBD;
 
 namespace TalaveraWeb.Models
 {
@@ -44,6 +46,15 @@ namespace TalaveraWeb.Models
             return new ApplicationDbContext();
         }
 
-        public System.Data.Entity.DbSet<TalaveraWeb.Models.EntregaPellas> EntregaPellas { get; set; }
+        public DbSet<EntregaPellas> EntregaPellas { get; set; }
+        public DbSet<BarroMaestra> BarroMaestra { get; set; }
+        public DbSet<BarroMovimientos> BarroMovimientos { get; set; }        
+        public DbSet<PreparacionBarro> PreparacionBarro { get; set; }
+        public DbSet<PreparacionPellas> PreparacionPellas { get; set; }
+        public DbSet<prepBarro_prepPellas> prepBarro_prepPellas { get; set; }
+        public DbSet<Provedores> Provedores { get; set; }
+        public DbSet<Recuperados> Recuperados { get; set; }
+        public DbSet<Sucursales> Sucursales { get; set; }
+
     }
 }

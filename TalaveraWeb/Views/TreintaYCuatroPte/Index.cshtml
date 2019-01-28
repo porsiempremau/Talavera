@@ -5,11 +5,13 @@
 
 <h2>34 Poniente</h2>
 
-<content>
-    <p>
-        @Html.ActionLink("Solicitar barro en granel", "SolicitarBarroGranel")
-    </p>
-    <h4 class="encabezado">Barro en Granel</h4>
+<content>    
+    <div class="row encabezado">
+        <h4 class="col-4">Barro en Granel</h4>
+        <div class="col-8 text-right">
+            @Html.ActionLink("Solicitar barro en granel", "SolicitarBarroGranel")
+        </div>
+    </div>
     <table class="table">
         <thead>
             <tr>
@@ -29,11 +31,13 @@
     </table>
 </content>
 
-<content>
-    <p>
-        @Html.ActionLink("Empaquetar barro", "SolicitarBarroEmpaque")
-    </p>
-    <h4 class="encabezado">Barro empaquetado</h4>
+<content>   
+    <div class="row encabezado">
+        <h4 class="col-4">Barro empaquetado</h4>
+        <div class="col-8 text-right">
+            @Html.ActionLink("Empaquetar barro", "SolicitarBarroEmpaque")           
+        </div>
+    </div>
     <table class="table">
         <thead>
             <tr>

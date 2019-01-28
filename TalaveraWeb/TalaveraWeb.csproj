@@ -186,6 +186,7 @@
     <Compile Include="Controllers\ProvedoresController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SolicitarPellasController.cs" />
+    <Compile Include="Controllers\SolicitudProduccionController.cs" />
     <Compile Include="Controllers\TreintaYCuatroPteController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -210,58 +211,29 @@
     <Compile Include="Migrations\201812181924222_addCampoAEntregaPellas.Designer.cs">
       <DependentUpon>201812181924222_addCampoAEntregaPellas.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901281930281_UnionDbContext.cs" />
+    <Compile Include="Migrations\201901281930281_UnionDbContext.Designer.cs">
+      <DependentUpon>201901281930281_UnionDbContext.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\BarroMaestra.cs">
-      <DependentUpon>ModelTalavera.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\BarroMovimientos.cs">
-      <DependentUpon>ModelTalavera.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\EntregaPellas.cs">
-      <DependentUpon>ModelTalavera.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\ModelTalavera.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ModelTalavera.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ModelTalavera.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ModelTalavera.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ModelTalavera.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ModelTalavera.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PreparacionBarro.cs">
-      <DependentUpon>ModelTalavera.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\MiBD\BarroMaestra.cs" />
+    <Compile Include="Models\MiBD\BarroMovimientos.cs" />
+    <Compile Include="Models\MiBD\EntregaPellas.cs" />
+    <Compile Include="Models\MiBD\PreparacionBarro.cs" />
+    <Compile Include="Models\MiBD\PreparacionPellas.cs" />
+    <Compile Include="Models\MiBD\prepBarro_prepPellas.cs" />
+    <Compile Include="Models\MiBD\Provedores.cs" />
+    <Compile Include="Models\MiBD\Recuperados.cs" />
+    <Compile Include="Models\MiBD\Sucursales.cs" />
     <Compile Include="Models\PreparacionBarroConsumo.cs" />
-    <Compile Include="Models\PreparacionPellas.cs">
-      <DependentUpon>ModelTalavera.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\PreparacionPellasConPreBar.cs" />
-    <Compile Include="Models\prepBarro_prepPellas.cs">
-      <DependentUpon>ModelTalavera.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Provedores.cs">
-      <DependentUpon>ModelTalavera.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Recuperados.cs">
-      <DependentUpon>ModelTalavera.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\ReservaBarro.cs" />
     <Compile Include="Models\ReservaBarroPreparado.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Models\SolicitarRecerva.cs" />
-    <Compile Include="Models\Sucursales.cs">
-      <DependentUpon>ModelTalavera.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\TalaveraServices.cs" />
     <Compile Include="Startup.cs" />
@@ -283,24 +255,7 @@
     <Content Include="Imagen\talavera2.JPG" />
     <Content Include="Imagen\talavera3.jpg" />
     <Content Include="Imagen\talavera_azulejo.png" />
-    <Content Include="Models\ModelTalavera.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ModelTalavera.edmx</DependentUpon>
-      <LastGenOutput>ModelTalavera.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\ModelTalavera.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ModelTalavera.edmx</DependentUpon>
-      <LastGenOutput>ModelTalavera.cs</LastGenOutput>
-    </Content>
     <Content Include="Scripts\angular-linq.min.js" />
-    <EntityDeploy Include="Models\ModelTalavera.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ModelTalavera.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\ModelTalavera.edmx.diagram">
-      <DependentUpon>ModelTalavera.edmx</DependentUpon>
-    </Content>
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-reboot.min.css.map" />
@@ -423,10 +378,13 @@
     <Content Include="Views\Role\Details.cshtml" />
     <Content Include="Views\Role\Delete.cshtml" />
     <Content Include="Views\SolicitarPellas\Solicitar.cshtml" />
+    <Content Include="Views\SolicitarPellas\Entregar.cshtml" />
+    <Content Include="Views\SolicitarPellas\ReporteEntrega.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Scripts\local\" />
+    <Folder Include="Views\SolicitudProduccion\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -451,6 +409,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201812181924222_addCampoAEntregaPellas.resx">
       <DependentUpon>201812181924222_addCampoAEntregaPellas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901281930281_UnionDbContext.resx">
+      <DependentUpon>201901281930281_UnionDbContext.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

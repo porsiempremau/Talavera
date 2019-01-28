@@ -9,7 +9,12 @@
     @*<p>
             @Html.ActionLink("Solicitar barro en granel", "SolicitarBarroGranel", new { Sucursal = 1 })
         </p>*@
-    <h4 class="encabezado">Barro en Granel</h4>
+   
+    <div class="row encabezado">
+        <h4 class="col-4">Barro en Granel</h4>
+        <div class="col-8 text-right">            
+        </div>
+    </div>
     <table class="table">
         <thead>
             <tr>
@@ -29,11 +34,13 @@
     </table>
 </content>
 
-<content>
-    <p>
-        @Html.ActionLink("Solicitar barro empaquetado", "SolicitarBarroEmpaque", new { Sucursal = 1 })
-    </p>
-    <h4 class="encabezado"> Barro empaquetado </h4>
+<content>   
+    <div class="row encabezado">
+        <h4 class="col-4">Barro empaquetado</h4>
+        <div class="col-8 text-right">
+            @Html.ActionLink("Solicitar barro empaquetado", "SolicitarBarroEmpaque", new { Sucursal = 1 })            
+        </div>
+    </div>
     <table class="table">
         <thead>
             <tr>
@@ -74,11 +81,13 @@
 
 </content>
 
-<content>
-    <p>
-        @Html.ActionLink("Solicitar pellas", "Solicitar", "SolicitarPellas", new { pLoc = 1 }, null)
-    </p>
-    <h4 class="encabezado">Pellas de barro</h4>
+<content>   
+    <div class="row encabezado">
+        <h4 class="col-4" >Pellas barro</h4>
+        <div class="col-8 text-right">
+            @Html.ActionLink("Solicitar pellas", "Solicitar", "SolicitarPellas", new { pLoc = 1 }, null)
+        </div>        
+    </div>
     <table class="table">
         <thead>
             <tr>
@@ -98,5 +107,12 @@
             }
         </tbody>
     </table>
+</content>
+
+<content>
+    <p>
+        @Html.ActionLink("Entregar pellas", "Entregar", "SolicitarPellas", new { pLoc = 1 }, null) - 
+        @Html.ActionLink("Reporte entrega de pellas", "ReporteEntrega", "SolicitarPellas", new { pLoc = 1 }, null)
+    </p>
 </content>
 

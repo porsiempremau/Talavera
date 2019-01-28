@@ -10,7 +10,6 @@ namespace TalaveraWeb.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            ContextKey = "TalaveraWeb.Models.ApplicationDbContext";
         }
 
         protected override void Seed(TalaveraWeb.Models.ApplicationDbContext context)

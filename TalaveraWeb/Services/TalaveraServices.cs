@@ -5,12 +5,15 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TalaveraWeb.Models;
+using TalaveraWeb.Models.MiBD;
 
 namespace TalaveraWeb.Services
 {
     public class TalaveraServices
     {
-        TalaveraEntities db = new TalaveraEntities();
+        //TalaveraEntities db = new TalaveraEntities();
+        ApplicationDbContext db = new ApplicationDbContext();
+
 
         //SUCURSALES
         public string getNombreSucursal(int pLoc)
@@ -791,5 +794,9 @@ namespace TalaveraWeb.Services
             }
         }
 
+        public List<EntregaPellas> listEngregaPellas(int pLoc)
+        {
+            return db.EntregaPellas.Where(x => x.Locacion == pLoc && x.TipoMovimiento == "E").ToList();
+        }
     }
 }
