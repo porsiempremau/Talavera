@@ -380,6 +380,9 @@
     <Content Include="Views\SolicitarPellas\Solicitar.cshtml" />
     <Content Include="Views\SolicitarPellas\Entregar.cshtml" />
     <Content Include="Views\SolicitarPellas\ReporteEntrega.cshtml" />
+    <Content Include="Views\TreintaYCuatroPte\Historial.cshtml" />
+    <Content Include="Views\TreintaYCuatroPte\Edit.cshtml" />
+    <Content Include="Views\TreintaYCuatroPte\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

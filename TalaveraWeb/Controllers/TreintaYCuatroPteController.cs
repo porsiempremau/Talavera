@@ -54,6 +54,67 @@ namespace TalaveraWeb.Controllers
             return View(new HttpStatusCodeResult(202, "No pudo ser generada la solicitud."));
         }
 
+        public ActionResult Historial()
+        {
+            ViewBag.Loc = (int)HttpContext.Application["Locacion"];
+
+            List<BarroMovimientos> HistBarroGranel = tsvc.obtenerHistorialGranel(ViewBag.Loc);
+            ViewBag.NombreLocActual = tsvc.getNombreSucursal(ViewBag.Loc);
+            ViewBag.Provedores = tsvc.obtenerProvedores();
+
+            return View(HistBarroGranel);
+        }
+
+        
+        public ActionResult Edit(int id)
+        {            
+            BarroMovimientos bm = tsvc.getBarroMovimiento(id);
+            ViewBag.Productos = tsvc.obtenerProductos(1);
+            foreach(var item in ViewBag.Productos)
+            {
+                item.Selected = false;
+                if (item.Value == bm.CodigoProducto)
+                    item.Selected = true;
+            }
+            ViewBag.Provedores = tsvc.obtenerProvedores(bm.OrigenTransferencia);
+            return View(bm);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(BarroMovimientos bm)
+        {
+            bm.PesoTotal = bm.Unidades;
+            bm.Editor = User.Identity.Name;
+            bm.FechaEdicion = DateTime.Now;
+            
+            int res = tsvc.editMovimientoBarro(bm);
+            if (res > 0)
+            {                
+                return RedirectToAction("Index");
+            }
+            return new HttpStatusCodeResult(404, "No se pudo actualizar el registro, vuelva a intentarlo mas tarde");
+        }
+
+        public ActionResult Delete(int id)
+        {
+            ViewBag.Loc = (int)HttpContext.Application["Locacion"];            
+            BarroMovimientos bm = tsvc.getBarroMovimiento(id);
+            ViewBag.Provedores = tsvc.obtenerProvedores(bm.OrigenTransferencia);
+            ViewBag.ProveedorNombre = ViewBag.Provedores[0].Text;
+            return View(bm);
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int id, BarroMovimientos pPrePell)
+        {
+            int res = tsvc.deleteBarroMovimiento(id);
+            if (res >= 1)
+            {               
+                return RedirectToAction("Index");
+            }
+            return new HttpStatusCodeResult(404, "No se pudo borrar el elemento, vuelva a interntar mas tarde.");
+        }
+
 
         public ActionResult SolicitarBarroEmpaque()
         {

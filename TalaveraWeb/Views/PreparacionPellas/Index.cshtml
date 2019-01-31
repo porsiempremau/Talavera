@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TalaveraWeb.Models.PreparacionPellas>
+﻿@model IEnumerable<TalaveraWeb.Models.MiBD.PreparacionPellas>
 
 @{
     ViewBag.Title = "Index";
@@ -49,6 +49,9 @@
 
 @foreach (var item in Model) {
     <tr>
+        <td>
+            @Html.HiddenFor(modelItem => item.Id)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Fuente)
         </td>

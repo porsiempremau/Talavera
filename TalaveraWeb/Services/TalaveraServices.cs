@@ -201,6 +201,34 @@ namespace TalaveraWeb.Services
             return lstReservas;
         }
 
+        public List<BarroMovimientos> obtenerHistorialGranel(int Sucursal)
+        {
+            try
+            {
+                //Obtengo los registros de ingreso de barro a granel
+                var lstIngresosBarroGranel = db.BarroMovimientos.Where(bm => bm.TipoMovimiento == "In" && bm.Locacion == Sucursal).OrderBy(x => x.FechaMovimiento).Take(10).ToList();
+                return lstIngresosBarroGranel;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public BarroMovimientos getBarroMovimiento(int pId)
+        {
+            try
+            {
+                BarroMovimientos bm = db.BarroMovimientos.Find(pId);
+                return bm;
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
+        }
+
+
         //Barro empaquetado
         public List<ReservaBarro> getReservasBarroEmpaqueFrom(int pLocacion)
         {
@@ -305,10 +333,15 @@ namespace TalaveraWeb.Services
         {
             return db.BarroMaestra.Where(x => x.Tipo == pTipo && x.Capacidad == pCapacidad).Select(y => y.CodigoProducto).FirstOrDefault();
         }
-        public List<SelectListItem> obtenerProvedores()
+        public List<SelectListItem> obtenerProvedores(int? pIdProveedor = 0)
         {
             List<SelectListItem> lst = db.Provedores.Select(x => new SelectListItem() { Text = x.Nombre, Value = x.id.ToString() }).ToList();
-            lst.First().Selected = true;
+                        
+            if(pIdProveedor == 0)       //Por default se establece el primer elemento como seleccionado.
+                lst.First().Selected = true;
+            else         //Si se especificica un id de proveedor, se establece dicho proveedor como elemento seleccionado.            
+                lst.Find(x => x.Value == pIdProveedor.ToString()).Selected = true;
+            
             return lst;
         }
         
@@ -442,8 +475,39 @@ namespace TalaveraWeb.Services
                 return -1;
             }
         }
-        
-                
+
+        public int editMovimientoBarro(BarroMovimientos pBM)
+        {
+            try
+            {
+                db.Entry(pBM).State = EntityState.Modified;
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                return -1;
+            }
+        }
+
+        public int deleteBarroMovimiento(int pId)
+        {
+            try
+            {
+                BarroMovimientos BM = db.BarroMovimientos.Find(pId);
+                db.BarroMovimientos.Remove(BM);
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                return -1;
+            }
+        }
+
+
         //PREPARACION DE BARROS
         public List<PreparacionBarro> obtenerPreparacionBarro(int pLocacion)
         {            

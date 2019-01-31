@@ -1,0 +1,59 @@
+﻿@model TalaveraWeb.Models.MiBD.BarroMovimientos
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2 style="text-align:center">
+    @ViewBag.NombreLocActual
+</h2>
+<h3 style="text-align:center">Borrar elemento</h3>
+<br />
+<h3>¿Estas seguro que deseas borrar este elemento?</h3>
+<div>   
+    <hr />
+    <dl class="dl-horizontal">
+        @*@Html.HiddenFor(model => model.Id)*@
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CodigoProducto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CodigoProducto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaMovimiento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaMovimiento)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Proveedor")
+        </dt>
+
+        <dd>
+            @ViewBag.ProveedorNombre
+        </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.PesoTotal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PesoTotal)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Borrar" class="btn btn-default" /> |
+            @Html.ActionLink("Volver al listado", "Index")
+        </div>
+    }
+</div>

@@ -9,14 +9,15 @@
     <div class="row encabezado">
         <h4 class="col-4">Barro en Granel</h4>
         <div class="col-8 text-right">
-            @Html.ActionLink("Solicitar barro en granel", "SolicitarBarroGranel")
+            @Html.ActionLink("Solicitar barro en granel", "SolicitarBarroGranel") - 
+            @Html.ActionLink("Historial", "Historial")
         </div>
     </div>
     <table class="table">
         <thead>
             <tr>
                 <th>Tipo</th>
-                <th>Total en Kg</th>
+                <th>Total en Kg</th>                
             </tr>
         </thead>
         <tbody>
@@ -24,7 +25,7 @@
             {
                 <tr>
                     <td>@item.Tipo</td>
-                    <td>@item.TotalKg</td>
+                    <td>@item.TotalKg</td>                    
                 </tr>
             }
         </tbody>

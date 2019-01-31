@@ -1,0 +1,67 @@
+﻿@model IEnumerable<TalaveraWeb.Models.MiBD.BarroMovimientos>
+
+@{
+    ViewBag.Title = "Historial";
+}
+
+<h2 style="text-align:center">
+    @ViewBag.NombreLocActual
+</h2>
+<h3 style="text-align:center">Historial de ingresos de barro</h3>
+<br /><br />
+
+<table class="table">
+    <tr>       
+        <th>
+            @Html.DisplayNameFor(model => model.FechaMovimiento)
+        </th>       
+        <th>
+            @Html.DisplayNameFor(model => model.CodigoProducto)
+        </th>       
+        <th>
+            @Html.DisplayNameFor(model => model.PesoTotal)
+        </th>
+        <th>
+            @Html.DisplayName("Proveedor")
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        @Html.HiddenFor(modelItem => item.Unidades)
+        @Html.HiddenFor(modelItem => item.TipoMovimiento)
+        @Html.HiddenFor(modelItem => item.Locacion)
+        @Html.HiddenFor(modelItem => item.OrigenTransferencia)
+        @Html.HiddenFor(modelItem => item.OrigenTabla)
+        @Html.HiddenFor(modelItem => item.Editor)
+        @Html.HiddenFor(modelItem => item.FechaEdicion)
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaMovimiento)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CodigoProducto)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PesoTotal)
+        </td>
+        <td>
+            @{
+                List<SelectListItem> lst = (List<SelectListItem>)ViewBag.Provedores;
+                ViewBag.NombreProveedor = (string)lst.Where(x => x.Value == item.OrigenTransferencia.ToString()).Select(y => y.Text).FirstOrDefault();
+            }
+            @ViewBag.NombreProveedor
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Borrar", "Delete", new { id = item.Id })
+        </td>
+    </tr>
+}
+
+</table>
+
+<div>
+    @Html.ActionLink("Volver", "Index")
+</div>
