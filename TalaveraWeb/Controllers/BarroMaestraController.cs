@@ -48,7 +48,20 @@ namespace TalaveraWeb.Controllers
             }
             return View();
         }
-                
+
+        public JsonResult ValidaExistenciaDeBarro(BarroMaestra pBM)
+        {
+            pBM.CodigoProducto = pBM.Tipo.Substring(0, 1) + pBM.Capacidad;
+            BarroMaestra ExiteBarro = tsvc.validaExistenciaBarroMaestra(pBM);
+
+            //Si no existe, sera null
+            if (ExiteBarro == null)
+                return Json(0);
+            else
+                return Json(1);
+        }
+
+
         // GET: BarroMaestra/Delete/5
         public ActionResult Delete(int id)
         {

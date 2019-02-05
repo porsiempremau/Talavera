@@ -320,13 +320,21 @@ namespace TalaveraWeb.Services
         }
 
         public List<SelectListItem> obtenerProductosDeTipo(string pTipo)
-        {            
-            List<SelectListItem> lst = db.BarroMaestra
+        {
+            try
+            {
+                List<SelectListItem> lst = db.BarroMaestra
                 .Where(y => y.Tipo.Contains(pTipo) && y.Capacidad != 1)
                 .Select(x => new SelectListItem() { Text = "Barro " + x.Tipo + " de " + x.Capacidad + " Kg", Value = x.CodigoProducto })
-                .ToList();            
-            lst.First().Selected = true;
-            return lst;
+                .ToList();
+                if(lst.Count > 0)
+                    lst.First().Selected = true;
+                return lst;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }            
         }
 
         public string obtenerCodigoDeProducto(string pTipo, int pCapacidad)

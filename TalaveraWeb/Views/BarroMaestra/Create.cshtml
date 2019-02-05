@@ -5,10 +5,13 @@
     ViewBag.Title = "Create";
 }
 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+
 <h2>Crear Barro</h2>
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "frmCrearBarro" }))
 {
     @Html.AntiForgeryToken()
 
@@ -37,13 +40,19 @@
             </div>
         </div>
 
-        <div class="form-group">
+        @*<div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Crear" class="btn btn-default " />
+                <input type="submit" value="Crear" class="btn btn-default " />                
             </div>
-        </div>
+        </div>*@
     </div>
 }
+
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">        
+        <button id="btnCrear" class="btn btn-default">Crear</button>
+    </div>
+</div>
 
 <div>
     @Html.ActionLink("Volver a lista de barro", "Index")
@@ -51,4 +60,53 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+      $( function() {
+        $( "#dialog" ).dialog({
+          autoOpen: false,
+          show: {
+            effect: "blind",
+            duration: 1000
+          },
+          hide: {
+            effect: "explode",
+            duration: 1000
+          }
+        });
+
+        $("#btnCrear").on("click", function () {
+
+            var url = "@Url.Action("ValidaExistenciaDeBarro", "BarroMaestra")"
+            var pCapacidad = $("#Capacidad").val();
+            var pTipo = $("#Tipo").val();
+            var dataBarroMaestra = { Capacidad: pCapacidad, Tipo: pTipo  }
+
+            $.post(url, dataBarroMaestra).done(function (data) {
+
+                if (data === 0) {
+                    var url2 = "@Url.Action("Create", "BarroMaestra")";
+                    $.post(url2, dataBarroMaestra).done(function (data) {
+                        window.location.href = "@Url.Action("Index", "BarroMaestra")";                        
+                    });
+                }
+                else {
+                    $("#dialog").dialog("open");
+                }
+
+            }).fail(function (error) {
+            }).always(function () {
+            });
+
+
+        });
+      } );
+    </script>
+
 }
+
+<div id="dialog" title="Codigo duplicado">
+    <p>Esta categoria de barro ya existe.</p>
+</div>
