@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TalaveraWeb.Models.PreparacionBarro>
+﻿@model IEnumerable<TalaveraWeb.Models.MiBD.PreparacionBarro>
 
 @{
     ViewBag.Title = "Index";
@@ -11,7 +11,7 @@
 <br /><br />
 
 <p>
-    @Html.ActionLink("Crear nueva preparación", "Create", new { pLocacion = ViewBag.Locacion })
+    @Html.ActionLink("Crear nueva preparación", "Create")
 </p>
 <table class="table">
     <tr>

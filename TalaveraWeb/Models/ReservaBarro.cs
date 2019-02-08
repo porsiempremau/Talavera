@@ -10,8 +10,8 @@ namespace TalaveraWeb.Models
     {
         public string CodigoBarro { get; set; }
         public string Tipo { get; set; }
-        public int? Capacidad { get; set; }
-        public int? Unidades { get; set; }
-        public int? TotalKg { get; set; }        
+        public double? Capacidad { get; set; }
+        public double? Unidades { get; set; }
+        public double? TotalKg { get; set; }        
     }
 }

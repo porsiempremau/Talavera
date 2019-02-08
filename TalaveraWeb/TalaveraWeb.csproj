@@ -215,6 +215,22 @@
     <Compile Include="Migrations\201901281930281_UnionDbContext.Designer.cs">
       <DependentUpon>201901281930281_UnionDbContext.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902060043424_tipoDoubleEnTambosDePreparacionBarro.cs" />
+    <Compile Include="Migrations\201902060043424_tipoDoubleEnTambosDePreparacionBarro.Designer.cs">
+      <DependentUpon>201902060043424_tipoDoubleEnTambosDePreparacionBarro.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902061752581_addAtributoOrigenVariacionEnBarroMovimientos.cs" />
+    <Compile Include="Migrations\201902061752581_addAtributoOrigenVariacionEnBarroMovimientos.Designer.cs">
+      <DependentUpon>201902061752581_addAtributoOrigenVariacionEnBarroMovimientos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902062317311_alterUnidadesYTotalBarroMovimientos.cs" />
+    <Compile Include="Migrations\201902062317311_alterUnidadesYTotalBarroMovimientos.Designer.cs">
+      <DependentUpon>201902062317311_alterUnidadesYTotalBarroMovimientos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902071923568_cambiosDoubleEnCodigo.cs" />
+    <Compile Include="Migrations\201902071923568_cambiosDoubleEnCodigo.Designer.cs">
+      <DependentUpon>201902071923568_cambiosDoubleEnCodigo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -415,6 +431,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901281930281_UnionDbContext.resx">
       <DependentUpon>201901281930281_UnionDbContext.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902060043424_tipoDoubleEnTambosDePreparacionBarro.resx">
+      <DependentUpon>201902060043424_tipoDoubleEnTambosDePreparacionBarro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902061752581_addAtributoOrigenVariacionEnBarroMovimientos.resx">
+      <DependentUpon>201902061752581_addAtributoOrigenVariacionEnBarroMovimientos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902062317311_alterUnidadesYTotalBarroMovimientos.resx">
+      <DependentUpon>201902062317311_alterUnidadesYTotalBarroMovimientos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902071923568_cambiosDoubleEnCodigo.resx">
+      <DependentUpon>201902071923568_cambiosDoubleEnCodigo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

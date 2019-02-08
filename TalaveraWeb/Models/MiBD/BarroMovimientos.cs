@@ -24,17 +24,20 @@ namespace TalaveraWeb.Models.MiBD
         public string TipoMovimiento { get; set; }
 
         [Required]
-        public int? Unidades { get; set; }
+        public double? Unidades { get; set; }
 
         [Display(Name = "Locación")]
         public int? Locacion { get; set; }
 
+        [Display(Name = "Peso total")]
+        public double? PesoTotal { get; set; }
         public int? OrigenTransferencia { get; set; }
 
         [StringLength(20)]
         public string OrigenTabla { get; set; }
 
-        public int? PesoTotal { get; set; }
+        [StringLength(20)]
+        public string OrigenVariacion { get; set; }
 
         [StringLength(50)]
         public string Editor { get; set; }

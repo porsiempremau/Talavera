@@ -49,7 +49,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.BarroNegro, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.BarroNegro, new { htmlAttributes = new { @class = "form-control", @min = "0" } })
+                @Html.EditorFor(model => model.BarroNegro, new { htmlAttributes = new { @class = "form-control", @min = "0", @type = "number" } })
                 @Html.ValidationMessageFor(model => model.BarroNegro, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -64,7 +64,7 @@
                     @Html.HiddenFor(model => model.lstConsumoBarroNegro[i].Capacidad)
                     @Html.HiddenFor(model => model.lstConsumoBarroNegro[i].Unidades)
                     @Html.HiddenFor(model => model.lstConsumoBarroNegro[i].TotalKg)
-                    @Html.EditorFor(model => model.lstConsumoBarroNegro[i].BarroUsado, new { htmlAttributes = new { @class = "form-control", @min = "0" } })
+                    @Html.EditorFor(model => model.lstConsumoBarroNegro[i].BarroUsado, new { htmlAttributes = new { @class = "form-control", @min = "0", @type = "number" } })
                 }
             </div>
         </div>
@@ -73,7 +73,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.BarroBlanco, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.BarroBlanco, new { htmlAttributes = new { @class = "form-control", @min = "0" } })
+                @Html.EditorFor(model => model.BarroBlanco, new { htmlAttributes = new { @class = "form-control", @min = "0", @type = "number" } })
                 @Html.ValidationMessageFor(model => model.BarroBlanco, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -88,7 +88,7 @@
                     @Html.HiddenFor(model => model.lstConsumoBarroBlanco[i].Capacidad)
                     @Html.HiddenFor(model => model.lstConsumoBarroBlanco[i].Unidades)
                     @Html.HiddenFor(model => model.lstConsumoBarroBlanco[i].TotalKg)
-                    @Html.EditorFor(model => model.lstConsumoBarroBlanco[i].BarroUsado, new { htmlAttributes = new { @class = "form-control", @min = "0" } })
+                    @Html.EditorFor(model => model.lstConsumoBarroBlanco[i].BarroUsado, new { htmlAttributes = new { @class = "form-control", @min = "0", @type = "number" } })
                 }
             </div>
         </div>

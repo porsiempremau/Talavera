@@ -21,12 +21,12 @@ namespace TalaveraWeb.Models.MiBD
         public string NumPreparado { get; set; }
 
         [Display(Name = "Barro negro")]
-        public int? BarroNegro { get; set; }
+        public double? BarroNegro { get; set; }
 
         [Display(Name = "Barro blanco")]
-        public int? BarroBlanco { get; set; }
+        public double? BarroBlanco { get; set; }
 
-        public int? Recuperado { get; set; }
+        public double? Recuperado { get; set; }
 
         [StringLength(10)]
         [Display(Name = "En piedra")]
@@ -37,7 +37,7 @@ namespace TalaveraWeb.Models.MiBD
         public string TiempoAgitacion { get; set; }
 
         [Display(Name = "Número de tambos")]
-        public int? NumTambos { get; set; }
+        public double? NumTambos { get; set; }
 
         [StringLength(10)]
         [Display(Name = "Desperdicio mojado")]

@@ -4,14 +4,17 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Registrar preparación</h2>
+<h2 style="text-align:center">
+    @ViewBag.NombreLocacion
+</h2>
+<h3 style="text-align:center">Preparación Barro</h3>
+<br /><br />
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "formCrearPreBar" }))
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>Preparación Barro</h4>
+    <div class="form-horizontal">        
         @if (ViewBag.txtMensaje != null)
         {
             <div class="alert alert-warning" role="alert">
@@ -197,5 +200,5 @@
 </script>
 
 <div>
-    @Html.ActionLink("Volver al listado", "Index")
+    @Html.ActionLink("Volver al listado", "Index", new { pLoc = ViewBag.Loc })
 </div>
