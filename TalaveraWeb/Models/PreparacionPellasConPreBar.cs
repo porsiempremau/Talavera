@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using TalaveraWeb.Models.MiBD;
 
 namespace TalaveraWeb.Models
@@ -9,10 +11,13 @@ namespace TalaveraWeb.Models
     public class PreparacionPellasConPreBar : PreparacionPellas
     {
         public List<string> lstPreBar { get; set; }
-
+                
+        public IEnumerable<string> SelectedPreparados { get; set; }
+        public IEnumerable<SelectListItem> lstPreparados { get; set; }
         public PreparacionPellasConPreBar() 
         {
-
+            SelectedPreparados = new List<string>();
+            lstPreparados = new List<SelectListItem>();
         }
 
         public PreparacionPellasConPreBar(PreparacionPellas pPP)

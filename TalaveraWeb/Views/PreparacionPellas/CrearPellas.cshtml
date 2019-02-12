@@ -4,11 +4,19 @@
     ViewBag.Title = "CrearPellas";
 }
 
+@if (!string.IsNullOrEmpty(ViewBag.msgAviso))
+{
+    <div class="alert alert-primary" role="alert">
+        @ViewBag.msgAviso
+    </div>
+}
+
+
 <h2>Crear Pellas</h2>
 
 <div class="row">
-        
-    @using (Html.BeginForm(null, null, FormMethod.Post, new { style = "width:100%"}))
+
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { style = "width:100%" }))
     {
         @Html.AntiForgeryToken()
 
@@ -65,36 +73,57 @@
             </div>
 
             @*<div class="form-group">
-                @Html.LabelFor(model => model.NumPeyas, htmlAttributes: new { @class = "control-label col-md-4" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.NumPeyas, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.NumPeyas, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.NumPeyas, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.NumPeyas, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.NumPeyas, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.Restante, htmlAttributes: new { @class = "control-label col-md-4" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Restante, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Restante, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Restante, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Restante, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Restante, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.CargaTotal, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CargaTotal, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.CargaTotal, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.CargaTotal, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+
+
+            @*<div class="form-group">
+                @Html.Label("Preparación de barro asignada", htmlAttributes: new { @class = "control-label col-md-4" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.CargaTotal, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.CargaTotal, "", new { @class = "text-danger" })
+                    @Html.DropDownListFor(model => model.lstPreBar, new SelectList(ViewBag.lstPreparadosDisponibles, "Value", "Text"), new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.lstPreBar, "", new { @class = "text-danger" })
                 </div>
             </div>*@
 
             <div class="form-group">
-                @Html.Label("Preparación de barro asignada" , htmlAttributes: new { @class = "control-label col-md-4" })
-                <div class="col-md-10">
-                    @Html.DropDownListFor(model => model.lstPreBar,new SelectList(ViewBag.lstPreparadosDisponibles, "Value", "Text") , new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.lstPreBar, "", new { @class = "text-danger" })
-                </div>
+                @Html.Label("Preparaciones de barro asignadas", htmlAttributes: new { @class = "control-label col-md-4" })
+                @foreach (var item in Model.lstPreparados)
+                {
+                    <div class="form-check" style="margin-left:15px">
+                        <input type="checkbox" name="SelectedPreparados" class="form-check-input" value="@item.Value">
+                        <label class="form-check-label" for="@item.Text">@item.Text</label>
+                    </div>
+                }
             </div>
+                
+            @*@foreach (var item in Model.lstPreparados)
+            {
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="SelectedPreparados" value="@item.Value" /> @item.Text
+                </label>
+            </div>
+            }*@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
@@ -102,11 +131,18 @@
                 </div>
             </div>
         </div>
-    }
-
+    }        
 </div>
-
 
 <div>
     @Html.ActionLink("Volver a listado", "Index", new { pLoc = ViewBag.Loc })
 </div>
+
+@section scripts{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    
+    <script>
+       
+    </script>
+
+}

@@ -88,3 +88,16 @@
 }
 
 </table>
+
+@if (ViewBag.Loc == 1)
+{
+    <div>
+        @Html.ActionLink("Página principal", "Index", "LaLuz")
+    </div>
+}
+else
+{
+    <div>
+        @Html.ActionLink("Página principal", "Index", "TreintaYCuatroPte")
+    </div>
+}

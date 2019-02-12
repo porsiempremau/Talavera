@@ -399,6 +399,7 @@
     <Content Include="Views\TreintaYCuatroPte\Historial.cshtml" />
     <Content Include="Views\TreintaYCuatroPte\Edit.cshtml" />
     <Content Include="Views\TreintaYCuatroPte\Delete.cshtml" />
+    <Content Include="Views\PreparacionPellas\DetallePellas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

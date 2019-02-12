@@ -691,10 +691,11 @@ namespace TalaveraWeb.Services
         }
 
         //Establece el numero de carga en fuentes, segun el año
-        public string getNumeroCarga()
+        public string getNumeroCarga(int pLocacion)
         {
-            int Count = db.PreparacionPellas.Count(x => x.FechaVaciado.Value.Year == DateTime.Today.Year);
-            string res = DateTime.Today.Year + "c" + (Count + 1);
+            string SiglaCodigo = db.Sucursales.Where(x => x.Id == pLocacion).Select(y => y.SiglaCodigo).FirstOrDefault();
+            int Count = db.PreparacionPellas.Where(y => y.NumCarga.Contains(SiglaCodigo)).Count(x => x.FechaVaciado.Value.Year == DateTime.Today.Year);
+            string res = DateTime.Today.Year + "c" + SiglaCodigo + (Count + 1);
             return res;
         }
 
@@ -757,11 +758,12 @@ namespace TalaveraWeb.Services
         }
                 
         //Actualiza en la tabla de PreparacionBarro el campo de Estado de "Disponible" a "Consumido"
-        public int editaEstadoPrepBarroPorPreparacionPellas(List<string> plstPreBar, string pEstado, string pEditor)
+        public int editaEstadoPrepBarroPorPreparacionPellas(string pNumeroDeCarga, string pEstado, string pEditor)
         {
             try
             {
-                var friends = db.PreparacionBarro.Where(f => plstPreBar.Contains(f.NumPreparado)).ToList();
+                var tmpList = db.prepBarro_prepPellas.Where(x => x.NumCarga == pNumeroDeCarga).Select(y => y.NumPreparado).ToList();
+                var friends = db.PreparacionBarro.Where(f => tmpList.Contains(f.NumPreparado)).ToList();
                 friends.ForEach(a => a.Estado = pEstado);
                 friends.ForEach(a => a.Editor = pEditor);
                 friends.ForEach(a => a.FechaEdicion = DateTime.Now);
@@ -777,6 +779,12 @@ namespace TalaveraWeb.Services
         public PreparacionPellas detallePreparacionPellas(int pId)
         {
             return db.PreparacionPellas.Where(x => x.Id == pId).FirstOrDefault();
+        }
+
+        public List<string> preparacionesAsignadasACarga(string pNumeroDeCarga)
+        {
+            var tmp = db.prepBarro_prepPellas.Where(x => x.NumCarga == pNumeroDeCarga).Select(y => y.NumPreparado).ToList();
+            return tmp;
         }
 
         public int editPreparacionPellas(PreparacionPellas pPrePell)
@@ -889,8 +897,8 @@ namespace TalaveraWeb.Services
         {
             try
             {
-                EntregaPellas ep = db.EntregaPellas.FirstOrDefault(x => x.NumCarga == pCarga);
-                db.EntregaPellas.Remove(ep);
+                List<EntregaPellas> ep = db.EntregaPellas.Where(x => x.NumCarga == pCarga).ToList();
+                db.EntregaPellas.RemoveRange(ep);
                 int res = db.SaveChanges();
                 return res;
             }

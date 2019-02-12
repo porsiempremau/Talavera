@@ -4,12 +4,19 @@
     ViewBag.Title = "EditarPellas";
 }
 
+@if (!string.IsNullOrEmpty(ViewBag.msgAviso))
+{
+    <div class="alert alert-primary" role="alert">
+        @ViewBag.msgAviso
+    </div>
+}
+
 <h2>Editar Reporte de Pellas</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Reporte de barro en fuentes</h4>
         <hr />
@@ -87,6 +94,27 @@
                 @Html.ValidationMessageFor(model => model.CargaTotal, "", new { @class = "text-danger" })
             </div>
         </div>
+
+        <div class="form-group">
+            @Html.Label("Preparaciones de barro asignadas", htmlAttributes: new { @class = "control-label col-md-4" })
+            @foreach (var item in Model.lstPreparados)
+                {
+                <div class="form-check" style="margin-left:15px">
+                    @if (item.Selected == true)
+                    {
+                        <input type="checkbox" name="SelectedPreparados" class="form-check-input" id="@item.Text" value="@item.Value" checked>
+                    }
+                    else
+                    {
+                        <input type="checkbox" name="SelectedPreparados" class="form-check-input" id="@item.Text" value="@item.Value" >
+                    }
+                    
+                    <label class="form-check-label" for="@item.Text">@item.Text</label>
+                </div>
+            }
+        </div>
+
+
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

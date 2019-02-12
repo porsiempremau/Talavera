@@ -56,5 +56,6 @@ namespace TalaveraWeb.Models
         public DbSet<Recuperados> Recuperados { get; set; }
         public DbSet<Sucursales> Sucursales { get; set; }
 
+        public System.Data.Entity.DbSet<TalaveraWeb.Models.PreparacionPellasConPreBar> PreparacionPellasConPreBars { get; set; }
     }
 }

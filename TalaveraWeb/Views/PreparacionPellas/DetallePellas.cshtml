@@ -1,0 +1,130 @@
+﻿@model TalaveraWeb.Models.PreparacionPellasConPreBar
+
+@{
+    ViewBag.Title = "DetallePellas";
+}
+
+<h2 style="text-align:center">
+    @ViewBag.NombreLocacion
+</h2>
+<h3 style="text-align:center">Detalle de carga</h3>
+<br /><br />
+
+<div>    
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Fuente)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fuente)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumCarga)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumCarga)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaVaciado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaVaciado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaLevantado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaLevantado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaInicoPisado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaInicoPisado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaFinPisado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaFinPisado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumPeyas)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumPeyas)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Restante)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Restante)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CargaTotal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CargaTotal)
+        </dd>
+
+        <dt>
+            @Html.Label("Preparaciones de barro asignadas:")
+        </dt>
+
+        <dd>
+            <ul>
+                @foreach (var item in Model.SelectedPreparados)
+                {
+                    <li> @item </li>
+                }
+            </ul>            
+        </dd>
+
+        @*<dt>
+                @Html.DisplayNameFor(model => model.Editor)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Editor)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.FechaEdicion)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.FechaEdicion)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Locacion)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Locacion)
+            </dd>*@
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Editar", "EditarPellas", new { id = Model.Id }) |
+    @Html.ActionLink("Volver a listado", "Index", new { pLoc = ViewBag.Loc })
+</p>

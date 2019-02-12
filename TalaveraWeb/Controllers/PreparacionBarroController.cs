@@ -16,6 +16,7 @@ namespace TalaveraWeb.Controllers
         public ActionResult Index(int pLoc = 1)
         {
             HttpContext.Application["Locacion"] = pLoc;
+            ViewBag.Loc = pLoc;
             List<PreparacionBarro> lstPreBar = tsvc.obtenerPreparacionBarro(pLoc);
             ViewBag.NombreLocacion = tsvc.getNombreSucursal(pLoc);            
             return View(lstPreBar);
@@ -125,6 +126,10 @@ namespace TalaveraWeb.Controllers
                                     int res3 = tsvc.addMovimientosBarro(lstVariaciones);
                                     if(res3 > 0)
                                         return RedirectToAction("Index", new { pLoc = ViewBag.Loc });
+                                }
+                                else
+                                {
+                                    return RedirectToAction("Index", new { pLoc = ViewBag.Loc });
                                 }
                             }
                         }

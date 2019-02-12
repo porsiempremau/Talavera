@@ -4,6 +4,9 @@
     ViewBag.Title = "Index";
 }
 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+
 <h2 style="text-align:center">
     @ViewBag.NombreLocacion
 </h2>
@@ -13,7 +16,9 @@
 
 
 <p>
-    @Html.ActionLink("Crear nuevo", "CrearPellas")
+    @*@Html.ActionLink("Crear nuevo", "CrearPellas")*@
+    <button type="button" class="btn btn-primary" id="aCrearNuevo">Crear nuevo</button>
+    @*<a id="aCrearNuevo" >Crear nuevo</a>*@
 </p>
 <table class="table">
     <tr>
@@ -26,21 +31,21 @@
         <th style="min-width: 110px;">
             @Html.DisplayNameFor(model => model.FechaVaciado)
         </th>
-        <th style="min-width: 110px;">
+        @*<th style="min-width: 110px;">
             @Html.DisplayNameFor(model => model.FechaLevantado)
-        </th>
+        </th>*@
         <th style="min-width: 110px;">
             @Html.DisplayNameFor(model => model.FechaInicoPisado)
         </th>
-        <th style="min-width: 110px;">
+        @*<th style="min-width: 110px;">
             @Html.DisplayNameFor(model => model.FechaFinPisado)
-        </th>
+        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.NumPeyas)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.Restante)
-        </th>
+        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.CargaTotal)
         </th>
@@ -48,10 +53,8 @@
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.HiddenFor(modelItem => item.Id)
-        </td>
+    <tr>        
+        @Html.HiddenFor(modelItem => item.Id)        
         <td>
             @Html.DisplayFor(modelItem => item.Fuente)
         </td>
@@ -61,29 +64,90 @@
         <td>
             @Html.DisplayFor(modelItem => item.FechaVaciado)
         </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.FechaLevantado)
-        </td>
+        </td>*@
         <td>
             @Html.DisplayFor(modelItem => item.FechaInicoPisado)
         </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.FechaFinPisado)
-        </td>
+        </td>*@
         <td>
             @Html.DisplayFor(modelItem => item.NumPeyas)
         </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.Restante)
-        </td>
+        </td>*@
         <td>
             @Html.DisplayFor(modelItem => item.CargaTotal)
         </td>
         <td>
-            @Html.ActionLink("Editar", "EditarPellas", new { id=item.Id }) |            
+            @Html.ActionLink("Detalles", "DetallePellas", new { id=item.Id }) |            
             @Html.ActionLink("Borrar", "BorrarPellas", new { id=item.Id })
         </td>
     </tr>
 }
 
 </table>
+
+@if (ViewBag.Loc == 1)
+{
+    <div>
+        @Html.ActionLink("Página principal", "Index", "LaLuz")
+    </div>
+}
+else
+{
+    <div>
+        @Html.ActionLink("Página principal", "Index", "TreintaYCuatroPte")
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        $(function () {
+            $("#dialog").dialog({
+                autoOpen: false,
+                show: {
+                    effect: "blind",
+                    duration: 1000
+                },
+                hide: {
+                    effect: "explode",
+                    duration: 1000
+                }
+            });
+
+            $("#aCrearNuevo").on("click", function () {
+
+                var url = "@Url.Action("ValidaRecursos", "PreparacionPellas")"
+
+                $.post(url).done(function (data) {
+
+                    if (data.length === 0) {
+                        $("#dialog").dialog("open");
+                    }
+                    else {
+                        window.location.href = "@Url.Action("CrearPellas", "PreparacionPellas")";
+                    }
+
+                }).fail(function (error) {
+                    window.location.href = "@Url.Action("Index", "Home")";
+                }).always(function () {
+                });
+
+
+            });
+        });
+    </script>
+
+}
+
+<div id="dialog" title="Recursos insuficientes">
+    <p>No cuentas con los recursos necesarios para crear una carga.</p>
+</div>
