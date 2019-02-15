@@ -267,42 +267,43 @@ namespace TalaveraWeb.Controllers
                     FechaEdicion = DateTime.Now
                 });
             }
-            if (!string.IsNullOrEmpty(pPB.DesperdicioMojado))
-            {
-                double tmpDesperdicio = double.Parse(pPB.DesperdicioMojado) / 2;
-                tmpPB.Add(new BarroMovimientos()
-                {
-                    CodigoProducto = "N1",
-                    FechaMovimiento = DateTime.Now,
-                    TipoMovimiento = "Eg",
-                    Unidades = tmpDesperdicio,
-                    Locacion = pPB.Locacion,
-                    PesoTotal = tmpDesperdicio,
-                    OrigenTransferencia = idPreparacion,
-                    OrigenTabla = "PreparacionBarro",
-                    OrigenVariacion = "DesperdicioMojado",
-                    Editor = pPB.Editor,
-                    FechaEdicion = DateTime.Now
-                });
-                tmpPB.Add(new BarroMovimientos()
-                {
-                    CodigoProducto = "B1",
-                    FechaMovimiento = DateTime.Now,
-                    TipoMovimiento = "Eg",
-                    Unidades = tmpDesperdicio,
-                    Locacion = pPB.Locacion,
-                    PesoTotal = tmpDesperdicio,
-                    OrigenTransferencia = idPreparacion,
-                    OrigenTabla = "PreparacionBarro",
-                    OrigenVariacion = "DesperdicioMojado",
-                    Editor = pPB.Editor,
-                    FechaEdicion = DateTime.Now
-                });
-            }
-            if (pPB.Recuperado != null || pPB.Recuperado != 0)
-            {
 
-            }
+            //if (!string.IsNullOrEmpty(pPB.DesperdicioMojado))
+            //{
+            //    double tmpDesperdicio = double.Parse(pPB.DesperdicioMojado) / 2;
+            //    tmpPB.Add(new BarroMovimientos()
+            //    {
+            //        CodigoProducto = "N1",
+            //        FechaMovimiento = DateTime.Now,
+            //        TipoMovimiento = "Eg",
+            //        Unidades = tmpDesperdicio,
+            //        Locacion = pPB.Locacion,
+            //        PesoTotal = tmpDesperdicio,
+            //        OrigenTransferencia = idPreparacion,
+            //        OrigenTabla = "PreparacionBarro",
+            //        OrigenVariacion = "DesperdicioMojado",
+            //        Editor = pPB.Editor,
+            //        FechaEdicion = DateTime.Now
+            //    });
+            //    tmpPB.Add(new BarroMovimientos()
+            //    {
+            //        CodigoProducto = "B1",
+            //        FechaMovimiento = DateTime.Now,
+            //        TipoMovimiento = "Eg",
+            //        Unidades = tmpDesperdicio,
+            //        Locacion = pPB.Locacion,
+            //        PesoTotal = tmpDesperdicio,
+            //        OrigenTransferencia = idPreparacion,
+            //        OrigenTabla = "PreparacionBarro",
+            //        OrigenVariacion = "DesperdicioMojado",
+            //        Editor = pPB.Editor,
+            //        FechaEdicion = DateTime.Now
+            //    });
+            //}
+
+            //if (pPB.Recuperado != null || pPB.Recuperado != 0)
+            //{
+            //}
 
             return tmpPB;
         }
@@ -368,13 +369,13 @@ namespace TalaveraWeb.Controllers
                         {
                             int elemBorrados = tsvc.borrarMovimientosBarroDerivadosDePreparacionBarro(PB.Id);
 
-                            var lstBarMovNegro = calculaBarroMovimientos(pPreBar.lstConsumoBarroNegro, (int)pPreBar.BarroNegro, PB, idPreparacion);
+                            var lstBarMovNegro = calculaBarroMovimientos(pPreBar.lstConsumoBarroNegro, (int)pPreBar.BarroNegro, PB, PB.Id);
                             lst.AddRange(lstBarMovNegro);
 
-                            var lstBarMovBlanco = calculaBarroMovimientos(pPreBar.lstConsumoBarroBlanco, (int)pPreBar.BarroBlanco, PB, idPreparacion);
+                            var lstBarMovBlanco = calculaBarroMovimientos(pPreBar.lstConsumoBarroBlanco, (int)pPreBar.BarroBlanco, PB, PB.Id);
                             lst.AddRange(lstBarMovBlanco);
 
-                            List<BarroMovimientos> lstVariaciones = calculaBarroMovimientosVariaciones(PB, idPreparacion);
+                            List<BarroMovimientos> lstVariaciones = calculaBarroMovimientosVariaciones(PB, PB.Id);
 
                             //Por ultimo se registran los movimientos en BD.
                             int res2 = tsvc.addMovimientosBarro(lst);
@@ -383,9 +384,8 @@ namespace TalaveraWeb.Controllers
                                 if (lstVariaciones.Count > 0)
                                 {
                                     int res3 = tsvc.addMovimientosBarro(lstVariaciones);
-                                    if (res3 > 0)
-                                        return RedirectToAction("Index", new { pLoc = ViewBag.Loc });
                                 }
+                                return RedirectToAction("Index", new { pLoc = ViewBag.Loc });
                             }
                         }
                         else

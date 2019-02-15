@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TalaveraWeb.Models.EntregaPellas>
+﻿@model IEnumerable<TalaveraWeb.Models.MiBD.EntregaPellas>
 
 @{
     ViewBag.Title = "ReporteEntrega";
@@ -29,7 +29,7 @@
         <th></th>
     </tr>
 
-@foreach (var item in (List<TalaveraWeb.Models.EntregaPellas>)ViewBag.lstEntrega) {
+@foreach (var item in (List<TalaveraWeb.Models.MiBD.EntregaPellas>)ViewBag.lstEntrega) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.FechaMovimiento)

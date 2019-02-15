@@ -269,6 +269,33 @@ namespace TalaveraWeb.Services
             return lstReservas;
         }
 
+        public List<BarroMovimientos> obtenerHistorialEmpaquetados(int Sucursal)
+        {
+            try
+            {
+                //Obtengo los registros de ingreso de barro empaquetado
+                var lstIngresosBarroEmpaque = db.BarroMovimientos.Where(bm => bm.TipoMovimiento == "In" && bm.Locacion == Sucursal && (bm.CodigoProducto != "B1" && bm.CodigoProducto != "N1") ).OrderBy(x => x.FechaMovimiento).Take(10).ToList();
+                return lstIngresosBarroEmpaque;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public double obtenerMermaDePedido(BarroMovimientos pBMCM)
+        {
+            try
+            {
+                double? res = db.BarroMovimientos.Where(x => x.OrigenTransferencia == pBMCM.Id && x.Locacion == pBMCM.OrigenTransferencia && x.OrigenTabla == "BarroMovimiento").Select(y => y.Unidades).FirstOrDefault();
+                return res != null ? (double)res : 0;
+            }
+            catch(Exception ex)
+            {
+                return 0;
+            }
+        }
+
         //Barro en pellas
         public List<ReservaBarro> getReservasPellasFrom(int pLocacion)
         {
@@ -512,6 +539,20 @@ namespace TalaveraWeb.Services
             }
         }
 
+        public int deleteMermaExistente(BarroMovimientos pBM)
+        {
+            try
+            {
+                List<BarroMovimientos> lst = db.BarroMovimientos.Where(x => x.OrigenTransferencia == pBM.Id && x.OrigenTabla == "BarroMovimiento").ToList();
+                db.BarroMovimientos.RemoveRange(lst);
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
 
         //PREPARACION DE BARROS
         public List<PreparacionBarro> obtenerPreparacionBarro(int pLocacion)

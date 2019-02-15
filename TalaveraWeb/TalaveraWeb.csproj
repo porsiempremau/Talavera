@@ -233,6 +233,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\BarroMovimientosConMerma.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MiBD\BarroMaestra.cs" />
@@ -400,6 +401,9 @@
     <Content Include="Views\TreintaYCuatroPte\Edit.cshtml" />
     <Content Include="Views\TreintaYCuatroPte\Delete.cshtml" />
     <Content Include="Views\PreparacionPellas\DetallePellas.cshtml" />
+    <Content Include="Views\LaLuz\HistorialBarroEmpaque.cshtml" />
+    <Content Include="Views\LaLuz\EditarRegitro.cshtml" />
+    <Content Include="Views\LaLuz\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

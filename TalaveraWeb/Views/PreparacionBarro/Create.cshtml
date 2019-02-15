@@ -162,14 +162,17 @@
     function actualizaUnidadesMax(){
         var lstBarroDisponible = @Html.Raw(Json.Encode(ViewBag.lstLuz));
 
+        var totalNegro = 0, totalBlanco = 0;
         lstBarroDisponible.forEach(function(element){
             if(element.Tipo.includes("Negro")){
-                document.getElementById("BarroNegro").setAttribute("max", element.TotalKg);
+                totalNegro = totalNegro + element.TotalKg;                
             }
             else if(element.Tipo.includes("Blanco")){
-                document.getElementById("BarroBlanco").setAttribute("max", element.TotalKg);
+                totalBlanco = totalBlanco + element.TotalKg;                
             }
         })
+        document.getElementById("BarroNegro").setAttribute("max", totalNegro);
+        document.getElementById("BarroBlanco").setAttribute("max", totalBlanco);
 
         var lstCBN = @Html.Raw(Json.Encode(Model.lstConsumoBarroNegro));
         var i = 0;
