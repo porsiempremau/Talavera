@@ -21,6 +21,81 @@ namespace TalaveraWeb.Services
             return db.Sucursales.Where(x => x.Id == pLoc).Select(y => y.Nombre).FirstOrDefault();
         }
 
+        //Catalogo Talavera
+        public CatalogoTalavera getPiezasTalavera(int pId)
+        {
+            try
+            {
+                return db.CatalogoTalavera.Find(pId);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        public List<CatalogoTalavera> getPiezasTalavera(string texto = "")
+        {
+            try
+            {
+                List<CatalogoTalavera> lst = new List<CatalogoTalavera>();
+                if (string.IsNullOrEmpty(texto))
+                {
+                    lst = db.CatalogoTalavera.OrderBy(x => x.NombrePieza).ToList();
+                }
+                else
+                {
+                    lst = db.CatalogoTalavera.Where(x => x.NombrePieza.Contains(texto)).OrderBy(y => y.NombrePieza).ToList();
+                }
+                return lst;
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
+        }
+        public int addPiezaTalavera(CatalogoTalavera pCT)
+        {
+            try
+            {
+                db.CatalogoTalavera.Add(pCT);
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }            
+        }
+
+        public int editCatalogo(CatalogoTalavera pCT)
+        {
+            try
+            {
+                db.Entry(pCT).State = EntityState.Modified;
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch(Exception ex)
+            {
+                return -1;
+            }
+        }
+
+        public int deleteCatalogo(int pId)
+        {
+            try
+            {
+                CatalogoTalavera prov = db.CatalogoTalavera.Find(pId);
+                db.CatalogoTalavera.Remove(prov);
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
         //PROVEDORES
         public List<Provedores> getProvedores()
         {
@@ -304,12 +379,13 @@ namespace TalaveraWeb.Services
                 var lstRes = db.EntregaPellas.Where(x => x.Locacion == pLocacion)
                         .GroupBy(y => y.TipoMovimiento)
                         .Select(z => new { TipoMovimiento = z.Key, Total = z.Sum(s => s.CantidadPellas) })
-                        .ToList();
+                        .ToList();                
 
+                //Obtengo las pellas disponibles para cada tipo de carga.
                 int? Positivo = 0, Negativo = 0;
                 List<ReservaBarro> lstReservas = new List<ReservaBarro>();
                 foreach (var item in lstRes)
-                {                    
+                {
                     if (item.TipoMovimiento == "I")
                         Positivo = item.Total;
                     if (item.TipoMovimiento == "E")
@@ -319,7 +395,7 @@ namespace TalaveraWeb.Services
                 int? Total = (Positivo != null ? Positivo : 0) - (Negativo != null ? Negativo : 0);
                 ReservaBarro RecBar = new ReservaBarro() { CodigoBarro = "N/A", Tipo = "Pella 40 kg", Capacidad = null, Unidades = Total, TotalKg = Total * 40 };
                 lstReservas.Add(RecBar);
-                
+
                 return lstReservas;
             }
             catch (Exception ex)
@@ -328,6 +404,41 @@ namespace TalaveraWeb.Services
             }            
         }
 
+        public List<PellasDisponibles> getPellasPorCargaFrom(int pLocacion)
+        {
+            try
+            {
+                var lstRes = db.EntregaPellas.Where(x => x.Locacion == pLocacion)
+                        .GroupBy(y => new { y.NumCarga, y.TipoMovimiento })
+                        .Select(z => new { Grupo = z.Key, Total = z.Sum(s => s.CantidadPellas) })
+                        .ToList();
+
+                //Selecciono los distintos codigos de carga.
+                var lstCodigosCarga = lstRes.Select(x => x.Grupo.NumCarga).Distinct();
+
+                //Obtengo las pellas disponibles para cada tipo de carga.
+                int? Positivo = 0, Negativo = 0;
+                List<PellasDisponibles> lstReservas = new List<PellasDisponibles>();
+                foreach (var item in lstCodigosCarga)
+                {
+                    Positivo = lstRes.Where(x => x.Grupo.NumCarga == item && x.Grupo.TipoMovimiento == "I").Select(y => y.Total).FirstOrDefault();
+                    Negativo = lstRes.Where(x => x.Grupo.NumCarga == item && x.Grupo.TipoMovimiento == "E").Select(y => y.Total).FirstOrDefault();
+
+                    int? Total = (Positivo != null ? Positivo : 0) - (Negativo != null ? Negativo : 0);
+                    if (Total > 0)
+                    {
+                        PellasDisponibles RecBar = new PellasDisponibles() { Tipo = "Pella 40 kg", Capacidad = null, UnidadesDisponibles = Total, TotalKg = Total * 40, NumeroCarga = item };
+                        lstReservas.Add(RecBar);
+                    }                    
+                }
+                 
+                return lstReservas;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
 
 
         //Catalogos para los Movimientos de barro
@@ -915,6 +1026,35 @@ namespace TalaveraWeb.Services
             }
         }
 
+        public int addEntregaPellas(List<EntregaPellas> pEnPe)
+        {
+            try
+            {
+                db.EntregaPellas.AddRange(pEnPe);
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
+        public List<EntregaPellas> calculaMovimientosEntregaPellas(int pLoc)
+        {
+            try
+            {
+                List<EntregaPellas> lst = db.EntregaPellas.Where(x => x.Locacion == pLoc).ToList();
+                return lst;
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
+        }
+
+
+
         public int editEntregaPellas(int? pCantidadPellas, string pCarga, string pResponsable, int pLocacion)
         {
             try
@@ -926,6 +1066,28 @@ namespace TalaveraWeb.Services
                 ep.FechaEdicion = DateTime.Now;
                 ep.Locacion = pLocacion;
                 int res = db.SaveChanges();                                
+                return res;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
+        public int editEntregaPellas(EntregaPellas pEP)
+        {
+            try
+            {
+                var ep = db.EntregaPellas.FirstOrDefault(x => x.NumCarga == pEP.NumCarga && x.TipoMovimiento == pEP.TipoMovimiento && x.Responsable == pEP.Responsable);
+                ep.Responsable = pEP.Responsable;
+                ep.TipoMovimiento = pEP.TipoMovimiento;
+                ep.CantidadPellas = pEP.CantidadPellas;
+                ep.NumCarga = pEP.NumCarga;
+                ep.Editor = pEP.Editor;
+                ep.FechaEdicion = pEP.FechaEdicion;
+                ep.Locacion = pEP.Locacion;
+                ep.Observacion = pEP.Observacion;
+                int res = db.SaveChanges();
                 return res;
             }
             catch (Exception ex)

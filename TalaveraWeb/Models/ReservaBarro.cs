@@ -12,6 +12,7 @@ namespace TalaveraWeb.Models
         public string Tipo { get; set; }
         public double? Capacidad { get; set; }
         public double? Unidades { get; set; }
-        public double? TotalKg { get; set; }        
+        public double? TotalKg { get; set; }          
+        public string NumeroCarga { get; set; }      
     }
 }

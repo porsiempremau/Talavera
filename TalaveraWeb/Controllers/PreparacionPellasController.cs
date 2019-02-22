@@ -147,11 +147,32 @@ namespace TalaveraWeb.Controllers
                     //en este caso, significa que son nuevas pellas.
                     if (PrePellEnBD.NumPeyas == null)
                     {
-                        tsvc.addEntregaPellas(pPPCB.NumPeyas, pPPCB.NumCarga, User.Identity.Name, ViewBag.Loc, "I");
+                        EntregaPellas EP = new EntregaPellas() {
+                            FechaMovimiento = DateTime.Today,
+                            Responsable = "PreparacionPellas",
+                            TipoMovimiento = "I",
+                            CantidadPellas = pPPCB.NumPeyas,
+                            NumCarga = pPPCB.NumCarga,
+                            Editor = User.Identity.Name,
+                            FechaEdicion = DateTime.Now,
+                            Locacion = ViewBag.Loc
+                        };
+                        tsvc.addEntregaPellas(EP);
                     }//Si el numero de pellas es diferente al que hay en BD, implica que se edito el numero de pellas                
                     else if (pPPCB.NumPeyas != PrePellEnBD.NumPeyas)
                     {
-                        tsvc.editEntregaPellas(pPPCB.NumPeyas, pPPCB.NumCarga, User.Identity.Name, ViewBag.Loc);
+                        EntregaPellas EP = new EntregaPellas()
+                        {
+                            FechaMovimiento = DateTime.Today,
+                            Responsable = "PreparacionPellas",
+                            TipoMovimiento = "I",
+                            CantidadPellas = pPPCB.NumPeyas,
+                            NumCarga = pPPCB.NumCarga,
+                            Editor = User.Identity.Name,
+                            FechaEdicion = DateTime.Now,
+                            Locacion = ViewBag.Loc
+                        };
+                        tsvc.editEntregaPellas(EP);
                     }
                 }
 

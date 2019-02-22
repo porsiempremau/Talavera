@@ -177,6 +177,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BarroMaestraController.cs" />
+    <Compile Include="Controllers\CatalogoTalaveraController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LaLuzController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -231,6 +232,18 @@
     <Compile Include="Migrations\201902071923568_cambiosDoubleEnCodigo.Designer.cs">
       <DependentUpon>201902071923568_cambiosDoubleEnCodigo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902192005599_ActualizacionPorEntregaPellas.cs" />
+    <Compile Include="Migrations\201902192005599_ActualizacionPorEntregaPellas.Designer.cs">
+      <DependentUpon>201902192005599_ActualizacionPorEntregaPellas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902212045109_addCatalogoTalavera.cs" />
+    <Compile Include="Migrations\201902212045109_addCatalogoTalavera.Designer.cs">
+      <DependentUpon>201902212045109_addCatalogoTalavera.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902221912397_camposObligatoriosCatalogoTalavera.cs" />
+    <Compile Include="Migrations\201902221912397_camposObligatoriosCatalogoTalavera.Designer.cs">
+      <DependentUpon>201902221912397_camposObligatoriosCatalogoTalavera.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BarroMovimientosConMerma.cs" />
@@ -238,6 +251,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MiBD\BarroMaestra.cs" />
     <Compile Include="Models\MiBD\BarroMovimientos.cs" />
+    <Compile Include="Models\MiBD\CatalogoTalavera.cs" />
     <Compile Include="Models\MiBD\EntregaPellas.cs" />
     <Compile Include="Models\MiBD\PreparacionBarro.cs" />
     <Compile Include="Models\MiBD\PreparacionPellas.cs" />
@@ -245,9 +259,11 @@
     <Compile Include="Models\MiBD\Provedores.cs" />
     <Compile Include="Models\MiBD\Recuperados.cs" />
     <Compile Include="Models\MiBD\Sucursales.cs" />
+    <Compile Include="Models\PellasDisponibles.cs" />
     <Compile Include="Models\PreparacionBarroConsumo.cs" />
     <Compile Include="Models\PreparacionPellasConPreBar.cs" />
     <Compile Include="Models\ReservaBarro.cs" />
+    <Compile Include="Models\ReservaBarroListaSolicitud.cs" />
     <Compile Include="Models\ReservaBarroPreparado.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Models\SolicitarRecerva.cs" />
@@ -267,6 +283,13 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Imagen\historia2.jpg" />
+    <Content Include="Imagen\Piezas\AlbareloBarril19x11.png" />
+    <Content Include="Imagen\Piezas\AlbareloBarril27x16.png" />
+    <Content Include="Imagen\Piezas\AlbareloBarril34x20.png" />
+    <Content Include="Imagen\Piezas\AlbareloCilindrico35x20.png" />
+    <Content Include="Imagen\Piezas\AlbareloTradicional17x9.png" />
+    <Content Include="Imagen\Piezas\AlbareloTradicional27x10.png" />
+    <Content Include="Imagen\Piezas\AlbareloTradicional30x15.png" />
     <Content Include="Imagen\slide-image-2.jpg" />
     <Content Include="Imagen\slide-image-4.jpg" />
     <Content Include="Imagen\talavera2.JPG" />
@@ -404,6 +427,11 @@
     <Content Include="Views\LaLuz\HistorialBarroEmpaque.cshtml" />
     <Content Include="Views\LaLuz\EditarRegitro.cshtml" />
     <Content Include="Views\LaLuz\Delete.cshtml" />
+    <Content Include="Views\SolicitarPellas\Movimientos.cshtml" />
+    <Content Include="Views\CatalogoTalavera\Index.cshtml" />
+    <Content Include="Views\CatalogoTalavera\NuevaPieza.cshtml" />
+    <Content Include="Views\CatalogoTalavera\Edit.cshtml" />
+    <Content Include="Views\CatalogoTalavera\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -448,6 +476,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902071923568_cambiosDoubleEnCodigo.resx">
       <DependentUpon>201902071923568_cambiosDoubleEnCodigo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902192005599_ActualizacionPorEntregaPellas.resx">
+      <DependentUpon>201902192005599_ActualizacionPorEntregaPellas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902212045109_addCatalogoTalavera.resx">
+      <DependentUpon>201902212045109_addCatalogoTalavera.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902221912397_camposObligatoriosCatalogoTalavera.resx">
+      <DependentUpon>201902221912397_camposObligatoriosCatalogoTalavera.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

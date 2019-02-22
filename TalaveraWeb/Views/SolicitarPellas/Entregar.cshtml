@@ -1,4 +1,4 @@
-﻿@model TalaveraWeb.Models.MiBD.EntregaPellas
+﻿@model TalaveraWeb.Models.ReservaBarroListaSolicitud
 
 @{
     ViewBag.Title = "Entregar";
@@ -26,14 +26,14 @@
 
         <div class="form-group">
             @*@Html.LabelFor(model => model.Responsable, htmlAttributes: new { @class = "control-label col-md-2" })*@
-            @Html.Label("Se entregan a", "Responsable", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Responsable", "Se entregan a", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Responsable, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Responsable, new { htmlAttributes = new { @class = "form-control", @required="required" } })
                 @Html.ValidationMessageFor(model => model.Responsable, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.CantidadPellas, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.CantidadPellas, new { htmlAttributes = new { @class = "form-control" } })
@@ -47,7 +47,49 @@
                 @Html.EditorFor(model => model.NumCarga, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.NumCarga, "", new { @class = "text-danger" })
             </div>
+        </div>*@
+
+        <div class="form-group">
+            @Html.Label("Pellas disponibles:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <table class="table">
+                <tr>
+                    <th>Carga</th>
+                    <th>Pellas solicitadas</th>
+                    <th>Pellas disponibles</th>
+                </tr>
+                @for (int i = 0; i < Model.lstReservas.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            <input id="Tipo" name="lstReservas[@i].Tipo" type="hidden" value=@Model.lstReservas[i].Tipo>
+                            <input id="Capacidad" name="lstReservas[@i].Capacidad" type="hidden" value=@Model.lstReservas[i].Capacidad>
+                            <input id="TotalKg" name="lstReservas[@i].TotalKg" type="hidden" value=@Model.lstReservas[i].TotalKg>
+                            <input id="TotalKg" name="lstReservas[@i].UnidadesDisponibles" type="hidden" value=@Model.lstReservas[i].UnidadesDisponibles>
+                            <input id="NumeroCarga" name="lstReservas[@i].NumeroCarga" style="border:none" type="text" value=@Model.lstReservas[i].NumeroCarga readonly>
+                        </td>
+                        <td>
+                            <input class="col-md-5 form-control text-box single-line" id="@Model.lstReservas[i].NumeroCarga" name="lstReservas[@i].UnidadesSolicitadas" type="number" min="0" max="@Model.lstReservas[i].UnidadesDisponibles" value="@Model.lstReservas[i].UnidadesSolicitadas" onchange="ActualizaTotal()" />
+                        </td>
+                        <td>
+                            <label id="lstReservas[@i].UnidadesDisponibles">@Model.lstReservas[i].UnidadesDisponibles</label>
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td>
+                        Total pellas:
+                    </td>
+                    <td>
+                        <input id="TotalSolicitadas" style="border:none" readonly value="0">
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
         </div>
+
+
+
+
 
         <div class="form-group">
             @Html.LabelFor(model => model.Observacion, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -82,12 +124,25 @@
     <script src="~/Scripts/jquery-3.0.0.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
     <script>
+        function ActualizaTotal(Elemento){
+            var Total = 0;
+            
+            var lst = @Html.Raw(Json.Encode(Model.lstReservas));
+            lst.forEach(function(item){
+                var tmp = document.getElementById(item.NumeroCarga).value;
+                var tmp2 = parseInt(tmp);
+                if(!isNaN(tmp2))
+                    Total += tmp2; 
+            })
+
+            document.getElementById("TotalSolicitadas").setAttribute("value", Total);
+        }
 
         function actualizaUnidadesMax(){
             var lstBarroDisponible = @Html.Raw(Json.Encode(ViewBag.lstRecervasPellas));
             document.getElementById("CantidadPellas").setAttribute("max", lstBarroDisponible[0].Unidades);
         }
 
-        actualizaUnidadesMax();
+        
     </script>
 }

@@ -1,0 +1,60 @@
+﻿@model IEnumerable<TalaveraWeb.Models.MiBD.CatalogoTalavera>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+<h2 style="text-align:center">
+    Talavera de la luz
+</h2>
+<hr />
+
+<div class="row encabezado">
+    <h4 class="col-4">Catalogo de piezas</h4>
+    <div class="col-8 text-right">
+        @Html.ActionLink("Agregar una pieza", "NuevaPieza")        
+    </div>
+</div>
+
+<div class="list-group">
+
+    <div class="container">
+        <div class="row">
+
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 piezaTalavera">
+                    <div class="row ">
+                        <div class="col-md-12 encabezadoPiezaTalavera">
+                            <div class="row">
+                                <h3 class="col-8">@item.NombrePieza</h3>
+                                <div class="col-4 text-right">
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="@("window.location.href='" + @Url.Action("edit", "CatalogoTalavera", new { id = item.Id }) + "'");" >
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="@("window.location.href='" + @Url.Action("delete", "CatalogoTalavera", new { id = item.Id }) + "'");">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <hr />
+                        </div>
+                        <div class="col-md-6">
+                            <label>Altura  : @item.Altura cm</label><br />
+                            <label>Diámetro: @item.Diametro cm</label>
+                        </div>
+                        <div class="col">
+                            <img src="~/Imagen/Piezas/@item.Imagen" class="img-fluid shadow-sm" />
+                        </div>
+                    </div>
+                </div>
+                
+            }
+
+        </div>
+    </div>
+
+</div>
+

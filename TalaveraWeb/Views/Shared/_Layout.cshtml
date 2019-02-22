@@ -28,6 +28,7 @@
                             Catálogos <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Talavera", "Index", "CatalogoTalavera")</li>
                             <li>@Html.ActionLink("Proveedores", "Index", "Provedores")</li>
                             <li>@Html.ActionLink("Barro", "Index", "BarroMaestra")</li>
                             <li>@Html.ActionLink("Usuarios", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>

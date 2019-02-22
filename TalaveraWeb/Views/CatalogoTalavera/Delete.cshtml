@@ -1,0 +1,64 @@
+﻿@model TalaveraWeb.Models.MiBD.CatalogoTalavera
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Catálogo de talavera</h2>
+
+<h3>¿Esta seguro que desea borrar la siguiente pieza?</h3>
+<div>
+    <h4>Borrar</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NombrePieza)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NombrePieza)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Altura)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Altura)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Diametro)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Diametro)
+        </dd>
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.Tipo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tipo)
+        </dd>*@
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Imagen)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Imagen)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Borrar" class="btn btn-default" /> |
+            @Html.ActionLink("Volver a listado", "Index")
+        </div>
+    }
+</div>

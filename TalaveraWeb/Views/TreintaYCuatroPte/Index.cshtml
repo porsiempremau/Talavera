@@ -64,32 +64,31 @@
 
 
 
-
-
 <content>
     @if (ViewBag.lstBarroEmpaque34pte.Count == 0)
     {
         <p style="margin-top:2rem; margin-bottom:2rem">
-            @Html.Label("Preparación de barro", new { style = "color: gray" }) - @Html.Label("Preparación en fuentes", new { style = "color: gray" })
+            @Html.Label("Preparación de barro", new { style = "color: gray" })
         </p>
     }
     else
     {
         <p style="margin-top:2rem; margin-bottom:2rem">
-            @Html.ActionLink("Preparación de barro", "Index", "PreparacionBarro", new { pLoc = 2 }, null)  -  @Html.ActionLink("Preparación en fuentes", "Index", "PreparacionPellas", new { pLoc = 2 }, null)
+            @Html.ActionLink("Preparación de barro", "Index", "PreparacionBarro", new { pLoc = 2 }, null)
         </p>
     }
 </content>
 
 
 
-
-
-
-
-
 <content>    
-    <h4 class="encabezado">Pellas de barro</h4>
+    <div class="row encabezado">
+        <h4 class="col-4">Pellas barro</h4>
+        <div class="col-8 text-right">
+            @Html.ActionLink("Historial de cargas", "Index", "PreparacionPellas", new { pLoc = 2 }, null) -
+            @Html.ActionLink("Movimientos", "Movimientos", "SolicitarPellas", new { pLoc = 2 }, null)                         
+        </div>
+    </div>
     <table class="table">
         <thead>
             <tr>

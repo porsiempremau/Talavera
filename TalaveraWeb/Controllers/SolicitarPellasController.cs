@@ -21,42 +21,48 @@ namespace TalaveraWeb.Controllers
             ViewBag.lstLocaciones = tsvc.obtenerSucursalesExcepto(pLoc);
 
             int IdOtraSucursal = pLoc == 1 ? 2:1;
-            ViewBag.lstRecervasPellas = tsvc.getReservasPellasFrom(IdOtraSucursal);
+            ViewBag.lstRecervasPellas = tsvc.getPellasPorCargaFrom(IdOtraSucursal);
 
-            EntregaPellas EP = new EntregaPellas();
+            ReservaBarroListaSolicitud EP = new ReservaBarroListaSolicitud();
             EP.FechaMovimiento = DateTime.Today;
+            EP.lstReservas = tsvc.getPellasPorCargaFrom(IdOtraSucursal);
             return View(EP);
         }
 
         [HttpPost]
-        public ActionResult Solicitar(EntregaPellas pEnPe)
+        public ActionResult Solicitar(ReservaBarroListaSolicitud pRBLS)
         {
             ViewBag.Loc = (int)HttpContext.Application["Locacion"];
-            string NombreLocActual = tsvc.getNombreSucursal(ViewBag.Loc);
-            int? tmpResponsable = int.Parse(pEnPe.Responsable); //Id de la sucursal a la que se le pidio los recursos.
+            int? tmpResponsable = int.Parse(pRBLS.Responsable); //Id de la sucursal a la que se le pidio los recursos.
+            string NombreResponsable = tsvc.getNombreSucursal((int)tmpResponsable);
+            
             if (ModelState.IsValid)
             {
-                pEnPe.Responsable = NombreLocActual;
-                pEnPe.TipoMovimiento = "I";
-                pEnPe.Editor = User.Identity.Name;
-                pEnPe.FechaEdicion = DateTime.Now;
-                pEnPe.Locacion = ViewBag.Loc;
+                List<EntregaPellas> lst = CalculaMovimientos(pRBLS.lstReservas, ViewBag.Loc, (int)tmpResponsable);
+                lst.ForEach(x => x.Observacion = pRBLS.Observacion);
+                
+                //EntregaPellas pEnPe = new EntregaPellas();
+                //pEnPe.Responsable = NombreResponsable;
+                //pEnPe.TipoMovimiento = "I";
+                //pEnPe.Editor = User.Identity.Name;
+                //pEnPe.FechaEdicion = DateTime.Now;
+                //pEnPe.Locacion = ViewBag.Loc;
 
-                int res = tsvc.addEntregaPellas(pEnPe);                
+                int res = tsvc.addEntregaPellas(lst);                
                 if (res >= 1)
                 {                    
-                    EntregaPellas EgresoEnPe = new EntregaPellas()
-                    {
-                        FechaMovimiento = DateTime.Now,
-                        Responsable = NombreLocActual,
-                        TipoMovimiento = "E",
-                        CantidadPellas = pEnPe.CantidadPellas,
-                        NumCarga = pEnPe.NumCarga,
-                        Editor = User.Identity.Name,
-                        FechaEdicion = DateTime.Now,
-                        Locacion = tmpResponsable
-                    };
-                    int res2 = tsvc.addEntregaPellas(EgresoEnPe);
+                    //EntregaPellas EgresoEnPe = new EntregaPellas()
+                    //{
+                    //    FechaMovimiento = DateTime.Now,
+                    //    Responsable = tsvc.getNombreSucursal(ViewBag.Loc),
+                    //    TipoMovimiento = "E",
+                    //    CantidadPellas = pEnPe.CantidadPellas,
+                    //    NumCarga = pEnPe.NumCarga,
+                    //    Editor = User.Identity.Name,
+                    //    FechaEdicion = DateTime.Now,
+                    //    Locacion = tmpResponsable
+                    //};
+                    //int res2 = tsvc.addEntregaPellas(EgresoEnPe);
 
                     if(ViewBag.Loc == 1)
                         return RedirectToAction("Index", "LaLuz");
@@ -67,6 +73,59 @@ namespace TalaveraWeb.Controllers
             return new HttpStatusCodeResult(404, "No se pudo registrar la solicitud de pellas");
         }
 
+        public List<EntregaPellas> CalculaMovimientos(List<PellasDisponibles> pLst, int pSolicitante, int pProvedor )
+        {
+            List<EntregaPellas> tmp = new List<EntregaPellas>();
+
+            foreach(var item in pLst)
+            {
+                if (item.UnidadesSolicitadas != null && item.UnidadesSolicitadas > 0)
+                {
+                    //Ingresos
+                    EntregaPellas EPIngresos = new EntregaPellas();
+                    EPIngresos.FechaMovimiento = DateTime.Now;
+                    EPIngresos.Responsable = tsvc.getNombreSucursal((int)pProvedor);
+                    EPIngresos.CantidadPellas = item.UnidadesSolicitadas;
+                    EPIngresos.NumCarga = item.NumeroCarga;
+                    EPIngresos.TipoMovimiento = "I";
+                    EPIngresos.Locacion = pSolicitante;
+                    EPIngresos.Editor = User.Identity.Name;
+                    EPIngresos.FechaEdicion = DateTime.Now;
+                    tmp.Add(EPIngresos);
+
+                    //Egresos
+                    EntregaPellas EgresoEnPe = new EntregaPellas()
+                    {
+                        FechaMovimiento = DateTime.Now,
+                        Responsable = tsvc.getNombreSucursal(pSolicitante),
+                        TipoMovimiento = "E",
+                        CantidadPellas = item.UnidadesSolicitadas,
+                        NumCarga = item.NumeroCarga,
+                        Locacion = pProvedor,
+                        Editor = User.Identity.Name,
+                        FechaEdicion = DateTime.Now
+                    };
+                    tmp.Add(EgresoEnPe);
+                }                   
+            }
+
+            return tmp;
+        }
+
+        //Retorna un historial de movimientos en las pellas
+        public ActionResult Movimientos(int pLoc)
+        {
+            ViewBag.Loc = pLoc;
+            ViewBag.NombreLocActual = tsvc.getNombreSucursal(pLoc);
+
+            List<EntregaPellas> lst = tsvc.calculaMovimientosEntregaPellas(pLoc);
+            int? Positivo = lst.Where(y => y.TipoMovimiento == "I").Sum(x => x.CantidadPellas);
+            int? Negativo = lst.Where(y => y.TipoMovimiento == "E").Sum(x => x.CantidadPellas);
+            @ViewBag.Total = (Positivo != null ? Positivo : 0) - (Negativo != null ? Negativo : 0);
+            return View(lst);
+        }
+
+
         //Entrega de pella a trabajadores para crear jahuetes.
         public ActionResult Entregar(int pLoc)
         {
@@ -74,27 +133,45 @@ namespace TalaveraWeb.Controllers
             ViewBag.Loc = pLoc;
             ViewBag.NombreLocActual = tsvc.getNombreSucursal(pLoc);
 
-            ViewBag.lstRecervasPellas = tsvc.getReservasPellasFrom(pLoc);
+            //ViewBag.lstRecervasPellas = tsvc.getReservasPellasFrom(pLoc);
 
-            EntregaPellas EP = new EntregaPellas();
+            ReservaBarroListaSolicitud EP = new ReservaBarroListaSolicitud();
             EP.FechaMovimiento = DateTime.Today;
+            EP.lstReservas = tsvc.getPellasPorCargaFrom(pLoc);
 
             return View(EP);
         }
 
         [HttpPost]
-        public ActionResult Entregar(EntregaPellas pEnPe)
+        public ActionResult Entregar(ReservaBarroListaSolicitud pRBLS)
         {
             ViewBag.Loc = (int)HttpContext.Application["Locacion"];
                         
             if (ModelState.IsValid)
-            {                
-                pEnPe.TipoMovimiento = "E";
-                pEnPe.Editor = User.Identity.Name;
-                pEnPe.FechaEdicion = DateTime.Now;
-                pEnPe.Locacion = ViewBag.Loc;
-
-                int res = tsvc.addEntregaPellas(pEnPe);
+            {
+                List<EntregaPellas> tmp = new List<EntregaPellas>();
+                foreach (var item in pRBLS.lstReservas)
+                {
+                    if (item.UnidadesSolicitadas != null && item.UnidadesSolicitadas > 0)
+                    {
+                        //Egresos
+                        EntregaPellas EgresoEnPe = new EntregaPellas()
+                        {
+                            FechaMovimiento = DateTime.Now,
+                            Responsable = pRBLS.Responsable,
+                            TipoMovimiento = "E",
+                            CantidadPellas = item.UnidadesSolicitadas,
+                            NumCarga = item.NumeroCarga,
+                            Locacion = ViewBag.Loc,
+                            Editor = User.Identity.Name,
+                            FechaEdicion = DateTime.Now,
+                            Observacion = pRBLS.Observacion
+                        };
+                        tmp.Add(EgresoEnPe);
+                    }                    
+                }
+                
+                int res = tsvc.addEntregaPellas(tmp);
                 if (res >= 1)
                 {
                     if (ViewBag.Loc == 1)
@@ -105,7 +182,7 @@ namespace TalaveraWeb.Controllers
             }
             return new HttpStatusCodeResult(404, "No se pudo registrar la solicitud de pellas");
         }
-
+        
         public ActionResult ReporteEntrega(int pLoc)
         {
             ViewBag.Loc = pLoc;

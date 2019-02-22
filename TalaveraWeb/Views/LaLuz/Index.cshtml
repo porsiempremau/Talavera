@@ -5,11 +5,7 @@
 
 <h2>Talavera de la luz</h2>
 
-<content>
-    @*<p>
-            @Html.ActionLink("Solicitar barro en granel", "SolicitarBarroGranel", new { Sucursal = 1 })
-        </p>*@
-   
+<content> 
     <div class="row encabezado">
         <h4 class="col-4">Barro en Granel</h4>
         <div class="col-8 text-right">            
@@ -69,13 +65,13 @@
     @if (ViewBag.lstBarroEmpaqueLuz.Count == 0)
     {
         <p style="margin-top:2rem; margin-bottom:2rem">
-            @Html.Label("Preparación de barro", new { style = "color: gray" }) - @Html.Label("Preparación en fuentes", new { style = "color: gray" })
+            @Html.Label("Preparación de barro", new { style = "color: gray" })
         </p>
     }
     else
     {
         <p style="margin-top:2rem; margin-bottom:2rem">
-            @Html.ActionLink("Preparación de barro", "Index", "PreparacionBarro", new { pLoc = 1 }, null)  -  @Html.ActionLink("Preparación en fuentes", "Index", "PreparacionPellas", new { pLoc = 1 }, null)
+            @Html.ActionLink("Preparación de barro", "Index", "PreparacionBarro", new { pLoc = 1 }, null)
         </p>
     }
 </content>
@@ -84,6 +80,8 @@
     <div class="row encabezado">
         <h4 class="col-4" >Pellas barro</h4>
         <div class="col-8 text-right">
+            @Html.ActionLink("Historial de cargas", "Index", "PreparacionPellas", new { pLoc = 1 }, null) -
+            @Html.ActionLink("Movimientos", "Movimientos", "SolicitarPellas", new { pLoc = 1 }, null) -
             @Html.ActionLink("Solicitar pellas", "Solicitar", "SolicitarPellas", new { pLoc = 1 }, null)
         </div>        
     </div>
