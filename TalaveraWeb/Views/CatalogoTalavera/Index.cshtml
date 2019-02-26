@@ -12,49 +12,103 @@
 <hr />
 
 <div class="row encabezado">
-    <h4 class="col-4">Catalogo de piezas</h4>
-    <div class="col-8 text-right">
-        @Html.ActionLink("Agregar una pieza", "NuevaPieza")        
+    <div class="col-md-4">        
+        @using (Ajax.BeginForm("PiesasFiltradas", new AjaxOptions()
+        {
+            HttpMethod = "POST",
+            InsertionMode = InsertionMode.Replace,
+            UpdateTargetId = "ListadoPiezasContenedor",
+            LoadingElementId = "loader"
+        }))
+        {
+            <div class="input-group flex-nowrap float-right">
+                <input id="inBuscar" name="inBuscar" type="text" class="form-control" placeholder="buscar" aria-label="buscar" aria-describedby="addon-wrapping">
+                <div class="input-group-prepend">
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        }                
+    </div>
+    <h4 class="col-md-4 text-center">Catalogo de piezas</h4>
+    <div class="col-md-4 text-right">
+        @Html.ActionLink("Agregar una pieza", "NuevaPieza")
     </div>
 </div>
 
-<div class="list-group">
+<div id="loader" class="spinner-border text-primary" role="status">
+    <span class="sr-only">Loading...</span>
+</div>
+<span id="ListadoPiezasContenedor">
+    @Html.Partial("_ListadoPiezas", Model)
+</span>
 
-    <div class="container">
-        <div class="row">
 
-            @foreach (var item in Model)
-            {
-                <div class="col-md-4 piezaTalavera">
-                    <div class="row ">
-                        <div class="col-md-12 encabezadoPiezaTalavera">
-                            <div class="row">
-                                <h3 class="col-8">@item.NombrePieza</h3>
-                                <div class="col-4 text-right">
-                                    <button type="button" class="btn btn-primary btn-sm" onclick="@("window.location.href='" + @Url.Action("edit", "CatalogoTalavera", new { id = item.Id }) + "'");" >
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-danger btn-sm" onclick="@("window.location.href='" + @Url.Action("delete", "CatalogoTalavera", new { id = item.Id }) + "'");">
-                                        <i class="fas fa-times"></i>
-                                    </button>
+@*<div class="list-group">
+
+        <div class="container">
+            <div class="row">
+
+                @foreach (var item in Model)
+                {
+                    <div class="col-md-4 piezaTalavera">
+                        <div class="row ">
+                            <div class="col-md-12 encabezadoPiezaTalavera">
+                                <div class="row">
+                                    <h3 class="col-8">@item.NombrePieza</h3>
+                                    <div class="col-4 text-right">
+                                        <button type="button" class="btn btn-primary btn-sm" onclick="@("window.location.href='" + @Url.Action("edit", "CatalogoTalavera", new { id = item.Id }) + "'");" >
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-sm" onclick="@("window.location.href='" + @Url.Action("delete", "CatalogoTalavera", new { id = item.Id }) + "'");">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
                                 </div>
+                                <hr />
                             </div>
-                            <hr />
-                        </div>
-                        <div class="col-md-6">
-                            <label>Altura  : @item.Altura cm</label><br />
-                            <label>Diámetro: @item.Diametro cm</label>
-                        </div>
-                        <div class="col">
-                            <img src="~/Imagen/Piezas/@item.Imagen" class="img-fluid shadow-sm" />
+                            <div class="col-md-6">
+                                <label>Altura  : @item.Altura cm</label><br />
+                                <label>Diámetro: @item.Diametro cm</label>
+                            </div>
+                            <div class="col">
+                                <img src="~/Imagen/Piezas/@item.Imagen" class="img-fluid shadow-sm" />
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-            }
 
+                }
+
+            </div>
         </div>
-    </div>
 
-</div>
+    </div>*@
 
+
+@section scripts{
+    <script src="~/Scripts/jquery-3.0.0.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script>
+        function FiltrarListado(){
+            var texto = document.getElementById("inBuscar").value.toLowerCase();
+            var lstCompleta = @Html.Raw(Json.Encode(Model));
+            var lstFinal = [];
+            lstCompleta.forEach(function(item){
+                if(item.NombrePieza.toLowerCase().includes(texto))
+                {
+                    lstFinal.push(item);
+                }
+            });
+
+
+        }
+
+        function actualizaUnidadesMax(){
+            var lstBarroDisponible = @Html.Raw(Json.Encode(ViewBag.lstRecervasPellas));
+            document.getElementById("CantidadPellas").setAttribute("max", lstBarroDisponible[0].Unidades);
+        }
+
+
+    </script>
+}

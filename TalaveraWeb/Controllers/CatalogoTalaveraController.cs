@@ -18,6 +18,12 @@ namespace TalaveraWeb.Controllers
             return View(lstCT);
         }
 
+        public PartialViewResult PiesasFiltradas(string inBuscar)
+        {
+            List<CatalogoTalavera> lstCT = tvsv.getPiezasTalavera(inBuscar);
+            return PartialView("_ListadoPiezas", lstCT);
+        }
+
         public ActionResult NuevaPieza()
         {
             return View();

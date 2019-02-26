@@ -432,6 +432,7 @@
     <Content Include="Views\CatalogoTalavera\NuevaPieza.cshtml" />
     <Content Include="Views\CatalogoTalavera\Edit.cshtml" />
     <Content Include="Views\CatalogoTalavera\Delete.cshtml" />
+    <Content Include="Views\CatalogoTalavera\_ListadoPiezas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
