@@ -59,5 +59,7 @@ namespace TalaveraWeb.Models
         public System.Data.Entity.DbSet<TalaveraWeb.Models.PreparacionPellasConPreBar> PreparacionPellasConPreBars { get; set; }
 
         public DbSet<CatalogoTalavera> CatalogoTalavera { get; set; }
+
+        public DbSet<PersonalTalavera> PersonalTalavera { get; set; }
     }
 }

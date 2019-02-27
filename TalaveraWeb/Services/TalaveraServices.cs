@@ -144,6 +144,73 @@ namespace TalaveraWeb.Services
             }            
         }
 
+        //PERSONAL TALAVERA
+        public List<PersonalTalavera> getPersonalTalavera()
+        {
+            try
+            {
+                return db.PersonalTalavera.ToList();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public int addPersonalTalaver(PersonalTalavera pPT)
+        {
+            try
+            {
+                db.PersonalTalavera.Add(pPT);
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch(Exception ex)
+            {
+                return -1;
+            }
+        }
+
+        public PersonalTalavera getPersonal(int id)
+        {
+            try
+            {
+                return db.PersonalTalavera.Find(id);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public int editPersonal(PersonalTalavera pPT)
+        {
+            try
+            {
+                db.Entry(pPT).State = EntityState.Modified;
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
+        public int deletePersonal(int pId)
+        {
+            try
+            {
+                PersonalTalavera per = db.PersonalTalavera.Find(pId);
+                db.PersonalTalavera.Remove(per);
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
 
         //BARROMAESTRA
         public List<BarroMaestra> getBarroMestra()

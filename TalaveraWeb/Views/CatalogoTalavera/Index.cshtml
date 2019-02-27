@@ -90,25 +90,6 @@
     <script src="~/Scripts/jquery-3.0.0.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
     <script>
-        function FiltrarListado(){
-            var texto = document.getElementById("inBuscar").value.toLowerCase();
-            var lstCompleta = @Html.Raw(Json.Encode(Model));
-            var lstFinal = [];
-            lstCompleta.forEach(function(item){
-                if(item.NombrePieza.toLowerCase().includes(texto))
-                {
-                    lstFinal.push(item);
-                }
-            });
-
-
-        }
-
-        function actualizaUnidadesMax(){
-            var lstBarroDisponible = @Html.Raw(Json.Encode(ViewBag.lstRecervasPellas));
-            document.getElementById("CantidadPellas").setAttribute("max", lstBarroDisponible[0].Unidades);
-        }
-
-
+        
     </script>
 }

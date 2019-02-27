@@ -1,0 +1,60 @@
+﻿@model IEnumerable<TalaveraWeb.Models.MiBD.PersonalTalavera>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2 style="text-align:center">
+    Talavera de la luz
+</h2>
+<h3 style="text-align:center">Personal de Talavera</h3>
+<hr />
+
+<p>
+    @Html.ActionLink("Agregar nuevo", "Crear")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.APaterno)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AMaterno)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Puesto)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.APaterno)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AMaterno)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Puesto)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |            
+            @Html.ActionLink("Borrar", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

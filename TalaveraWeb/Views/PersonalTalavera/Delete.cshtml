@@ -1,0 +1,66 @@
+﻿@model TalaveraWeb.Models.MiBD.PersonalTalavera
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2 style="text-align:center">
+    Talavera de la luz
+</h2>
+<h3 style="text-align:center">Borrar personal de talavera</h3>
+<hr />
+
+<h3>¿Estás seguro que deseas borrar a esta persona?</h3>
+<div>    
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.APaterno)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.APaterno)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AMaterno)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AMaterno)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Puesto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Puesto)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Borrar" class="btn btn-default" /> |
+            @Html.ActionLink("Volver a listado", "Index")
+        </div>
+    }
+</div>
