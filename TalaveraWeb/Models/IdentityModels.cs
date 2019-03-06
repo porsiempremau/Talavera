@@ -61,5 +61,10 @@ namespace TalaveraWeb.Models
         public DbSet<CatalogoTalavera> CatalogoTalavera { get; set; }
 
         public DbSet<PersonalTalavera> PersonalTalavera { get; set; }
+
+        public DbSet<PlanDeTrabajo> PlanDeTrabajo { get; set; }
+
+        public DbSet<MoldeadoMovimientos> MoldeadoMovimientos { get; set; }
+               
     }
 }

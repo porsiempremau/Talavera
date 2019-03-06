@@ -1,0 +1,249 @@
+﻿@model TalaveraWeb.Models.clasesPlanDeTrabajo.PlanDeTrabajoConDetalle
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<h2 style="text-align:center">
+    @ViewBag.NombreLocacion
+</h2>
+<h3 style="text-align:center">Crear plan de trabajo</h3>
+<br /><br />
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+              
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        
+    <div class="row col-md-12">
+        <div class="form-group col-md-4">
+            @Html.Label("Personal", htmlAttributes: new { @class = "control-label col" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.IdPersonal, new SelectList(ViewBag.Personal, "Value", "Text"), new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.IdPersonal, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.NumeroOrden, htmlAttributes: new { @class = "control-label col" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NumeroOrden, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NumeroOrden, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.Label("Etapa producción", htmlAttributes: new { @class = "control-label col" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.EtapaPlan, new SelectList(ViewBag.EtapasProduccion, "Value", "Text"), new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.IdPersonal, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="row col-md-12">
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.FechaInicio, htmlAttributes: new { @class = "control-label col" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FechaInicio, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FechaInicio, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.FechaFin, htmlAttributes: new { @class = "control-label col" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FechaFin, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FechaFin, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="row col-md-12">
+        <div class="form-group col">
+            @Html.LabelFor(model => model.Observacion, htmlAttributes: new { @class = "control-label col" })
+            <div class="col-md-11">
+                @Html.EditorFor(model => model.Observacion, new { htmlAttributes = new { @class = "form-control col" } })
+                @Html.ValidationMessageFor(model => model.Observacion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="row col-md-12">
+        @Html.Label("Piezas planeadas:", htmlAttributes: new { @class = "control-label col" })
+        <table class="table col-md-12">            
+            <thead>
+                <tr>
+                    <th>Pieza</th>
+                    <th>Cantidad Planeada</th>
+                    <th>Cantidad Real</th>
+                    <th>Observación</th>
+                </tr>
+            </thead>
+            <tbody id="ElemLista">
+                @Html.Partial("_DetallePlan", 0)
+            </tbody>
+        </table>
+        <div class="col-md-12">
+            <button type="button" class="btn btn-primary btn-md float-right" onclick="obtenerIndiceSiguiente()" data-toggle="tooltip" data-placement="top" title="Agregar piezas">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>        
+    </div>
+    
+    <div class="form-group col-12">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Crear" class="btn btn-primary" />
+        </div>
+    </div>
+
+}
+
+    <div>
+        @Html.ActionLink("Volver a listado", "Index")
+    </div>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-xl" id="modalCatalogo" name="modalCatalogo" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="col-md-4">
+                        @using (Ajax.BeginForm("PiesasFiltradas", new AjaxOptions()
+                        {
+                            HttpMethod = "POST",
+                            InsertionMode = InsertionMode.Replace,
+                            UpdateTargetId = "ListadoPiezasContenedor"
+                        }))
+                        {
+                            <div class="input-group flex-nowrap float-right">
+                                <input id="inBuscar" name="inBuscar" type="text" class="form-control" placeholder="buscar" aria-label="buscar" aria-describedby="addon-wrapping">
+                                <div class="input-group-prepend">
+                                    <button type="submit" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <h5 class="modal-title col-md-4" id="exampleModalScrollableTitle">Catálogo de piezas</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body" style="margin:5px">
+                    <div class="list-group">
+                        <div class="container" id="ListadoPiezasContenedor">
+
+                            @Html.Partial("_listadoPiezasTalavera", (List<TalaveraWeb.Models.MiBD.CatalogoTalavera>)ViewBag.lstCT)
+
+                            @*<div class="row" >
+                                    @foreach (var item in (List<TalaveraWeb.Models.MiBD.CatalogoTalavera>)ViewBag.lstCT)
+                                    {
+                                        <a href="#" name="@item.NombrePieza @item.Altura x @item.Diametro"  id="@item.Id" class="list-group-item list-group-item-action col-sm-4" onclick="onClickAceptarCatalogo(this)">
+                                            <div class="row">
+                                                <label class="col-12">Nombre  : @item.NombrePieza</label><br />
+                                                <div class="col-sm-6">
+                                                    <label>Altura  : @item.Altura cm</label><br />
+                                                    <label>Diámetro: @item.Diametro cm</label>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <img src="~/Imagen/Piezas/@item.Imagen" class="img-fluid shadow-sm" />
+                                                </div>
+                                            </div>
+                                        </a>
+                                    }
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    @*dialog para solicitar que se llenen todos los campos*@
+    <div id="dialogCampos" title="Campos faltantes" >        
+        <p>Debes porporcionar el nombre pieza y la cantidad planeada.</p>                    
+    </div>
+
+    @section Scripts {
+        <script src="~/Scripts/jquery-3.0.0.js"></script>
+        <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+        <script src="~/Scripts/bootstrap.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+        <script>
+            $( function() {
+                $("#dialogCampos").dialog({
+                    autoOpen: false,
+                    show: {
+                        effect: "blind",
+                        duration: 1000
+                    },
+                    hide: {
+                        effect: "explode",
+                        duration: 1000
+                    }
+                });
+            });
+
+
+            function obtenerIndiceSiguiente() {
+                var elementosActuales = document.getElementById("ElemLista").childElementCount;
+                var indice = elementosActuales - 1;
+
+                var idPieza = "inNombrePieza[" + indice + "]";
+                var idCantidad = "CantidadPlaneada[" + indice + "]";
+
+                var tmpPieza = document.getElementById(idPieza).value;
+                var tmpCantidad = document.getElementById(idCantidad).value;
+
+                if (tmpPieza == "" || tmpCantidad == "") {
+                    $("#dialogCampos").dialog("open");
+
+                }
+                else {
+                    var urlAction = "@Url.Action("agregarElemento", "PlanDeTrabajo")"
+                    var dataElemento = { indice: elementosActuales }
+
+                    $.ajax({
+                        url: urlAction,
+                        type: "POST",
+                        data: dataElemento
+                    }).done(function (res) {
+                        //$("#ElemLista").after(res);
+                        $("#ElemLista").append(res);
+
+                    }).fail(function (error) {
+                        var tmp = error;
+                    }).always(function () {
+                    });
+                } 
+            }
+
+            var itemNombre = "", itemId = "0";
+            function onClickAceptarCatalogo(val) {
+                $('#modalCatalogo').modal('toggle');
+                document.getElementById(itemNombre).value = val.name;
+                document.getElementById(itemId).value = val.id;
+            }
+
+            function invocaVentana(data) {
+                itemNombre = "inNombrePieza[" + data + "]";
+                itemId = "inIdPieza[" + data + "]";
+                $('#modalCatalogo').modal();
+            }
+
+        </script>
+
+        @Scripts.Render("~/bundles/jqueryval")
+    }

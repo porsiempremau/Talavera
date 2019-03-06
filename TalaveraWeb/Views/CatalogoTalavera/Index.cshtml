@@ -12,9 +12,10 @@
 <hr />
 
 <div class="row encabezado">
-    <div class="col-md-4">        
+    <div class="col-md-4">
+        
         @using (Ajax.BeginForm("PiesasFiltradas", new AjaxOptions()
-        {
+        {  
             HttpMethod = "POST",
             InsertionMode = InsertionMode.Replace,
             UpdateTargetId = "ListadoPiezasContenedor",
@@ -29,7 +30,7 @@
                     </button>
                 </div>
             </div>
-        }                
+        }
     </div>
     <h4 class="col-md-4 text-center">Catalogo de piezas</h4>
     <div class="col-md-4 text-right">
@@ -90,6 +91,6 @@
     <script src="~/Scripts/jquery-3.0.0.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
     <script>
-        
+
     </script>
 }

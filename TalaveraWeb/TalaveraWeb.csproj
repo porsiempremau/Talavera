@@ -183,6 +183,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MovimientosBarroController.cs" />
     <Compile Include="Controllers\PersonalTalaveraController.cs" />
+    <Compile Include="Controllers\PlanDeTrabajoController.cs" />
     <Compile Include="Controllers\PreparacionBarroController.cs" />
     <Compile Include="Controllers\PreparacionPellasController.cs" />
     <Compile Include="Controllers\ProvedoresController.cs" />
@@ -249,6 +250,10 @@
     <Compile Include="Migrations\201902262031208_addTablaPersonalTalavera.Designer.cs">
       <DependentUpon>201902262031208_addTablaPersonalTalavera.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902281939535_addPlanTrabajoYModelado.cs" />
+    <Compile Include="Migrations\201902281939535_addPlanTrabajoYModelado.Designer.cs">
+      <DependentUpon>201902281939535_addPlanTrabajoYModelado.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BarroMovimientosConMerma.cs" />
@@ -258,7 +263,9 @@
     <Compile Include="Models\MiBD\BarroMovimientos.cs" />
     <Compile Include="Models\MiBD\CatalogoTalavera.cs" />
     <Compile Include="Models\MiBD\EntregaPellas.cs" />
+    <Compile Include="Models\MiBD\MoldeadoMovimientos.cs" />
     <Compile Include="Models\MiBD\PersonalTalavera.cs" />
+    <Compile Include="Models\MiBD\PlanDeTrabajo.cs" />
     <Compile Include="Models\MiBD\PreparacionBarro.cs" />
     <Compile Include="Models\MiBD\PreparacionPellas.cs" />
     <Compile Include="Models\MiBD\prepBarro_prepPellas.cs" />
@@ -266,6 +273,8 @@
     <Compile Include="Models\MiBD\Recuperados.cs" />
     <Compile Include="Models\MiBD\Sucursales.cs" />
     <Compile Include="Models\PellasDisponibles.cs" />
+    <Compile Include="Models\clasesPlanDeTrabajo\DetalleDePlan.cs" />
+    <Compile Include="Models\clasesPlanDeTrabajo\PlanDeTrabajoConDetalle.cs" />
     <Compile Include="Models\PreparacionBarroConsumo.cs" />
     <Compile Include="Models\PreparacionPellasConPreBar.cs" />
     <Compile Include="Models\ReservaBarro.cs" />
@@ -443,6 +452,10 @@
     <Content Include="Views\PersonalTalavera\Crear.cshtml" />
     <Content Include="Views\PersonalTalavera\Edit.cshtml" />
     <Content Include="Views\PersonalTalavera\Delete.cshtml" />
+    <Content Include="Views\PlanDeTrabajo\Index.cshtml" />
+    <Content Include="Views\PlanDeTrabajo\Create.cshtml" />
+    <Content Include="Views\PlanDeTrabajo\_DetallePlan.cshtml" />
+    <Content Include="Views\PlanDeTrabajo\_listadoPiezasTalavera.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -499,6 +512,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902262031208_addTablaPersonalTalavera.resx">
       <DependentUpon>201902262031208_addTablaPersonalTalavera.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902281939535_addPlanTrabajoYModelado.resx">
+      <DependentUpon>201902281939535_addPlanTrabajoYModelado.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -17,7 +17,8 @@
         <thead>
             <tr>
                 <th>Tipo</th>
-                <th>Total en Kg</th>                
+                <th>Total en Kg</th>
+                <th class="text-primary">Suma Total</th>
             </tr>
         </thead>
         <tbody>
@@ -25,7 +26,8 @@
             {
                 <tr>
                     <td>@item.Tipo</td>
-                    <td>@item.TotalKg</td>                    
+                    <td>@item.TotalKg</td>
+                    <td class="text-primary">@ViewData[item.Tipo]</td>
                 </tr>
             }
         </tbody>

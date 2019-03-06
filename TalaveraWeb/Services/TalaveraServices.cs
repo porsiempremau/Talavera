@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TalaveraWeb.Models;
+using TalaveraWeb.Models.clasesPlanDeTrabajo;
 using TalaveraWeb.Models.MiBD;
 
 namespace TalaveraWeb.Services
@@ -1120,8 +1121,7 @@ namespace TalaveraWeb.Services
             }
         }
 
-
-
+        
         public int editEntregaPellas(int? pCantidadPellas, string pCarga, string pResponsable, int pLocacion)
         {
             try
@@ -1182,5 +1182,128 @@ namespace TalaveraWeb.Services
         {
             return db.EntregaPellas.Where(x => x.Locacion == pLoc && x.TipoMovimiento == "E").ToList();
         }
+
+
+        //PLAN DE TRABAJO
+
+        public List<SelectListItem> getEtapasDeProduccion()
+        {
+            List<SelectListItem> lst = new List<SelectListItem>();
+            lst.Add(new SelectListItem() { Value = "Moldes", Text = "Moldes" });            
+            lst.Add(new SelectListItem() { Value = "Torno", Text = "Torno" });            
+            lst.Add(new SelectListItem() { Value = "Decorado", Text = "Decorado" });
+            lst.Add(new SelectListItem() { Value = "Terminado", Text = "Terminado" });
+            lst.Add(new SelectListItem() { Value = "Pausado", Text = "Pausado" });
+
+            return lst;
+        }
+
+        //Retorna un nivel mas al de la etapa actual.
+        public List<SelectListItem> getEtapasDeProduccion(int EtapaActual)
+        {
+            List<SelectListItem> lst = new List<SelectListItem>();                        
+            lst.Add(new SelectListItem() { Value = "0", Text = "Planeación" });
+
+            if (EtapaActual  >= 0)
+                lst.Add(new SelectListItem() { Value = "Torno", Text = "Torno" });
+            if (EtapaActual  >= 1)
+                lst.Add(new SelectListItem() { Value = "2", Text = "Secado" });
+            if (EtapaActual >= 2)
+                lst.Add(new SelectListItem() { Value = "3", Text = "Horno" });
+            if (EtapaActual >= 3)
+                lst.Add(new SelectListItem() { Value = "4", Text = "Decoración" });
+            if (EtapaActual >= 4)
+                lst.Add(new SelectListItem() { Value = "10", Text = "Terminado" });
+
+            lst.Add(new SelectListItem() { Value = "11", Text = "Pausado" });
+
+            return lst;
+        }
+
+        public List<PlanDeTrabajoConDetalle> getPlanesTrabajo()
+        {
+            try
+            {
+                List<PlanDeTrabajo> lst = db.PlanDeTrabajo.ToList();
+
+                List<PlanDeTrabajoConDetalle> lstConDet = new List<PlanDeTrabajoConDetalle>();
+                foreach(var item in lst)
+                {
+                    PlanDeTrabajoConDetalle tmp = new PlanDeTrabajoConDetalle()
+                    {
+                        Id = item.Id,
+                        IdPersonal = item.IdPersonal,
+                        NombrePersonal = db.PersonalTalavera.Where(n => n.Id == item.IdPersonal).Select(nn => nn.Nombre + " " + nn.APaterno).FirstOrDefault(),
+                        NumeroOrden = item.NumeroOrden,
+                        FechaInicio = item.FechaInicio,
+                        FechaFin = item.FechaFin,
+                        EtapaPlan = item.EtapaPlan,
+                        Observacion = item.Observacion,
+                        Detalles = db.MoldeadoMovimientos.Where(x => x.IdOrigen == item.Id).Select(y => new DetalleDePlan()
+                                                                                                            {
+                                                                                                                Id = y.Id,
+                                                                                                                IdCatalogoTalavera = y.IdCatalogoTalavera,
+                                                                                                                NombrePieza = db.CatalogoTalavera.Where(zz => zz.Id == y.IdCatalogoTalavera).Select(zzz => zzz.NombrePieza + " " + zzz.Altura + " x " + zzz.Diametro ).FirstOrDefault(),
+                                                                                                                CatidadPlaneada = y.CatidadPlaneada,
+                                                                                                                CantidadReal = y.CantidadReal,
+                                                                                                                Observacion = y.Observacion                            
+                                                                                                            }).ToList()
+                        
+                    };
+                    lstConDet.Add(tmp);
+                }
+
+                return lstConDet;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public int addPlanDeTrabajo(PlanDeTrabajo pPT)
+        {
+            try
+            {
+                db.PlanDeTrabajo.Add(pPT);
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
+        //MOVIMIENTOS DE PIEZAS
+
+        public int addMoldeadoMovimientos(MoldeadoMovimientos pMM)
+        {
+            try
+            {
+                db.MoldeadoMovimientos.Add(pMM);
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+        public int addMoldeadoMovimientos(List<MoldeadoMovimientos> pMM)
+        {
+            try
+            {
+                db.MoldeadoMovimientos.AddRange(pMM);
+                int res = db.SaveChanges();
+                return res;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
+
     }
 }

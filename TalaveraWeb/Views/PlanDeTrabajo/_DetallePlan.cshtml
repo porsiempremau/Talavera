@@ -1,0 +1,29 @@
+﻿@model int
+
+
+<tr>
+    <td>        
+        <!-- Button trigger modal -->
+        <div class="input-group flex-nowrap float-right">
+            <input id="inIdPieza[@Model]" name="Detalles[@Model].IdCatalogoTalavera" type="number" class="form-control" hidden>
+            <div>
+                <input id="inNombrePieza[@Model]" name="inNombrePieza[@Model]" type="text" class="form-control" data-val="true" data-val-required="Nombre de pieza requerido" placeholder="Pieza" aria-label="buscar" aria-describedby="addon-wrapping" readonly>
+                <span class="text-danger field-validation-valid" data-valmsg-for="inNombrePieza[@Model]" data-valmsg-replace="true"></span>
+            </div>
+            <div class="input-group-prepend">
+                <button type="button" class="btn btn-primary btn-sm" onclick="invocaVentana('@Model')">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    <td>
+        <input id="CantidadPlaneada[@Model]" name="Detalles[@Model].CatidadPlaneada" class="form-control" data-val="true" data-val-required="Cantidad planeada requerido" required >
+        <span class="text-danger field-validation-valid" data-valmsg-for="Detalles[@Model].CatidadPlaneada" data-valmsg-replace="true"></span>
+    </td>
+    <td>
+        <input id="CantidadReal[@Model]" name="Detalles[@Model].CantidadReal" class="form-control">
+    </td>
+    <td>
+        <input id="Observacion[@Model]" name="Detalles[@Model].Observacion" class="form-control">
+    </td>
+</tr>

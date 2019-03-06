@@ -1,0 +1,19 @@
+﻿@model IEnumerable<TalaveraWeb.Models.MiBD.CatalogoTalavera>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <a href="#" name="@item.NombrePieza @item.Altura x @item.Diametro" id="@item.Id" class="list-group-item list-group-item-action col-sm-4" onclick="onClickAceptarCatalogo(this)">
+            <div class="row">
+                <label class="col-12">Nombre  : @item.NombrePieza</label><br />
+                <div class="col-sm-6">
+                    <label>Altura  : @item.Altura cm</label><br />
+                    <label>Diámetro: @item.Diametro cm</label>
+                </div>
+                <div class="col-sm-6">
+                    <img src="~/Imagen/Piezas/@item.Imagen" class="img-fluid shadow-sm" />
+                </div>
+            </div>
+        </a>
+    }
+</div>

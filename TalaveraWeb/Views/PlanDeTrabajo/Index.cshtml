@@ -1,0 +1,65 @@
+﻿@model IEnumerable<TalaveraWeb.Models.clasesPlanDeTrabajo.PlanDeTrabajoConDetalle>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2 style="text-align:center">
+    @ViewBag.NombreLocActual
+</h2>
+<h3 style="text-align:center">Plan de trabajo</h3>
+<br /><br />
+
+<p>
+    @Html.ActionLink("Nuevo plan", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.NombrePersonal)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NumeroOrden)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaInicio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaFin)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EtapaPlan)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Observacion)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombrePersonal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumeroOrden)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaInicio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaFin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EtapaPlan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Observacion)
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+

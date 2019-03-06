@@ -20,6 +20,19 @@ namespace TalaveraWeb.Controllers
             ViewBag.lstBarroGranel34pte = tsvc.getReservasBarroGranelFrom(2);
             ViewBag.lstBarroEmpaque34pte = tsvc.getReservasBarroEmpaqueFrom(2);
             ViewBag.lstPellas = tsvc.getReservasPellasFrom(2);
+
+            //Para agregar la suma de granel y empaquetado en Kg.
+            foreach (var item in ViewBag.lstBarroGranel34pte)
+            {
+                foreach (var elem in ViewBag.lstBarroEmpaque34pte)
+                {
+                    if (item.Tipo == elem.Tipo)
+                    {
+                        ViewData[item.Tipo] = item.TotalKg + elem.TotalKg;
+                    }
+                }
+            }
+
             return View();
         }
 
